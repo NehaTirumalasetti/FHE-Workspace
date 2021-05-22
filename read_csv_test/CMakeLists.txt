@@ -1,0 +1,2 @@
+add_executable(read_csv_test read_csv_test.cpp)
+target_link_libraries(read_csv_test helib)
