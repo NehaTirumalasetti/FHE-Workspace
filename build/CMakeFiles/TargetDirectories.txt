@@ -1,3 +1,0 @@
-/opt/IBM/FHE-Workspace/build/CMakeFiles/rebuild_cache.dir
-/opt/IBM/FHE-Workspace/build/CMakeFiles/edit_cache.dir
-/opt/IBM/FHE-Workspace/build/CMakeFiles/BGV_world_country_db_lookup.dir
