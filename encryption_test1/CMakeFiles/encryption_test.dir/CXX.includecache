@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/opt/IBM/FHE-Workspace/encryption_test/test.cpp
+iostream
+-
+helib/helib.h
+-
+helib/EncryptedArray.h
+-
+helib/ArgMap.h
+-
+NTL/BasicThreadPool.h
+-
+
