@@ -79,6 +79,7 @@ encryption_test_EXTERNAL_OBJECTS =
 
 encryption_test: CMakeFiles/encryption_test.dir/test.cpp.o
 encryption_test: CMakeFiles/encryption_test.dir/build.make
+encryption_test: /usr/local/lib/libhelib.so.2.1.0
 encryption_test: /usr/lib/x86_64-linux-gnu/hdf5/serial/libhdf5_cpp.so
 encryption_test: /usr/lib/x86_64-linux-gnu/hdf5/serial/libhdf5.so
 encryption_test: /usr/lib/x86_64-linux-gnu/libpthread.so
@@ -87,7 +88,6 @@ encryption_test: /usr/lib/x86_64-linux-gnu/libz.so
 encryption_test: /usr/lib/x86_64-linux-gnu/libdl.so
 encryption_test: /usr/lib/x86_64-linux-gnu/libm.so
 encryption_test: /usr/local/lib/libboost_filesystem.so.1.72.0
-encryption_test: /usr/local/lib/libhelib.so.1.1.0
 encryption_test: /usr/local/lib/libntl.so
 encryption_test: /usr/lib/x86_64-linux-gnu/libgmp.so
 encryption_test: CMakeFiles/encryption_test.dir/link.txt

@@ -48,13 +48,20 @@ int main(int argc, char const *argv[])
   // Initialize context
   std::cout << "\nInitializing the Context ... ";
   HELIB_NTIMER_START(timer_Context);
-  helib::Context context(m, p, r);
+ // helib::Context context(m, p, r);
+   helib::Context context = helib::ContextBuilder<helib::BGV>()
+                               .m(m)
+                               .p(p)
+                               .r(r)
+                               .bits(bits)
+                               .c(c)
+                               .build();
   HELIB_NTIMER_STOP(timer_Context);
   
   // Modify the context, adding primes to the modulus chain
   std::cout << "\nBuilding modulus chain ... ";
   HELIB_NTIMER_START(timer_CHAIN);
-  helib::buildModChain(context, bits, c);
+  //helib::buildModChain(context, bits, c);
   HELIB_NTIMER_STOP(timer_CHAIN);
 
 // Secret key management
@@ -79,7 +86,8 @@ int main(int argc, char const *argv[])
   HELIB_NTIMER_STOP(timer_PubKey);
 
   // Get the EncryptedArray of the context
-  const helib::EncryptedArray& ea = *(context.ea);
+//  const helib::EncryptedArray& ea = *(context.ea);
+  const helib::EncryptedArray& ea = context.getEA();
 
    // Print the context
  // std::cout << std::endl;

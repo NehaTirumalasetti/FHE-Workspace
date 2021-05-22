@@ -37,5 +37,6 @@ add_executable(encryption_test test.cpp)
 INCLUDE_DIRECTORIES(/usr/local/include/simple_ml_helib)
 
 # Link Twitter_recommendation_system, hdf5, helib, boost, and simple_ml_helib
-target_link_libraries(encryption_test -lsimple_ml_helib ${HDF5_LIBRARIES} helib ${Boost_LIBRARIES})
-target_link_libraries(encryption_test helib)
+# target_link_libraries(encryption_test -lsimple_ml_helib ${HDF5_LIBRARIES} helib ${Boost_LIBRARIES})
+# target_link_libraries(encryption_test helib)
+target_link_libraries(encryption_test mlhelib helib ${HDF5_LIBRARIES} ${Boost_LIBRARIES})
