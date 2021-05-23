@@ -4,9 +4,10 @@
 #include <sstream>
 #include <helib/helib.h>
 
-
 using namespace std;
 using namespace helib;
+using namespace helayers;
+
 // using std::vector;
 
 vector<vector<double>> read_csv(string filename)
@@ -79,7 +80,7 @@ int main(int argc, char* argv[])
 
     const PubKey& publicKey = secretKey;
 
-    PtxtArray iv(context, interest_vector);
+    // PtxtArray iv(context);//, interest_vector);
     // for(int i=0; i < interest_vector.size(); i++){
   
     //     PtxtArray p0(context, interest_vector[i]);
@@ -90,7 +91,10 @@ int main(int argc, char* argv[])
     //     // cout<<"\n";
     //     iv.load(p0);
     // }
-    cout<<iv;
+    // cout<<iv;
+
+
+
 
     return 0;
 }

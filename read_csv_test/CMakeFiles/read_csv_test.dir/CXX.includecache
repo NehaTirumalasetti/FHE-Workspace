@@ -17,4 +17,6 @@ sstream
 -
 helib/helib.h
 -
+helayers/simple_nn/CipherMatrixEncoder.h
+/opt/IBM/FHE-Workspace/read_csv_test/helayers/simple_nn/CipherMatrixEncoder.h
 
