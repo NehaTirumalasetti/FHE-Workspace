@@ -119,13 +119,16 @@ int main(int argc, char* argv[])
       db_ptxt.emplace_back(move(n));
         
     }
-    cout<<db_ptxt;
-
-
-
-    
-
-
+    //cout<<db_ptxt;
+    std::vector<Ctxt> ctxt_arr;
+    // , interest_vector);
+    for(int i=0; i < db_ptxt.size(); i++)
+    {
+      Ctxt c (publicKey);
+      db_ptxt[i].encrypt(c);
+      ctxt_arr.emplace_back(move(c));        
+    }
+    cout<<ctxt_arr;
 
 
     return 0;
