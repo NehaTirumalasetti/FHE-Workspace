@@ -42,6 +42,17 @@ vector<vector<double>> read_csv(string filename)
   return dataset;
 }
 
+void storeinfile(string filename, vector<Ctxt> cp)
+{
+     ofstream file;
+    file.open(filename , ios::out);
+    if (file.is_open())
+    {
+      file<<cp;
+    }
+    else cout << "Unable to open file";
+}
+
 
 
 int main(int argc, char* argv[])
@@ -130,15 +141,9 @@ int main(int argc, char* argv[])
     }
     // cout<<ctxt_arr;
 
-    ofstream file;
-    file.open("op.txt" , ios::out);
-    if (file.is_open())
-    {
-      file<<ctxt_arr;
-    }
-    else cout << "Unable to open file";
+    storeinfile("op.txt", ctxt_arr);
 
-  //Decrytion
+  //Decryption
   vector<vector<double>> decrytxt;
   for(int i =0;i<ctxt_arr.size();i++)
   {
