@@ -53,6 +53,17 @@ void storeinfile(string filename, vector<Ctxt> cp)
     else cout << "Unable to open file";
 }
 
+void storeinfileptxt(string filename, vector<vector<double>> cp)
+{
+     ofstream file;
+    file.open(filename , ios::out);
+    if (file.is_open())
+    {
+      file<<cp;
+    }
+    else cout << "Unable to open file";
+}
+
 
 
 int main(int argc, char* argv[])
@@ -154,6 +165,7 @@ int main(int argc, char* argv[])
     decrytxt.push_back(v);
   }
   cout<<decrytxt;
+  storeinfileptxt("dec.txt", decrytxt);
 
     return 0;
 }
