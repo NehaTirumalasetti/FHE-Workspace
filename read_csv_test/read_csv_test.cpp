@@ -128,7 +128,16 @@ int main(int argc, char* argv[])
       db_ptxt[i].encrypt(c);
       ctxt_arr.emplace_back(move(c));        
     }
-    cout<<ctxt_arr;
+    // cout<<ctxt_arr;
+
+    ofstream file;
+    file.open("op.txt" , ios::out);
+    if (file.is_open())
+    {
+      file<<ctxt_arr;
+    }
+  else cout << "Unable to open file";
+
 
 
     return 0;
