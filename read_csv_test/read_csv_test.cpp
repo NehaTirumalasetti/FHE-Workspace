@@ -136,9 +136,19 @@ int main(int argc, char* argv[])
     {
       file<<ctxt_arr;
     }
-  else cout << "Unable to open file";
+    else cout << "Unable to open file";
 
-
+  //Decrytion
+  vector<vector<double>> decrytxt;
+  for(int i =0;i<ctxt_arr.size();i++)
+  {
+    PtxtArray pp (context);
+    pp.decrypt(ctxt_arr[i],secretKey);
+    vector<double> v;
+    pp.store(v);
+    decrytxt.push_back(v);
+  }
+  cout<<decrytxt;
 
     return 0;
 }
