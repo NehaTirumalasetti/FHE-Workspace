@@ -59,41 +59,41 @@ int main(int argc, char* argv[])
      std::vector<std::pair<helib::Ptxt<helib::BGV>, helib::Ptxt<helib::BGV>>>
       country_db_ptxt;
 
-      // Plaintext prime modulus
-    unsigned long p = 131;
-    // Cyclotomic polynomial - defines phi(m)
-    unsigned long m = 130; // this will give 48 slots
-    // Hensel lifting (default = 1)
-    unsigned long r = 1;
-    // Number of bits of the modulus chain
-    unsigned long bits = 1000;
-    // Number of columns of Key-Switching matrix (default = 2 or 3)
-    unsigned long c = 2;
-    // Size of NTL thread pool (default =1)
-    unsigned long nthreads = 1;
+    //   // Plaintext prime modulus
+    // unsigned long p = 131;
+    // // Cyclotomic polynomial - defines phi(m)
+    // unsigned long m = 130; // this will give 48 slots
+    // // Hensel lifting (default = 1)
+    // unsigned long r = 1;
+    // // Number of bits of the modulus chain
+    // unsigned long bits = 1000;
+    // // Number of columns of Key-Switching matrix (default = 2 or 3)
+    // unsigned long c = 2;
+    // // Size of NTL thread pool (default =1)
+    // unsigned long nthreads = 1;
 
-     helib::Context context = helib::ContextBuilder<helib::BGV>()
-                               .m(m)
-                               .p(p)
-                               .r(r)
-                               .bits(bits)
-                               .c(c)
-                               .build();  
+    //  helib::Context context = helib::ContextBuilder<helib::BGV>()
+    //                            .m(m)
+    //                            .p(p)
+    //                            .r(r)
+    //                            .bits(bits)
+    //                            .c(c)
+    //                            .build();  
        
-    // Context context =
+    Context context =
 
-    //   // initialize a Context object using the builder pattern
-    //   ContextBuilder<CKKS>()
+      // initialize a Context object using the builder pattern
+      ContextBuilder<CKKS>()
 
-    //       .m(16 * 1024)
+          .m(16 * 1024)
 
-    //       .bits(119)
+          .bits(119)
           
-    //       .precision(20)
+          .precision(20)
     
-    //       .c(2)
+          .c(2)
         
-    //       .build();
+          .build();
      cout << "securityLevel=" << context.securityLevel() << "\n";
 
     long n = context.getNSlots();
@@ -108,12 +108,12 @@ int main(int argc, char* argv[])
 
     PtxtArray iv(context, interest_vector[0]);
     //cout << iv;
-    std::vector<std::vector<PtxtArray>> db_ptxt;
+    std::vector<PtxtArray> db_ptxt;
     // , interest_vector);
     for(int i=0; i < interest_vector.size(); i++)
     {
-      //PtxtArray n (context,interest_vector[i]);
-      PlaintextArray n (ea);
+      PtxtArray n (context,interest_vector[i]);
+      // PlaintextArray n (ea);
       //n.getData()
 
       db_ptxt.emplace_back(move(n));
