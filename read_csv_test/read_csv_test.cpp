@@ -6,7 +6,7 @@
 
 using namespace std;
 using namespace helib;
-using namespace helayers;
+//using namespace helayers;
 
 // using std::vector;
 
@@ -56,23 +56,49 @@ int main(int argc, char* argv[])
         cout<<"\n";
     }
 
-    Context context =
+     std::vector<std::pair<helib::Ptxt<helib::BGV>, helib::Ptxt<helib::BGV>>>
+      country_db_ptxt;
 
-      // initialize a Context object using the builder pattern
-      ContextBuilder<CKKS>()
+      // Plaintext prime modulus
+    unsigned long p = 131;
+    // Cyclotomic polynomial - defines phi(m)
+    unsigned long m = 130; // this will give 48 slots
+    // Hensel lifting (default = 1)
+    unsigned long r = 1;
+    // Number of bits of the modulus chain
+    unsigned long bits = 1000;
+    // Number of columns of Key-Switching matrix (default = 2 or 3)
+    unsigned long c = 2;
+    // Size of NTL thread pool (default =1)
+    unsigned long nthreads = 1;
 
-          .m(16 * 1024)
+     helib::Context context = helib::ContextBuilder<helib::BGV>()
+                               .m(m)
+                               .p(p)
+                               .r(r)
+                               .bits(bits)
+                               .c(c)
+                               .build();  
+       
+    // Context context =
 
-          .bits(119)
+    //   // initialize a Context object using the builder pattern
+    //   ContextBuilder<CKKS>()
+
+    //       .m(16 * 1024)
+
+    //       .bits(119)
           
-          .precision(20)
+    //       .precision(20)
     
-          .c(2)
+    //       .c(2)
         
-          .build();
+    //       .build();
      cout << "securityLevel=" << context.securityLevel() << "\n";
 
     long n = context.getNSlots();
+
+    const helib::EncryptedArray& ea = context.getEA();
 
     SecKey secretKey(context);
 
@@ -80,18 +106,24 @@ int main(int argc, char* argv[])
 
     const PubKey& publicKey = secretKey;
 
-    // PtxtArray iv(context);//, interest_vector);
-    // for(int i=0; i < interest_vector.size(); i++){
-  
-    //     PtxtArray p0(context, interest_vector[i]);
-    //     // for(int j=0; j< interest_vector[i].size(); j++){
-            
-    //     //     //cout<<interest_vector[i][j]<<"\t";
-    //     // }
-    //     // cout<<"\n";
-    //     iv.load(p0);
-    // }
-    // cout<<iv;
+    PtxtArray iv(context, interest_vector[0]);
+    //cout << iv;
+    std::vector<std::vector<PtxtArray>> db_ptxt;
+    // , interest_vector);
+    for(int i=0; i < interest_vector.size(); i++)
+    {
+      //PtxtArray n (context,interest_vector[i]);
+      PlaintextArray n (ea);
+      //n.getData()
+
+      db_ptxt.emplace_back(move(n));
+        
+    }
+    cout<<db_ptxt;
+
+
+
+    
 
 
 
