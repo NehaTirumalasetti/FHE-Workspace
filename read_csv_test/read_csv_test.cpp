@@ -78,8 +78,8 @@ int main(int argc, char* argv[])
         cout<<"\n";
     }
 
-     std::vector<std::pair<helib::Ptxt<helib::BGV>, helib::Ptxt<helib::BGV>>>
-      country_db_ptxt;
+    //  std::vector<std::pair<helib::Ptxt<helib::BGV>, helib::Ptxt<helib::BGV>>>
+    //   country_db_ptxt;
 
     //   // Plaintext prime modulus
     // unsigned long p = 131;
@@ -134,14 +134,20 @@ int main(int argc, char* argv[])
     // , interest_vector);
     for(int i=0; i < interest_vector.size(); i++)
     {
-      PtxtArray n (context,interest_vector[i]);
+      vector<double> v1 = interest_vector[i];
+      for(int j =6; j<n;j++)
+      {
+        v1.push_back(0);
+      }
+      PtxtArray n (context,v1);
+      // PtxtArray n (context,interest_vector[i]);
       // PlaintextArray n (ea);
       //n.getData()
 
-      db_ptxt.emplace_back(move(n));
+      db_ptxt.emplace_back(n);
         
     }
-    //cout<<db_ptxt;
+    cout<<db_ptxt;
     std::vector<Ctxt> ctxt_arr;
     // , interest_vector);
     for(int i=0; i < db_ptxt.size(); i++)
@@ -164,7 +170,7 @@ int main(int argc, char* argv[])
     pp.store(v);
     decrytxt.push_back(v);
   }
-  cout<<decrytxt;
+  //cout<<decrytxt;
   storeinfileptxt("dec.txt", decrytxt);
 
     return 0;
