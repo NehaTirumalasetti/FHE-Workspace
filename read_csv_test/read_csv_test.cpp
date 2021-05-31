@@ -158,6 +158,8 @@ int main(int argc, char* argv[])
     }
     // cout<<ctxt_arr;
 
+    ctxt_arr[1] -= ctxt_arr[0];
+
     storeinfile("op.txt", ctxt_arr);
 
   //Decryption
