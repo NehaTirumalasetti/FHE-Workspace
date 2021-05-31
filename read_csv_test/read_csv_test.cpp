@@ -186,6 +186,18 @@ int main(int argc, char* argv[])
   xc.extractBits(bits, r);
   storeinfile("bits.txt", bits);
 
+  vector<vector<double>> bits_decrypt;
+  for(int i =0;i<bits.size();i++)
+  {
+    PtxtArray pp (context);
+    pp.decrypt(bits[i],secretKey);
+    vector<double> v;
+    pp.store(v);
+    bits_decrypt.push_back(v);
+  }
+  //cout<<decrytxt;
+  storeinfileptxt("bits_dec.txt", bits_decrypt);
+
 
     return 0;
 }
