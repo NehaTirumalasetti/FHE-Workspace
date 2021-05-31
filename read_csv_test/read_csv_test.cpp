@@ -147,7 +147,7 @@ int main(int argc, char* argv[])
       db_ptxt.emplace_back(n);
         
     }
-    cout<<db_ptxt;
+    //cout<<db_ptxt;
     std::vector<Ctxt> ctxt_arr;
     // , interest_vector);
     for(int i=0; i < db_ptxt.size(); i++)
@@ -174,6 +174,18 @@ int main(int argc, char* argv[])
   }
   //cout<<decrytxt;
   storeinfileptxt("dec.txt", decrytxt);
+
+  double x = 0.24;
+  PtxtArray k(context, x);
+  Ctxt xc(publicKey);
+  
+  k.encrypt(xc);
+
+  long r = 1;
+  vector<Ctxt> bits;
+  xc.extractBits(bits, r);
+  storeinfile("bits.txt", bits);
+
 
     return 0;
 }
