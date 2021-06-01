@@ -50,7 +50,7 @@ void storeinfile(string filename, vector<Ctxt> cp)
     {
       file<<cp;
     }
-    else cout << "Unable to open file";
+    else std::cout << "Unable to open file";
 }
 
 void storeinfileptxt(string filename, vector<vector<double>> cp)
@@ -61,7 +61,7 @@ void storeinfileptxt(string filename, vector<vector<double>> cp)
     {
       file<<cp;
     }
-    else cout << "Unable to open file";
+    else std::cout << "Unable to open file";
 }
 
 void storeinfilePtxtArray(string filename, vector<double> cp)
@@ -72,7 +72,7 @@ void storeinfilePtxtArray(string filename, vector<double> cp)
     {
       file<<cp;
     }
-    else cout << "Unable to open file";
+    else std::cout << "Unable to open file";
 }
 
 void debugtxtfile(string filename, Ctxt c, string var, int i ,SecKey secretKey)
@@ -91,10 +91,23 @@ void debugtxtfile(string filename, Ctxt c, string var, int i ,SecKey secretKey)
       file<<"\n";
       flag = true;
     }
-    else cout << "Unable to open file";
+    else std::cout << "Unable to open file";
     if(flag == true){
-    cout << var <<"\n";
+    std::cout << var <<"\n";
     }
+}
+
+
+void debugtxtprint(string filename, Ctxt c, string var, int i ,SecKey secretKey)
+{
+  PtxtArray dec_x (c.getContext());
+  dec_x.decrypt(c, secretKey);
+  vector<double> x_ptxt;
+  dec_x.store(x_ptxt);
+  bool flag = false;
+
+  std::cout<< "Iteration " << i << " " << var <<" = "<< x_ptxt[0] << "\n" ;
+  
 }
 
 /*
@@ -143,7 +156,7 @@ void sqroot(EncryptedArray ea, PubKey publicKey, SecKey secretKey)
    PtxtArray dec_x (ea);
   dec_x.decrypt(a1, secretKey);
 
-  cout << "Decrypted sqroot : " << dec_x;
+  std::cout << "Decrypted sqroot : " << dec_x;
 }
 
 */
@@ -156,9 +169,9 @@ int main(int argc, char* argv[])
     for(int i=0; i < interest_vector.size(); i++){
   
         for(int j=0; j< interest_vector[i].size(); j++){
-            cout<<interest_vector[i][j]<<"\t";
+            std::cout<<interest_vector[i][j]<<"\t";
         }
-        cout<<"\n";
+        std::cout<<"\n";
     }
 
     //  std::vector<std::pair<helib::Ptxt<helib::BGV>, helib::Ptxt<helib::BGV>>>
@@ -199,7 +212,7 @@ int main(int argc, char* argv[])
           .c(6)
         
           .build();
-     cout << "securityLevel=" << context.securityLevel() << "\n";
+     std::cout << "securityLevel=" << context.securityLevel() << "\n";
 
     long n = context.getNSlots();
 
@@ -211,10 +224,10 @@ int main(int argc, char* argv[])
 
     const PubKey& publicKey = secretKey;
 
-    cout << "test pubkey";
+    std::cout << "test pubkey";
     /*
     PtxtArray iv(context, interest_vector[0]);
-    //cout << iv;
+    //std::cout << iv;
     std::vector<PtxtArray> db_ptxt;
     // , interest_vector);
     for(int i=0; i < interest_vector.size(); i++)
@@ -232,7 +245,7 @@ int main(int argc, char* argv[])
       db_ptxt.emplace_back(n);
         
     }
-    //cout<<db_ptxt;
+    //std::cout<<db_ptxt;
     std::vector<Ctxt> ctxt_arr;
     // , interest_vector);
     for(int i=0; i < db_ptxt.size(); i++)
@@ -241,7 +254,7 @@ int main(int argc, char* argv[])
       db_ptxt[i].encrypt(c);
       ctxt_arr.emplace_back(move(c));        
     }
-    // cout<<ctxt_arr;
+    // std::cout<<ctxt_arr;
 
     ctxt_arr[1] -= ctxt_arr[0];
 
@@ -257,7 +270,7 @@ int main(int argc, char* argv[])
     pp.store(v);
     decrytxt.push_back(v);
   }
-  //cout<<decrytxt;
+  //std::cout<<decrytxt;
   storeinfileptxt("dec.txt", decrytxt);
 
   double x = 0.24;
@@ -282,7 +295,7 @@ int main(int argc, char* argv[])
     bits_decrypt.push_back(v);
   }
   */
-  //cout<<decrytxt;
+  //std::cout<<decrytxt;
   //storeinfileptxt("bits_dec.txt", bits_decrypt);
 
 
@@ -292,24 +305,24 @@ int main(int argc, char* argv[])
   vector<double> xint;
   xint.push_back(0.5);
   int d = 4;
-  cout << "test1";
+  std::cout << "test1";
   vector<double> k;
   k.push_back(1);
   PtxtArray one(context, k);
-  cout << "test one";
+  std::cout << "test one";
   vector<double> u;
   u.push_back(-1);
   PtxtArray negone(context, u);
-  cout << "test negone";
+  std::cout << "test negone";
   vector<double> f;
   f.push_back(3);
   PtxtArray three(context, f);
-  cout << "test three";
+  std::cout << "test three";
   long half = 0.5;
   long quarter = 0.25;
 
   PtxtArray x(context, xint);
-  cout << "test x";
+  std::cout << "test x";
   Ctxt xc(publicKey);
   
   x.encrypt(xc);
@@ -321,14 +334,14 @@ int main(int argc, char* argv[])
   
   b0 -= one;
 
-  // cout << "\na0 c : " << a0.capacity() << "\n";
-  // cout << "a0 e : " << a0.errorBound() << "\n";
-  // cout << "b0 c : " << b0.capacity() << "\n";
-  // cout << "b0 e : " << b0.errorBound() << "\n";
+  // std::cout << "\na0 c : " << a0.capacity() << "\n";
+  // std::cout << "a0 e : " << a0.errorBound() << "\n";
+  // std::cout << "b0 c : " << b0.capacity() << "\n";
+  // std::cout << "b0 e : " << b0.errorBound() << "\n";
 
   for(int i=0; i<d; i++)
   {
-    cout << "Iteration : " << i;
+    std::cout << "Iteration : " << i;
     Ctxt temp1 = b0;
     temp1.multByConstant(half);
     //temp1.divideBy2();
@@ -336,8 +349,8 @@ int main(int argc, char* argv[])
     temp1.multByConstant(negone);
     a0 *= temp1;
     //a1 = a0;
-    debugtxtfile("debug.txt",a0,"After a0 calc : a0 ",i, secretKey);
-    debugtxtfile("debug.txt",b0,"After a0 calc : b0 ",i, secretKey);
+    debugtxtprint("debug.txt",a0,"After a0 calc : a0 ",i, secretKey);
+    debugtxtprint("debug.txt",b0,"After a0 calc : b0 ",i, secretKey);
 
     Ctxt temp2 = b0;
     temp2 -= three;
@@ -346,24 +359,48 @@ int main(int argc, char* argv[])
     b0 *= temp2;
     //b1 = b0;
 
-    debugtxtfile("debug.txt",a0,"After b0 calc : a0 ",i, secretKey);
-    debugtxtfile("debug.txt",b0,"After b0 calc : b0 ",i, secretKey);
+    debugtxtprint("debug.txt",a0,"After b0 calc : a0 ",i, secretKey);
+    debugtxtprint("debug.txt",b0,"After b0 calc : b0 ",i, secretKey);
 
-    // cout << "a0 c : " << a0.capacity() << "\n";
-    // cout << "a0 e : " << a0.errorBound() << "\n";
-    // cout << "b0 c : " << b0.capacity() << "\n";
-    // cout << "b0 e : " << b0.errorBound() << "\n";
+    // std::cout << "a0 c : " << a0.capacity() << "\n";
+    // std::cout << "a0 e : " << a0.errorBound() << "\n";
+    // std::cout << "b0 c : " << b0.capacity() << "\n";
+    // std::cout << "b0 e : " << b0.errorBound() << "\n";
     //a0 = a1;
     //b0 = b1;
   }
-  PtxtArray dec_x (context);
-  dec_x.decrypt(a0, secretKey);
+  //PtxtArray dec_x (context);
+  //dec_x.decrypt(a0, secretKey);
 
-  //cout << "Decrypted sqroot : " << dec_x;
-  vector<double> x_ptxt;
-  dec_x.store(x_ptxt);
+  //std::cout << "Decrypted sqroot : " << dec_x;
+  //vector<double> x_ptxt;
+  //dec_x.store(x_ptxt);
 
-  storeinfilePtxtArray("sqroot_ptxt.txt", x_ptxt); 
+  //storeinfilePtxtArray("sqroot_ptxt.txt", x_ptxt); 
   return 0;
 }
 
+/*
+
+./read_csv_test
+0.24    0.54    0.17    0.26    0.31    0.25
+0.18    0.48    0.13    0.18    0.2     0.19
+securityLevel=129.741
+test pubkeytest1test onetest negonetest threetest xIteration : 0Iteration 0 After a0 calc : a0  = 0.500001
+Iteration 0 After a0 calc : b0  = -0.5
+Iteration 0 After b0 calc : a0  = 0.500001
+Iteration 0 After b0 calc : b0  = 99.0279
+Iteration : 1Iteration 1 After a0 calc : a0  = 0.499999
+Iteration 1 After a0 calc : b0  = 99.0279
+Iteration 1 After b0 calc : a0  = 0.499999
+Iteration 1 After b0 calc : b0  = 99.0279
+Iteration : 2Iteration 2 After a0 calc : a0  = 0.500002
+Iteration 2 After a0 calc : b0  = 99.0279
+Iteration 2 After b0 calc : a0  = 0.500002
+Iteration 2 After b0 calc : b0  = 99.0279
+Iteration : 3Iteration 3 After a0 calc : a0  = 0.500002
+Iteration 3 After a0 calc : b0  = 99.0279
+Iteration 3 After b0 calc : a0  = 0.500002
+Iteration 3 After b0 calc : b0  = 99.0279
+
+*/
