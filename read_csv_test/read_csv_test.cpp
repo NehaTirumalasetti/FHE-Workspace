@@ -75,6 +75,23 @@ void storeinfilePtxtArray(string filename, vector<double> cp)
     else cout << "Unable to open file";
 }
 
+void debugtxtfile(string filename, Ctxt c, string var, SecKey secretKey)
+{
+  PtxtArray dec_x (c.getContext());
+  dec_x.decrypt(c, secretKey);
+  vector<double> x_ptxt;
+  dec_x.store(x_ptxt);
+
+    ofstream file;
+    file.open(filename , ios::out);
+    if (file.is_open())
+    {
+      file << var <<" = "<< x_ptxt[0] << "\n" ;
+      file<<"\n";
+    }
+    else cout << "Unable to open file";
+}
+
 /*
 void sqroot(EncryptedArray ea, PubKey publicKey, SecKey secretKey)
 {
@@ -266,14 +283,22 @@ int main(int argc, char* argv[])
 
   //sqroot(ea, publicKey, secretKey);
 
-  int xint = 0.5;
+  //int xint = 0.5;
+  vector<double> xint;
+  xint.push_back(0.5);
   int d = 4;
   cout << "test1";
-  PtxtArray one(context, 1);
+  vector<double> k;
+  k.push_back(1);
+  PtxtArray one(context, k);
   cout << "test one";
-  PtxtArray negone(context, -1);
+  vector<double> u;
+  u.push_back(-1);
+  PtxtArray negone(context, u);
   cout << "test negone";
-  PtxtArray three(context, 3);
+  vector<double> f;
+  f.push_back(3);
+  PtxtArray three(context, f);
   cout << "test three";
   long half = 0.5;
   long quarter = 0.25;
@@ -285,9 +310,9 @@ int main(int argc, char* argv[])
   x.encrypt(xc);
 
   Ctxt a0 = xc;
-  Ctxt a1(publicKey);
+  //Ctxt a1 = xc;
   Ctxt b0 = xc;
-  Ctxt b1(publicKey);
+  //Ctxt b1 = xc;
   
   b0 -= one;
 
@@ -305,14 +330,19 @@ int main(int argc, char* argv[])
     temp1 -= one;
     temp1.multByConstant(negone);
     a0 *= temp1;
-    a1 = a0;
+    //a1 = a0;
+    debugtxtfile("debug.txt",a0,"After a0 calc : a0 ", secretKey);
+    debugtxtfile("debug.txt",b0,"After a0 calc : b0 ", secretKey);
 
     Ctxt temp2 = b0;
     temp2 -= three;
     temp2.multByConstant(quarter);
     b0 *= b0;
     b0 *= temp2;
-    b1 = b0;
+    //b1 = b0;
+
+    debugtxtfile("debug.txt",a0,"After b0 calc : a0 ", secretKey);
+    debugtxtfile("debug.txt",b0,"After b0 calc : b0 ", secretKey);
 
     cout << "a0 c : " << a0.capacity() << "\n";
     cout << "a0 e : " << a0.errorBound() << "\n";
@@ -322,14 +352,13 @@ int main(int argc, char* argv[])
     //b0 = b1;
   }
   PtxtArray dec_x (context);
-  dec_x.decrypt(a1, secretKey);
+  dec_x.decrypt(a0, secretKey);
 
   //cout << "Decrypted sqroot : " << dec_x;
   vector<double> x_ptxt;
   dec_x.store(x_ptxt);
 
-  storeinfilePtxtArray("sqroot_ptxt.txt", x_ptxt);
-
+  storeinfilePtxtArray("sqroot_ptxt.txt", x_ptxt); 
   return 0;
 }
 
