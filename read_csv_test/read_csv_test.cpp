@@ -90,7 +90,8 @@ void sqroot(EncryptedArray ea, PubKey publicKey, SecKey secretKey)
   for(int i=0; i<d; i++)
   {
     Ctxt temp1 = b0;
-    temp1.multByConstant(half);
+    //temp1.multByConstant(half);
+    temp1.divideBy2();
     temp1 -= one;
     temp1.multByConstant(negone);
     a0 *= temp1;
@@ -177,7 +178,8 @@ int main(int argc, char* argv[])
 
     const PubKey& publicKey = secretKey;
 
-
+    cout << "test pubkey";
+    /*
     PtxtArray iv(context, interest_vector[0]);
     //cout << iv;
     std::vector<PtxtArray> db_ptxt;
@@ -235,7 +237,7 @@ int main(int argc, char* argv[])
   vector<Ctxt> bits;
   //xc.extractBits(bits, r);
   //storeinfile("bits.txt", bits);
-
+*/
   /*
   vector<vector<double>> bits_decrypt;
   for(int i =0;i<bits.size();i++)
@@ -250,8 +252,60 @@ int main(int argc, char* argv[])
   //cout<<decrytxt;
   //storeinfileptxt("bits_dec.txt", bits_decrypt);
 
-  sqroot(ea, publicKey, secretKey);
 
-    return 0;
+  //sqroot(ea, publicKey, secretKey);
+
+  int xint = 0.5;
+  int d = 4;
+  cout << "test1";
+  PtxtArray one(context, 1);
+  cout << "test one";
+  PtxtArray negone(context, -1);
+  cout << "test negone";
+  PtxtArray three(context, 3);
+  cout << "test three";
+  long half = 0.5;
+  long quarter = 0.25;
+
+  PtxtArray x(context, xint);
+  cout << "test x";
+  Ctxt xc(publicKey);
+  
+  x.encrypt(xc);
+
+  Ctxt a0 = xc;
+  Ctxt a1(publicKey);
+  Ctxt b0 = xc;
+  Ctxt b1(publicKey);
+  
+  b0 -= one;
+
+  for(int i=0; i<d; i++)
+  {
+    //cout << "Iteration : " << i;
+    Ctxt temp1 = b0;
+    //temp1.multByConstant(half);
+    temp1.divideBy2();
+    temp1 -= one;
+    temp1.multByConstant(negone);
+    a0 *= temp1;
+    a1 = a0;
+
+    Ctxt temp2 = b0;
+    temp2 -= three;
+    temp2.multByConstant(quarter);
+    b0 *= b0;
+    b0 *= temp2;
+    b1 = b0;
+
+    //a0 = a1;
+    //b0 = b1;
+  }
+   PtxtArray dec_x (context);
+  dec_x.decrypt(a1, secretKey);
+
+  cout << "Decrypted sqroot : " << dec_x;
+
+  return 0;
 }
 
