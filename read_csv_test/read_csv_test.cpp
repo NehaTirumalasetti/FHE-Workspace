@@ -64,7 +64,7 @@ void storeinfileptxt(string filename, vector<vector<double>> cp)
     else cout << "Unable to open file";
 }
 
-
+/*
 void sqroot(EncryptedArray ea, PubKey publicKey, SecKey secretKey)
 {
   int xint = 0.5;
@@ -113,7 +113,7 @@ void sqroot(EncryptedArray ea, PubKey publicKey, SecKey secretKey)
   cout << "Decrypted sqroot : " << dec_x;
 }
 
-
+*/
 
 
 int main(int argc, char* argv[])
@@ -280,12 +280,17 @@ int main(int argc, char* argv[])
   
   b0 -= one;
 
+  cout << "a0 c : " << a0.capacity();
+  cout << "a0 e : " << a0.errorBound();
+  cout << "b0 c : " << b0.capacity();
+  cout << "b0 e : " << b0.errorBound();
+
   for(int i=0; i<d; i++)
   {
-    //cout << "Iteration : " << i;
+    cout << "Iteration : " << i;
     Ctxt temp1 = b0;
-    //temp1.multByConstant(half);
-    temp1.divideBy2();
+    temp1.multByConstant(half);
+    //temp1.divideBy2();
     temp1 -= one;
     temp1.multByConstant(negone);
     a0 *= temp1;
@@ -298,13 +303,17 @@ int main(int argc, char* argv[])
     b0 *= temp2;
     b1 = b0;
 
+    cout << "a0 c : " << a0.capacity();
+    cout << "a0 e : " << a0.errorBound();
+    cout << "b0 c : " << b0.capacity();
+    cout << "b0 e : " << b0.errorBound();
     //a0 = a1;
     //b0 = b1;
   }
-   PtxtArray dec_x (context);
-  dec_x.decrypt(a1, secretKey);
+  //PtxtArray dec_x (context);
+  //dec_x.decrypt(a1, secretKey);
 
-  cout << "Decrypted sqroot : " << dec_x;
+  //cout << "Decrypted sqroot : " << dec_x;
 
   return 0;
 }
