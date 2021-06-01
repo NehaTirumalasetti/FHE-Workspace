@@ -2,3 +2,31 @@
 [ 15:20:44 ] WARNING: Ctxt::bringToSet called with capacity=-40.360047, likely decryption error
 [ 15:22:37 ] WARNING: Ctxt::bringToSet called with capacity=-8.578713, likely decryption error
 [ 15:22:37 ] WARNING: Ctxt::bringToSet called with capacity=-40.360047, likely decryption error
+[ 18:23:27 ] WARNING: CKKS decryption: sigma set to sigma_min, accuracy may be affected
+[ 18:23:27 ] WARNING: CKKS decryption: sigma set to sigma_min, accuracy may be affected
+[ 18:23:28 ] WARNING: CKKS decryption: sigma set to sigma_min, accuracy may be affected
+[ 18:23:28 ] WARNING: CKKS decryption: sigma set to sigma_min, accuracy may be affected
+[ 18:23:29 ] WARNING: CKKS decryption: sigma set to sigma_min, accuracy may be affected
+[ 18:23:29 ] WARNING: CKKS decryption: sigma set to sigma_min, accuracy may be affected
+[ 18:23:30 ] WARNING: CKKS decryption: sigma set to sigma_min, accuracy may be affected
+[ 18:29:01 ] WARNING: CKKS decryption: sigma set to sigma_min, accuracy may be affected
+[ 18:29:02 ] WARNING: CKKS decryption: sigma set to sigma_min, accuracy may be affected
+[ 18:29:02 ] WARNING: CKKS decryption: sigma set to sigma_min, accuracy may be affected
+[ 18:29:03 ] WARNING: CKKS decryption: sigma set to sigma_min, accuracy may be affected
+[ 18:29:03 ] WARNING: CKKS decryption: sigma set to sigma_min, accuracy may be affected
+[ 18:29:04 ] WARNING: CKKS decryption: sigma set to sigma_min, accuracy may be affected
+[ 18:29:04 ] WARNING: CKKS decryption: sigma set to sigma_min, accuracy may be affected
+[ 18:32:55 ] WARNING: CKKS decryption: sigma set to sigma_min, accuracy may be affected
+[ 18:32:56 ] WARNING: CKKS decryption: sigma set to sigma_min, accuracy may be affected
+[ 18:32:56 ] WARNING: CKKS decryption: sigma set to sigma_min, accuracy may be affected
+[ 18:32:57 ] WARNING: CKKS decryption: sigma set to sigma_min, accuracy may be affected
+[ 18:32:57 ] WARNING: CKKS decryption: sigma set to sigma_min, accuracy may be affected
+[ 18:32:58 ] WARNING: CKKS decryption: sigma set to sigma_min, accuracy may be affected
+[ 18:32:58 ] WARNING: CKKS decryption: sigma set to sigma_min, accuracy may be affected
+[ 18:38:53 ] WARNING: CKKS decryption: sigma set to sigma_min, accuracy may be affected
+[ 18:38:54 ] WARNING: CKKS decryption: sigma set to sigma_min, accuracy may be affected
+[ 18:38:54 ] WARNING: CKKS decryption: sigma set to sigma_min, accuracy may be affected
+[ 18:38:55 ] WARNING: CKKS decryption: sigma set to sigma_min, accuracy may be affected
+[ 18:38:55 ] WARNING: CKKS decryption: sigma set to sigma_min, accuracy may be affected
+[ 18:38:55 ] WARNING: CKKS decryption: sigma set to sigma_min, accuracy may be affected
+[ 18:38:56 ] WARNING: CKKS decryption: sigma set to sigma_min, accuracy may be affected

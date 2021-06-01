@@ -75,21 +75,26 @@ void storeinfilePtxtArray(string filename, vector<double> cp)
     else cout << "Unable to open file";
 }
 
-void debugtxtfile(string filename, Ctxt c, string var, SecKey secretKey)
+void debugtxtfile(string filename, Ctxt c, string var, int i ,SecKey secretKey)
 {
   PtxtArray dec_x (c.getContext());
   dec_x.decrypt(c, secretKey);
   vector<double> x_ptxt;
   dec_x.store(x_ptxt);
+  bool flag = false;
 
     ofstream file;
     file.open(filename , ios::out);
     if (file.is_open())
     {
-      file << var <<" = "<< x_ptxt[0] << "\n" ;
+      file << "Iteration " << i << " " << var <<" = "<< x_ptxt[0] << "\n" ;
       file<<"\n";
+      flag = true;
     }
     else cout << "Unable to open file";
+    if(flag == true){
+    cout << var <<"\n";
+    }
 }
 
 /*
@@ -316,10 +321,10 @@ int main(int argc, char* argv[])
   
   b0 -= one;
 
-  cout << "\na0 c : " << a0.capacity() << "\n";
-  cout << "a0 e : " << a0.errorBound() << "\n";
-  cout << "b0 c : " << b0.capacity() << "\n";
-  cout << "b0 e : " << b0.errorBound() << "\n";
+  // cout << "\na0 c : " << a0.capacity() << "\n";
+  // cout << "a0 e : " << a0.errorBound() << "\n";
+  // cout << "b0 c : " << b0.capacity() << "\n";
+  // cout << "b0 e : " << b0.errorBound() << "\n";
 
   for(int i=0; i<d; i++)
   {
@@ -331,8 +336,8 @@ int main(int argc, char* argv[])
     temp1.multByConstant(negone);
     a0 *= temp1;
     //a1 = a0;
-    debugtxtfile("debug.txt",a0,"After a0 calc : a0 ", secretKey);
-    debugtxtfile("debug.txt",b0,"After a0 calc : b0 ", secretKey);
+    debugtxtfile("debug.txt",a0,"After a0 calc : a0 ",i, secretKey);
+    debugtxtfile("debug.txt",b0,"After a0 calc : b0 ",i, secretKey);
 
     Ctxt temp2 = b0;
     temp2 -= three;
@@ -341,13 +346,13 @@ int main(int argc, char* argv[])
     b0 *= temp2;
     //b1 = b0;
 
-    debugtxtfile("debug.txt",a0,"After b0 calc : a0 ", secretKey);
-    debugtxtfile("debug.txt",b0,"After b0 calc : b0 ", secretKey);
+    debugtxtfile("debug.txt",a0,"After b0 calc : a0 ",i, secretKey);
+    debugtxtfile("debug.txt",b0,"After b0 calc : b0 ",i, secretKey);
 
-    cout << "a0 c : " << a0.capacity() << "\n";
-    cout << "a0 e : " << a0.errorBound() << "\n";
-    cout << "b0 c : " << b0.capacity() << "\n";
-    cout << "b0 e : " << b0.errorBound() << "\n";
+    // cout << "a0 c : " << a0.capacity() << "\n";
+    // cout << "a0 e : " << a0.errorBound() << "\n";
+    // cout << "b0 c : " << b0.capacity() << "\n";
+    // cout << "b0 e : " << b0.errorBound() << "\n";
     //a0 = a1;
     //b0 = b1;
   }
