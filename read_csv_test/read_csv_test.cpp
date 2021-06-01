@@ -64,6 +64,17 @@ void storeinfileptxt(string filename, vector<vector<double>> cp)
     else cout << "Unable to open file";
 }
 
+void storeinfilePtxtArray(string filename, vector<double> cp)
+{
+     ofstream file;
+    file.open(filename , ios::out);
+    if (file.is_open())
+    {
+      file<<cp;
+    }
+    else cout << "Unable to open file";
+}
+
 /*
 void sqroot(EncryptedArray ea, PubKey publicKey, SecKey secretKey)
 {
@@ -313,7 +324,11 @@ int main(int argc, char* argv[])
   PtxtArray dec_x (context);
   dec_x.decrypt(a1, secretKey);
 
-  cout << "Decrypted sqroot : " << dec_x;
+  //cout << "Decrypted sqroot : " << dec_x;
+  vector<double> x_ptxt;
+  dec_x.store(x_ptxt);
+
+  storeinfilePtxtArray("sqroot_ptxt.txt", x_ptxt);
 
   return 0;
 }
