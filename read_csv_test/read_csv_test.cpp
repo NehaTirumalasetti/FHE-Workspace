@@ -157,13 +157,13 @@ int main(int argc, char* argv[])
       // initialize a Context object using the builder pattern
       ContextBuilder<CKKS>()
 
-          .m(16 * 1024)
+          .m(32 * 1024)
 
-          .bits(119)
+          .bits(358)
           
           .precision(20)
     
-          .c(2)
+          .c(6)
         
           .build();
      cout << "securityLevel=" << context.securityLevel() << "\n";
@@ -280,10 +280,10 @@ int main(int argc, char* argv[])
   
   b0 -= one;
 
-  cout << "a0 c : " << a0.capacity();
-  cout << "a0 e : " << a0.errorBound();
-  cout << "b0 c : " << b0.capacity();
-  cout << "b0 e : " << b0.errorBound();
+  cout << "\na0 c : " << a0.capacity() << "\n";
+  cout << "a0 e : " << a0.errorBound() << "\n";
+  cout << "b0 c : " << b0.capacity() << "\n";
+  cout << "b0 e : " << b0.errorBound() << "\n";
 
   for(int i=0; i<d; i++)
   {
@@ -303,17 +303,17 @@ int main(int argc, char* argv[])
     b0 *= temp2;
     b1 = b0;
 
-    cout << "a0 c : " << a0.capacity();
-    cout << "a0 e : " << a0.errorBound();
-    cout << "b0 c : " << b0.capacity();
-    cout << "b0 e : " << b0.errorBound();
+    cout << "a0 c : " << a0.capacity() << "\n";
+    cout << "a0 e : " << a0.errorBound() << "\n";
+    cout << "b0 c : " << b0.capacity() << "\n";
+    cout << "b0 e : " << b0.errorBound() << "\n";
     //a0 = a1;
     //b0 = b1;
   }
-  //PtxtArray dec_x (context);
-  //dec_x.decrypt(a1, secretKey);
+  PtxtArray dec_x (context);
+  dec_x.decrypt(a1, secretKey);
 
-  //cout << "Decrypted sqroot : " << dec_x;
+  cout << "Decrypted sqroot : " << dec_x;
 
   return 0;
 }

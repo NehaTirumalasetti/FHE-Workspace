@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/opt/IBM/FHE-Workspace/read_csv_test/read_csv_test.cpp
+iostream
+-
+vector
+-
+fstream
+-
+sstream
+-
+helib/helib.h
+-
+
