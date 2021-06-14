@@ -304,7 +304,7 @@ int main(int argc, char* argv[])
   //int xint = 0.5;
   vector<double> xint;
   xint.push_back(0.5);
-  int d = 4;
+  int d = 3;
   std::cout << "test1";
   vector<double> k;
   k.push_back(1);
@@ -343,10 +343,12 @@ int main(int argc, char* argv[])
   {
     std::cout << "Iteration : " << i;
     Ctxt temp1 = b0;
-    temp1.multByConstant(half);
+    //temp1.multByConstant(half);
+    temp1 *= 0.5;
     //temp1.divideBy2();
     temp1 -= one;
-    temp1.multByConstant(negone);
+    //temp1.multByConstant(negone);
+    temp1 *= -1.0;
     a0 *= temp1;
     //a1 = a0;
     debugtxtprint("debug.txt",a0,"After a0 calc : a0 ",i, secretKey);
@@ -354,7 +356,8 @@ int main(int argc, char* argv[])
 
     Ctxt temp2 = b0;
     temp2 -= three;
-    temp2.multByConstant(quarter);
+    //temp2.multByConstant(quarter);
+    temp2 *= 0.25;
     b0 *= b0;
     b0 *= temp2;
     //b1 = b0;
