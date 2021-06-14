@@ -303,7 +303,7 @@ int main(int argc, char* argv[])
 
   //int xint = 0.5;
   vector<double> xint;
-  xint.push_back(0.5);
+  xint.push_back(0.05);
   int d = 3;
   std::cout << "test1";
   vector<double> k;
@@ -358,7 +358,10 @@ int main(int argc, char* argv[])
     temp2 -= three;
     //temp2.multByConstant(quarter);
     temp2 *= 0.25;
-    b0 *= b0;
+    debugtxtprint("debug.txt",temp2,"During b0 calc : temp2 ",i, secretKey);
+    //b0 *= b0;
+    b0.square();
+    debugtxtprint("debug.txt",b0,"During b0 calc : b0 square ",i, secretKey);
     b0 *= temp2;
     //b1 = b0;
 
