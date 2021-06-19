@@ -207,7 +207,7 @@ int main(int argc, char* argv[])
 
           .bits(358)
           
-          .precision(20)
+          .precision(32)
     
           .c(6)
         
@@ -303,7 +303,7 @@ int main(int argc, char* argv[])
 
   //int xint = 0.5;
   vector<double> xint;
-  xint.push_back(0.05);
+  xint.push_back(0.0603);
   int d = 3;
   std::cout << "test1";
   vector<double> k;
