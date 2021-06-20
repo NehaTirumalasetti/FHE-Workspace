@@ -131,7 +131,7 @@ vector<vector<Ctxt>> encryptDb (PubKey publicKey)
   return encdb;
 }
 
-void decryptDBinfile(vector<vector<Ctxt>> encdb, PubKey publicKey , SecKey secretKey)
+void decryptDBinfile(string filename, vector<vector<Ctxt>> encdb, PubKey publicKey , SecKey secretKey)
 {
   vector<vector<double>> decrp;
   for(int i = 0;i<encdb.size();i++)
@@ -145,7 +145,7 @@ void decryptDBinfile(vector<vector<Ctxt>> encdb, PubKey publicKey , SecKey secre
         decrp.emplace_back(x_ptxt);
     }
   }
-  storeinfileptxt("encdbtest.txt",decrp);
+  storeinfileptxt(filename,decrp);
 }
 
 /*
@@ -424,7 +424,15 @@ int main(int argc, char* argv[])
 
  vector<vector<Ctxt>> v = encryptDb( publicKey);
 
- decryptDBinfile(v, publicKey, secretKey);
+ for(int i = 0; i<v.size()-1;i++)
+ {
+   for(int j =0;j<6;j++)
+   {
+     v[i][j]-=v[i+1][j];
+   }
+ }
+
+ decryptDBinfile("subdbtest.txt",v, publicKey, secretKey);
 
   return 0;
 }
