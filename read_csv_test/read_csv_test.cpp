@@ -300,7 +300,7 @@ int main(int argc, char* argv[])
 
 
   //sqroot(ea, publicKey, secretKey);
-
+/* SQUARE ROOT CODE : -------------------------------------------
   //int xint = 0.5;
   vector<double> xint;
   xint.push_back(0.0603);
@@ -374,7 +374,7 @@ int main(int argc, char* argv[])
     // std::cout << "b0 e : " << b0.errorBound() << "\n";
     //a0 = a1;
     //b0 = b1;
-  }
+  }*/
   //PtxtArray dec_x (context);
   //dec_x.decrypt(a0, secretKey);
 
@@ -383,6 +383,24 @@ int main(int argc, char* argv[])
   //dec_x.store(x_ptxt);
 
   //storeinfilePtxtArray("sqroot_ptxt.txt", x_ptxt); 
+
+  vector<double> v1 {0.24,0.54,0.17,0.26,0.31,0.25};
+  vector<double> v2 {0.18,0.48,0.13,0.18,0.2,0.19};
+  PtxtArray x1(context, v1);
+  PtxtArray x2(context, v2);
+  Ctxt e1 (publicKey);
+  x1.encrypt(e1);
+  Ctxt e2 (publicKey);
+  x2.encrypt(e2);
+
+  e1-=e2;
+
+  PtxtArray dec_x (context);
+  dec_x.decrypt(e1, secretKey);
+  vector<double> x_ptxt;
+  dec_x.store(x_ptxt);
+  storeinfilePtxtArray("subptxt.txt", x_ptxt);
+
   return 0;
 }
 
