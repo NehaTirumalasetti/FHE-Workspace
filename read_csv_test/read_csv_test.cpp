@@ -394,12 +394,13 @@ int main(int argc, char* argv[])
   x2.encrypt(e2);
 
   e1-=e2;
+  e1.square();
 
   PtxtArray dec_x (context);
   dec_x.decrypt(e1, secretKey);
   vector<double> x_ptxt;
   dec_x.store(x_ptxt);
-  storeinfilePtxtArray("subptxt.txt", x_ptxt);
+  storeinfilePtxtArray("subsqptxt.txt", x_ptxt);
 
   return 0;
 }
