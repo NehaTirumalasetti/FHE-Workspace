@@ -109,7 +109,42 @@ void debugtxtprint(string filename, Ctxt c, string var, int i ,SecKey secretKey)
   std::cout<< "Iteration " << i << " " << var <<" = "<< x_ptxt[0] << "\n" ;
   
 }
+vector<vector<Ctxt>> encryptDb ()
+{
+  vector<vector<double>> interest_vector;
+  interest_vector = read_csv("./interest_vector.csv");
 
+  vector<vector<Ctxt>> encdb ;
+
+  for(int i=0; i < interest_vector.size(); i++){
+          vector<Ctxt> tmp;
+        for(int j=0; j< interest_vector[i].size(); j++)
+        {
+          PtxtArray n(context, interest_vector[i][j]);
+          Ctxt x (publicKey);
+          n.encrypt(x);
+          tmp.push_back(x);
+        }
+        encdb.emplace_back(tmp);
+    }
+  
+  vector<vector<double>> decrp;
+  for(int i = 0;i<encdb.size();i++)
+  {
+    for(int j = 0 ;j<encdb[i].size();j++)
+    {
+        PtxtArray dec_x (context);
+        dec_x.decrypt(encdb[i][j], secretKey);
+        vector<double> x_ptxt;
+        dec_x.store(x_ptxt);
+        decrp.emplace_back(x_ptxt);
+    }
+  }
+  storeinfileptxt('encdbtest.txt',decrp);
+
+  return encdb;
+
+}
 /*
 void sqroot(EncryptedArray ea, PubKey publicKey, SecKey secretKey)
 {
@@ -384,23 +419,7 @@ int main(int argc, char* argv[])
 
   //storeinfilePtxtArray("sqroot_ptxt.txt", x_ptxt); 
 
-  vector<double> v1 {0.24,0.54,0.17,0.26,0.31,0.25};
-  vector<double> v2 {0.18,0.48,0.13,0.18,0.2,0.19};
-  PtxtArray x1(context, v1);
-  PtxtArray x2(context, v2);
-  Ctxt e1 (publicKey);
-  x1.encrypt(e1);
-  Ctxt e2 (publicKey);
-  x2.encrypt(e2);
-
-  e1-=e2;
-  e1.square();
-
-  PtxtArray dec_x (context);
-  dec_x.decrypt(e1, secretKey);
-  vector<double> x_ptxt;
-  dec_x.store(x_ptxt);
-  storeinfilePtxtArray("subsqptxt.txt", x_ptxt);
+ vector<vector<Ctxt>> v = encryptDb();
 
   return 0;
 }
@@ -427,5 +446,28 @@ Iteration : 3Iteration 3 After a0 calc : a0  = 0.500002
 Iteration 3 After a0 calc : b0  = 99.0279
 Iteration 3 After b0 calc : a0  = 0.500002
 Iteration 3 After b0 calc : b0  = 99.0279
+
+
+ vector<double> v1 {0.24,0.54,0.17,0.26,0.31,0.25};
+  vector<double> v2 {0.18,0.48,0.13,0.18,0.2,0.19};
+  PtxtArray x1(context, v1);
+  PtxtArray x2(context, v2);
+  Ctxt e1 (publicKey);
+  x1.encrypt(e1);
+  Ctxt e2 (publicKey);
+  x2.encrypt(e2);
+
+  e1-=e2;
+  e1.square();
+  cout << e1[0] << endl;
+  
+  vector<vector<Ctxt>> db ;
+  
+
+  PtxtArray dec_x (context);
+  dec_x.decrypt(e1, secretKey);
+  vector<double> x_ptxt;
+  dec_x.store(x_ptxt);
+  storeinfilePtxtArray("subsqptxt.txt", x_ptxt);
 
 */
