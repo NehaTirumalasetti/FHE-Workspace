@@ -29,7 +29,7 @@ int main(int argc, char* argv[])
   hePtr->printSignature();
   vector<double> vals1{0.5};
   HeContext& he = *hePtr;
-
+  BitwiseEvaluator bit = BitwiseEvaluator(he);
   // To encrypt it, we need an encoder . . .
   Encoder encoder(he);
 
@@ -40,10 +40,12 @@ int main(int argc, char* argv[])
   // The following method does both.
   encoder.encodeEncrypt(c1, vals1);
 
-  CTile src(he);
-  bool b = src.getIsSigned(*c1);
+  //CTile src(he);
 
+  bool b = bit.getIsSigned(c1);
   vector<double> res = encoder.decryptDecodeDouble(c1);
   std::cout << res[0] << endl;
+  std::cout << b << endl;
+  
   return 0;
 }

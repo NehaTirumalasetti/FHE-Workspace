@@ -11,6 +11,10 @@ helayers/hebase/helib/HelibCkksContext.h
 /opt/IBM/FHE-Workspace/ctile_test/helayers/hebase/helib/HelibCkksContext.h
 helayers/hebase/hebase.h
 /opt/IBM/FHE-Workspace/ctile_test/helayers/hebase/hebase.h
+helayers/hebase/BitwiseEvaluator.h
+/opt/IBM/FHE-Workspace/ctile_test/helayers/hebase/BitwiseEvaluator.h
+helayers/hebase/AlwaysAssert.h
+/opt/IBM/FHE-Workspace/ctile_test/helayers/hebase/AlwaysAssert.h
 iostream
 -
 vector
