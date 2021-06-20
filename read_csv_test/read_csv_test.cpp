@@ -109,7 +109,7 @@ void debugtxtprint(string filename, Ctxt c, string var, int i ,SecKey secretKey)
   std::cout<< "Iteration " << i << " " << var <<" = "<< x_ptxt[0] << "\n" ;
   
 }
-vector<vector<Ctxt>> encryptDb (PubKey publicKey, SecKey secretKey)
+vector<vector<Ctxt>> encryptDb (PubKey publicKey)
 {
   vector<vector<double>> interest_vector;
   interest_vector = read_csv("./interest_vector.csv");
@@ -127,7 +127,12 @@ vector<vector<Ctxt>> encryptDb (PubKey publicKey, SecKey secretKey)
         }
         encdb.emplace_back(tmp);
     }
-  
+
+  return encdb;
+}
+
+void decryptDBinfile(vector<vector<Ctxt>> encdb, PubKey publicKey , SecKey secretKey)
+{
   vector<vector<double>> decrp;
   for(int i = 0;i<encdb.size();i++)
   {
@@ -141,10 +146,8 @@ vector<vector<Ctxt>> encryptDb (PubKey publicKey, SecKey secretKey)
     }
   }
   storeinfileptxt("encdbtest.txt",decrp);
-
-  return encdb;
-
 }
+
 /*
 void sqroot(EncryptedArray ea, PubKey publicKey, SecKey secretKey)
 {
@@ -419,7 +422,9 @@ int main(int argc, char* argv[])
 
   //storeinfilePtxtArray("sqroot_ptxt.txt", x_ptxt); 
 
- vector<vector<Ctxt>> v = encryptDb( publicKey,secretKey);
+ vector<vector<Ctxt>> v = encryptDb( publicKey);
+
+ decryptDBinfile(v, publicKey, secretKey);
 
   return 0;
 }
