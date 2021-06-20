@@ -1,2 +1,0 @@
-Iteration 3 After b0 calc : b0  = -714.387
-

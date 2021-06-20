@@ -241,13 +241,13 @@ int main(int argc, char* argv[])
       // initialize a Context object using the builder pattern
       ContextBuilder<CKKS>()
 
-          .m(32 * 1024)
+          .m(16 * 1024)
 
-          .bits(358)
+          .bits(119)
           
           .precision(32)
     
-          .c(6)
+          .c(2)
         
           .build();
      std::cout << "securityLevel=" << context.securityLevel() << "\n";
@@ -422,18 +422,40 @@ int main(int argc, char* argv[])
 
   //storeinfilePtxtArray("sqroot_ptxt.txt", x_ptxt); 
 
- vector<vector<Ctxt>> v = encryptDb( publicKey);
+ /*vector<vector<Ctxt>> v = encryptDb( publicKey);
 
  for(int i = 0; i<v.size()-1;i++)
  {
    for(int j =0;j<6;j++)
    {
+    //Ctxt tmp = v[i][j];
+
      v[i][j]-=v[i+1][j];
+     v[i][j].square();
+     //v[i][j]*=v[i][j];
    }
  }
 
- decryptDBinfile("subdbtest.txt",v, publicKey, secretKey);
+ decryptDBinfile("subsqdbtest.txt",v, publicKey, secretKey);*/
 
+
+ PtxtArray p1 (context, 0.24);
+ PtxtArray p2 (context, 0.18);
+ Ctxt c1 (publicKey);
+ p1.encrypt(c1);
+ Ctxt c2 (publicKey);
+ p2.encrypt(c2);
+
+ c1-=c2;
+ c1.square();
+ vector<Ctxt> bits;
+ //Ctxt bits (publicKey);
+ c1.extractBits(bits,5);
+// PtxtArray dec_x (context);
+// dec_x.decrypt(bits[0], secretKey);
+// vector<double> x_ptxt;
+// dec_x.store(x_ptxt);
+// cout << x_ptxt[0] <<endl;
   return 0;
 }
 
