@@ -14,7 +14,7 @@ using namespace helayers;
 int main(int argc, char* argv[])
 {
     shared_ptr<HeContext> hePtr = HelibContext::create(HELIB_CKKS_8192);
-
+    
   // The HELIB_CKKS_8192 preset is a configuration where
   // Each ciphertext has 8192 slots, i.e., it can hold 8192 numbers.
   // In CKKS, each number can be a complex number.
@@ -29,7 +29,14 @@ int main(int argc, char* argv[])
   hePtr->printSignature();
   vector<double> vals1{0.5};
   HeContext& he = *hePtr;
-  BitwiseEvaluator bit = BitwiseEvaluator(he);
+
+  bool bitwise = he.getTraits().getSupportsBitwiseOperations();
+  std::cout << "pre" << bitwise << endl;
+  // he.getTraits().setSupportsBitwiseOperations(true);
+  // bool bitwise1 = he.getTraits().getSupportsBitwiseOperations();
+  // std::cout << "post" << bitwise1 << endl;
+
+  //BitwiseEvaluator bit = BitwiseEvaluator(he);
   // To encrypt it, we need an encoder . . .
   Encoder encoder(he);
 
@@ -42,10 +49,10 @@ int main(int argc, char* argv[])
 
   //CTile src(he);
 
-  bool b = bit.getIsSigned(c1);
+  //bool b = bit.getIsSigned(c1);
   vector<double> res = encoder.decryptDecodeDouble(c1);
   std::cout << res[0] << endl;
-  std::cout << b << endl;
+  //std::cout << b << endl;
   
   return 0;
 }
