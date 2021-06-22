@@ -172,8 +172,9 @@ void encryptDb (PubKey publicKey, SecKey secretKey)
  }
  tmp_add.push_back(sum);
 
+ int x=0;
+ debugtxtfile("sq_add_dbtest.txt",tmp_add[0],"addition",x,secretKey);
  decryptDBinfile("subsqdbtest.txt",encdb, publicKey, secretKey);
- decryptDBinfile("sq_add_dbtest.txt",encdb, publicKey, secretKey);
   //return encdb;
 }
 
