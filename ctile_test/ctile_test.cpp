@@ -7,6 +7,7 @@
 #include <fstream>
 #include <sstream>
 #include <helib/helib.h>
+#include "helayers/hebase/helib/HelibBgvContext.h"
 
 using namespace std;
 using namespace helayers;
@@ -47,7 +48,30 @@ bool isPowerOf2(int v) { return (v & v - 1) == 0; }
 
 int main(int argc, char* argv[])
 {
-    shared_ptr<HeContext> hePtr = HelibContext::create(HELIB_CKKS_8192);
+  // Plaintext prime modulus
+  unsigned long p = 127;
+  // Cyclotomic polynomial - defines phi(m)
+  unsigned long m = 128; // this will give 32 slots
+  // Hensel lifting (default = 1)
+  unsigned long r = 1;
+  // Number of bits of the modulus chain
+  unsigned long bits = 1000;
+  // Number of columns of Key-Switching matrix (default = 2 or 3)
+  unsigned long c = 2;
+  // Size of NTL thread pool (default =1)
+  unsigned long nthreads = 1;
+
+  HelibConfig conf;
+  conf.p = p;
+  conf.m = m;
+  conf.r = r;
+  conf.L = bits;
+  conf.c = c;
+
+  HelibBgvContext he;
+  he.init(conf);
+
+    //shared_ptr<HeContext> hePtr = HelibContext::create(HELIB_NOT_SECURE_BGV_24);
     
   // The HELIB_CKKS_8192 preset is a configuration where
   // Each ciphertext has 8192 slots, i.e., it can hold 8192 numbers.
@@ -55,15 +79,15 @@ int main(int argc, char* argv[])
   // IMPORTANT: It's
   // always required to test that the resulting security matches your needs.
   // Security levels may vary with different library versions.
-  always_assert(hePtr->getSecurityLevel() >= 128);
+  //always_assert(hePtr->getSecurityLevel() >= 128);
   
 
   // This will print the details of the underlying scheme:
   // name, configuration params, and security level.
   cout << "Using scheme: " << endl;
-  hePtr->printSignature();
+  //hePtr->printSignature();
   vector<double> vals1{0.5};
-  HeContext& he = *hePtr;
+  //HeContext& he = *hePtr;
 
   
   // bool bitwise = he.getTraits().getSupportsBitwiseOperations();
@@ -105,7 +129,7 @@ int main(int argc, char* argv[])
 
   cout << "DB encrypted mask declared" << endl;
 
-  vector<double> q{-0.41};
+  vector<double> q{-0.48};
   CTile query(he);
   encoder.encodeEncrypt(query, q);
   

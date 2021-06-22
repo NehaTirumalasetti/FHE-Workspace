@@ -1,0 +1,30 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/opt/IBM/FHE-Workspace/ctile_test/ctile_test.cpp
+helayers/hebase/helib/HelibCkksContext.h
+/opt/IBM/FHE-Workspace/ctile_test/helayers/hebase/helib/HelibCkksContext.h
+helayers/hebase/hebase.h
+/opt/IBM/FHE-Workspace/ctile_test/helayers/hebase/hebase.h
+helayers/hebase/BitwiseEvaluator.h
+/opt/IBM/FHE-Workspace/ctile_test/helayers/hebase/BitwiseEvaluator.h
+helayers/hebase/AlwaysAssert.h
+/opt/IBM/FHE-Workspace/ctile_test/helayers/hebase/AlwaysAssert.h
+iostream
+-
+vector
+-
+fstream
+-
+sstream
+-
+helib/helib.h
+-
+helayers/hebase/helib/HelibBgvContext.h
+/opt/IBM/FHE-Workspace/ctile_test/helayers/hebase/helib/HelibBgvContext.h
+
