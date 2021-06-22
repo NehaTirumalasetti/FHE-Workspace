@@ -164,7 +164,16 @@ void encryptDb (PubKey publicKey, SecKey secretKey)
    }
  }
 
+ vector<Ctxt> tmp_add;
+ Ctxt sum(publicKey);
+ for(int k=0; k<6; k++)
+ {
+   sum += encdb[0][k];
+ }
+ tmp_add.push_back(sum);
+
  decryptDBinfile("subsqdbtest.txt",encdb, publicKey, secretKey);
+ decryptDBinfile("sq_add_dbtest.txt",encdb, publicKey, secretKey);
   //return encdb;
 }
 
