@@ -1,6 +1,6 @@
-#include "helayers/hebase/helib/HelibCkksContext.h"
+//#include "helayers/hebase/helib/HelibCkksContext.h"
 #include "helayers/hebase/hebase.h"
-#include "helayers/hebase/BitwiseEvaluator.h"
+//#include "helayers/hebase/BitwiseEvaluator.h"
 #include "helayers/hebase/AlwaysAssert.h"
 #include <iostream>
 #include <vector>
@@ -8,6 +8,7 @@
 #include <sstream>
 #include <helib/helib.h>
 #include "helayers/hebase/helib/HelibBgvContext.h"
+#include <helib/ArgMap.h>
 
 using namespace std;
 using namespace helayers;
@@ -61,6 +62,19 @@ int main(int argc, char* argv[])
   // Size of NTL thread pool (default =1)
   unsigned long nthreads = 1;
 
+  helib::ArgMap amap;
+  amap.arg("m", m, "Cyclotomic polynomial ring");
+  amap.arg("p", p, "Plaintext prime modulus");
+  amap.arg("r", r, "Hensel lifting");
+  amap.arg("bits", bits, "# of bits in the modulus chain");
+  amap.arg("c", c, "# fo columns of Key-Switching matrix");
+  amap.arg("nthreads", nthreads, "Size of NTL thread pool");
+  //amap.arg("db_filename", db_filename, "Qualified name for the database filename");
+  //amap.arg("country", countryName, "Country to search for");
+  //amap.toggle().arg("-debug", debug, "Toggle debug output", "");
+  amap.parse(argc, argv);
+
+
   HelibConfig conf;
   conf.p = p;
   conf.m = m;
@@ -70,6 +84,14 @@ int main(int argc, char* argv[])
 
   HelibBgvContext he;
   he.init(conf);
+
+  /*helib::Context he = helib::ContextBuilder<helib::BGV>()
+                               .m(m)
+                               .p(p)
+                               .r(r)
+                               .bits(bits)
+                               .c(c)
+                               .build();*/
 
     //shared_ptr<HeContext> hePtr = HelibContext::create(HELIB_NOT_SECURE_BGV_24);
     
@@ -85,8 +107,8 @@ int main(int argc, char* argv[])
   // This will print the details of the underlying scheme:
   // name, configuration params, and security level.
   cout << "Using scheme: " << endl;
-  //hePtr->printSignature();
-  vector<double> vals1{0.5};
+  he.printSignature();
+  vector<double> vals{0.5};
   //HeContext& he = *hePtr;
 
   
@@ -210,7 +232,7 @@ int main(int argc, char* argv[])
   // We'll now encrypt vals1 into c:
   // In HE encryption actually involves two steps: encode, then encrypt.
   // The following method does both.
-  encoder.encodeEncrypt(c1, vals1);
+  encoder.encodeEncrypt(c1, vals);
 
   //CTile src(he);
 
