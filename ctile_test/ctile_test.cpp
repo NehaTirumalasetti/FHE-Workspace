@@ -43,6 +43,8 @@ vector<vector<double>> read_csv(string filename)
   return dataset;
 }
 
+bool isPowerOf2(int v) { return (v & v - 1) == 0; }
+
 int main(int argc, char* argv[])
 {
     shared_ptr<HeContext> hePtr = HelibContext::create(HELIB_CKKS_8192);
@@ -101,6 +103,82 @@ int main(int argc, char* argv[])
   NativeFunctionEvaluator eval(he);
   long modulusP = he.getTraits().getArithmeticModulus();
 
+  cout << "DB encrypted mask declared" << endl;
+
+  vector<double> q{-0.41};
+  CTile query(he);
+  encoder.encodeEncrypt(query, q);
+  
+  cout << "Entering lookup for loop" <<endl;
+
+  // For every entry in our database we perform the following
+  // calculation:
+  for (const auto& encrypted_pair : encrypted_lookup_db) {
+    //  Copy of database key: a country name
+
+    cout << "Entered lookup for loop" <<endl;
+    CTile mask_entry = encrypted_pair.first;
+    // Calculate the difference
+    // In each slot now we'll have 0 when characters match,
+    // or non-zero when there's a mismatch
+    mask_entry.sub(query);
+
+    // Fermat's little theorem:
+    // Since the underlying plaintext are in modular arithmetic,
+    // Raising to the power of modulusP convers all non-zero values
+    // to 1.
+    eval.powerInPlace(mask_entry, modulusP - 1);
+
+    // Negate the ciphertext
+    // Now we'll have 0 for match, -1 for mismatch
+    mask_entry.negate();
+
+    // Add +1
+    // Now we'll have 1 for match, 0 for mismatch
+    mask_entry.addScalar(1);
+
+    // We'll now multiply all slots together, since
+    // we want a complete match across all slots.
+
+    // If slot count is a power of 2 there's an efficient way
+    // to do it:
+    // we'll do a rotate-and-multiply algorithm, similar to
+    // a rotate-and-sum one.
+    cout << "Power of 2 check" <<endl;
+    if (isPowerOf2(he.slotCount())) {
+      for (int rot = 1; rot < he.slotCount(); rot *= 2) {
+        CTile tmp(mask_entry);
+        tmp.rotate(-rot);
+        mask_entry.multiply(tmp);
+      }
+    } else {
+      // Otherwise we'll create all possible rotations, and multiply all of
+      // them.
+      // Note that for non powers of 2 a rotate-and-multiply algorithm
+      // can still be used as well, though it's more complicated and
+      // beyond the scope of this example.
+      vector<CTile> rotated_masks(he.slotCount(), mask_entry);
+      for (int i = 1; i < rotated_masks.size(); i++)
+        rotated_masks[i].rotate(-i); // Rotate each of the masks
+      eval.totalProduct(mask_entry,
+                        rotated_masks); // Multiply each of the masks
+    }
+
+    // mask_entry is now either all 1s if query==country,
+    // or all 0s otherwise.
+    // After we multiply by capital name it will be either
+    // the capital name, or all 0s.
+    mask_entry.multiply(encrypted_pair.second);
+    // We collect all our findings.
+    mask.push_back(mask_entry);
+  }
+
+  CTile value = mask[0];
+  for (int i = 1; i < mask.size(); i++)
+    value.add(mask[i]);
+
+  vector<double> res = encoder.decryptDecodeDouble(value);
+  std::cout << "Value: " << res[0] << endl;
 
 
   // And a CTile object - this is our ciphertext object.
@@ -113,8 +191,8 @@ int main(int argc, char* argv[])
   //CTile src(he);
 
   //bool b = bit.getIsSigned(c1);
-  vector<double> res = encoder.decryptDecodeDouble(c1);
-  std::cout << res[0] << endl;
+  vector<double> res1 = encoder.decryptDecodeDouble(c1);
+  std::cout << res1[0] << endl;
   //std::cout << b << endl;
   
   return 0;
