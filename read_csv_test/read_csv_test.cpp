@@ -127,8 +127,89 @@ void decryptDBinfile(string filename, vector<vector<Ctxt>> encdb, PubKey publicK
   storeinfileptxt(filename,decrp);
 }
 
+void sqroot(EncryptedArray ea, PubKey publicKey, SecKey secretKey, Ctxt xc)
+{
+  //int xint = 0.5;
+  //vector<double> xint;
+  //xint.push_back(0.0603);
+  int d = 3;
+  std::cout << "test1";
+  vector<double> k;
+  k.push_back(1);
+  PtxtArray one(publicKey.getContext(), k);
+  std::cout << "test one";
+  vector<double> u;
+  u.push_back(-1);
+  PtxtArray negone(publicKey.getContext(), u);
+  std::cout << "test negone";
+  vector<double> f;
+  f.push_back(3);
+  PtxtArray three(publicKey.getContext(), f);
+  std::cout << "test three";
+  long half = 0.5;
+  long quarter = 0.25;
 
-void encryptDb (PubKey publicKey, SecKey secretKey)
+  //PtxtArray x(publicKey.getContext(), xint);
+  std::cout << "test x";
+  //Ctxt xc(publicKey);
+  
+  //x.encrypt(xc);
+
+  Ctxt a0 = xc;
+  //Ctxt a1 = xc;
+  Ctxt b0 = xc;
+  //Ctxt b1 = xc;
+  
+  b0 -= one;
+
+  // std::cout << "\na0 c : " << a0.capacity() << "\n";
+  // std::cout << "a0 e : " << a0.errorBound() << "\n";
+  // std::cout << "b0 c : " << b0.capacity() << "\n";
+  // std::cout << "b0 e : " << b0.errorBound() << "\n";
+
+  for(int i=0; i<d; i++)
+  {
+    std::cout << "Iteration : " << i;
+    Ctxt temp1 = b0;
+    //temp1.multByConstant(half);
+    temp1 *= 0.5;
+    //temp1.divideBy2();
+    temp1 -= one;
+    //temp1.multByConstant(negone);
+    temp1 *= -1.0;
+    a0 *= temp1;
+    //a1 = a0;
+    debugtxtprint(a0,"After a0 calc : a0 ",i, secretKey);
+    debugtxtprint(b0,"After a0 calc : b0 ",i, secretKey);
+
+    Ctxt temp2 = b0;
+    temp2 -= three;
+    //temp2.multByConstant(quarter);
+    temp2 *= 0.25;
+    debugtxtprint(temp2,"During b0 calc : temp2 ",i, secretKey);
+    //b0 *= b0;
+    b0.square();
+    debugtxtprint(b0,"During b0 calc : b0 square ",i, secretKey);
+    b0 *= temp2;
+    //b1 = b0;
+
+    debugtxtprint(a0,"After b0 calc : a0 ",i, secretKey);
+    debugtxtprint(b0,"After b0 calc : b0 ",i, secretKey);
+
+    // std::cout << "a0 c : " << a0.capacity() << "\n";
+    // std::cout << "a0 e : " << a0.errorBound() << "\n";
+    // std::cout << "b0 c : " << b0.capacity() << "\n";
+    // std::cout << "b0 e : " << b0.errorBound() << "\n";
+    //a0 = a1;
+    //b0 = b1;
+  }
+  int i=0;
+  debugtxtfile("debug_sqrt.txt",a0,"Square root : ",i,secretKey);
+}
+
+
+
+void encryptDb (PubKey publicKey, SecKey secretKey, EncryptedArray ea)
 {
   vector<vector<double>> interest_vector;
   interest_vector = read_csv("./interest_vector.csv");
@@ -173,8 +254,10 @@ void encryptDb (PubKey publicKey, SecKey secretKey)
  tmp_add.push_back(sum);
 
  int x=0;
- debugtxtfile("sq_add_dbtest.txt",tmp_add[0],"addition",x,secretKey);
+ debugtxtfile("sq_add_dbtest_new.txt",tmp_add[0],"addition",x,secretKey);
  decryptDBinfile("subsqdbtest.txt",encdb, publicKey, secretKey);
+
+ sqroot(ea, publicKey, secretKey, tmp_add[0]);
   //return encdb;
 }
 
@@ -500,7 +583,7 @@ int main(int argc, char* argv[])
 // dec_x.store(x_ptxt);
 // cout << x_ptxt[0] <<endl;
 
-encryptDb(publicKey, secretKey);
+encryptDb(publicKey, secretKey, ea);
   return 0;
 }
 
