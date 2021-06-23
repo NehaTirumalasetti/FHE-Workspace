@@ -61,7 +61,7 @@ vector<vector<double>> read_csv(string filename)
       std::stringstream ss(line);
       while (getline(ss, entry, ',')) 
       {
-        cout << entry;
+        //cout << entry;
         if(!entry.empty())
         {
           row.push_back(stod(entry));
@@ -153,15 +153,15 @@ cout << "\nAfter read_csv";
     vector<long> v1;
     v1.push_back(iv[i][0]);
     helib::Ptxt<helib::BGV> index(context,v1);
-    cout << "\nIndex ptxt created ";
+    //cout << "\nIndex ptxt created ";
 
     vector<long> v2;
     v2.push_back(iv[i][1]);
     helib::Ptxt<helib::BGV> value(context, v2);
-    cout << "\nValue ptxt created ";
+    //cout << "\nValue ptxt created ";
 
     iv_ptxt.emplace_back(std::move(index), std::move(value));
-    cout << "\nLookup ptxt created ";
+    //cout << "\nLookup ptxt created ";
   }
 
   std::vector<std::pair<helib::Ctxt, helib::Ctxt>> enc_ivdb;
@@ -169,15 +169,15 @@ cout << "\nAfter read_csv";
   {
     helib::Ctxt encrypted_index(public_key);
     helib::Ctxt encrypted_value(public_key);
-    cout << "\nCtxts created ";
+    //cout << "\nCtxts created ";
 
     public_key.Encrypt(encrypted_index, iv_pair.first);
     public_key.Encrypt(encrypted_value, iv_pair.second);
-    cout << "\nEncryption complete ";
+    //cout << "\nEncryption complete ";
 
     enc_ivdb.emplace_back(std::move(encrypted_index),
                                       std::move(encrypted_value));
-    cout << "\nEmplace back completed";
+    //cout << "\nEmplace back completed";
   }
 
 
@@ -210,10 +210,7 @@ cout << "\nAfter read_csv";
   }
 
 
-
-
-
-
+/*
   vector<long> qu;
   qu.push_back(-48);
   helib::Ptxt<helib::BGV> query_ptxt(context,qu);
@@ -235,7 +232,20 @@ cout << "\nAfter read_csv";
 
   
   cout << "done!" << endl;
+*/
 
+  for (int i=0; i<enc_ivdb.size()-1; i++)
+  {
+    Ctxt diff = enc_ivdb[i].first;
+    diff -= enc_ivdb[i+1].first;
+    Ctxt abs_value = get_abs_value(diff, lookup,encrypted_lookup_db);
+
+    helib::Ptxt<helib::BGV> plaintext_result(context);
+    secret_key.Decrypt(plaintext_result, abs_value);
+    cout << "Test2" << endl;
+    cout<<plaintext_result[0]<<endl;
+    cout << "done!" << endl;
+  }
 
  
  /*
