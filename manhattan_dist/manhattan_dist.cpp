@@ -61,7 +61,12 @@ vector<vector<double>> read_csv(string filename)
       std::stringstream ss(line);
       while (getline(ss, entry, ',')) 
       {
-        row.push_back(stod(entry));
+        cout << entry;
+        if(!entry.empty())
+        {
+          row.push_back(stod(entry));
+        }
+        
       }
       // Add key value pairs to dataset
       dataset.push_back(row);
@@ -137,8 +142,49 @@ int main(int argc, char* argv[])
   // Get the number of slot (phi(m))
   long nslots = ea.size();
   std::cout << "\nNumber of slots: " << nslots << std::endl;
+  
+cout << "\nBefore read_csv";
+vector<vector<double>> lookup = read_csv("interest_vector.csv");
+cout << "\nAfter read_csv";
+  std::vector<std::pair<helib::Ptxt<helib::BGV>, helib::Ptxt<helib::BGV>>> lookup_ptxt;
+ cout << "\nBefore for";
+  for (int i =0;i<lookup.size();i++) 
+  {
+    vector<long> v1;
+    v1.push_back(lookup[i][0]);
+    helib::Ptxt<helib::BGV> index(context,v1);
+    cout << "\nIndex ptxt created ";
+
+    vector<long> v2;
+    v2.push_back(lookup[i][1]);
+    helib::Ptxt<helib::BGV> value(context, v2);
+    cout << "\nValue ptxt created ";
+
+    lookup_ptxt.emplace_back(std::move(index), std::move(value));
+    cout << "\nLookup ptxt created ";
+  }
+
+  std::vector<std::pair<helib::Ctxt, helib::Ctxt>> encrypted_lookup_db;
+  for (const auto& lookup_pair : lookup_ptxt) 
+  {
+    helib::Ctxt encrypted_index(public_key);
+    helib::Ctxt encrypted_value(public_key);
+    cout << "\nCtxts created ";
+
+    public_key.Encrypt(encrypted_index, lookup_pair.first);
+    public_key.Encrypt(encrypted_value, lookup_pair.second);
+    cout << "\nEncryption complete ";
+
+    encrypted_lookup_db.emplace_back(std::move(encrypted_index),
+                                      std::move(encrypted_value));
+    cout << "\nEmplace back completed";
+  }
+
+
+
+  //vector<vector<double>> lookup = read_csv("lookup.csv");
   /*
-  vector<vector<double>> lookup = read_csv("lookup.csv");
+  vector<vector<double>> lookup = read_csv("./interest_vector.csv");
   std::vector<std::pair<helib::Ptxt<helib::BGV>, helib::Ptxt<helib::BGV>>> lookup_ptxt;
   for (int i =0;i<lookup.size();i++) 
   {
@@ -163,11 +209,12 @@ int main(int argc, char* argv[])
   encrypted_lookup_db.emplace_back(std::move(encrypted_index),
                                     std::move(encrypted_value));
   }
+*/
 
 
 
 
-
+/*
   vector<long> qu;
   qu.push_back(-48);
   helib::Ptxt<helib::BGV> query_ptxt(context,qu);
@@ -192,6 +239,7 @@ int main(int argc, char* argv[])
 
   */
  
+ /*
   vector<vector<double>> interest_vector;
   interest_vector = read_csv("./interest_vector.csv");
 
@@ -215,6 +263,8 @@ int main(int argc, char* argv[])
 
     }
   }
+
+  */
   //Context& context = publicKey.getContext();
   
   // vector<vector<Ptxt<BGV>>> db_ptxt;
@@ -292,19 +342,28 @@ int main(int argc, char* argv[])
   //   encdb.emplace_back(tmp);
   // }
 
-  // vector<vector<double>> decrp;
-  // for(int i = 0;i<encdb.size();i++)
-  // {
-  //   for(int j = 0 ;j<encdb[i].size();j++)
-  //   {
-  //       PtxtArray dec_x (public_key.getContext());
-  //       dec_x.decrypt(encdb[i][j], secret_key);
-  //       vector<double> x_ptxt;
-  //       dec_x.store(x_ptxt);
-  //       decrp.emplace_back(x_ptxt);
-  //   }
-  // }
-
+/*
+  cout << "\nStarting decryption : ";
+  vector<vector<double>> decrp;
+   for(int i = 0;i<encrypted_lookup_db.size();i++)
+   {
+     for(int j = 0 ;j<2;j++)
+     {
+         PtxtArray dec_x (public_key.getContext());
+         if(j==0)
+         {
+           dec_x.decrypt(encrypted_lookup_db[i].first, secret_key);
+         }
+         else
+         {
+           dec_x.decrypt(encrypted_lookup_db[i].second, secret_key);
+         }
+         vector<double> x_ptxt;
+         dec_x.store(x_ptxt);
+         decrp.emplace_back(x_ptxt);
+     }
+   }
+*/
   // cout << decrp[0][0] <<endl;
   return 0;
 }
