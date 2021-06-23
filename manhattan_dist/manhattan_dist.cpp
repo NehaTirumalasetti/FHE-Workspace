@@ -124,51 +124,7 @@ int main(int argc, char* argv[])
   // std::cout << "\nCreating Public Key ...";
   const helib::PubKey& public_key = secret_key;
 
-  //     // Plaintext prime modulus
-  // unsigned long p = 131;
-  // // Cyclotomic polynomial - defines phi(m)
-  // unsigned long m = 130; // this will give 48 slots
-  // // Hensel lifting (default = 1)
-  // unsigned long r = 1;
-  // // Number of bits of the modulus chain
-  // unsigned long bits = 1000;
-  // // Number of columns of Key-Switching matrix (default = 2 or 3)
-  // unsigned long c = 2;
-  // // Size of NTL thread pool (default =1)
-  // unsigned long nthreads = 1;
-  // // debug output (default no debug output)
-  // bool debug = false;
-
-  // helib::ArgMap amap;
-  // amap.arg("m", m, "Cyclotomic polynomial ring");
-  // amap.arg("p", p, "Plaintext prime modulus");
-  // amap.arg("r", r, "Hensel lifting");
-  // amap.arg("bits", bits, "# of bits in the modulus chain");
-  // amap.arg("c", c, "# fo columns of Key-Switching matrix");
-  // amap.arg("nthreads", nthreads, "Size of NTL thread pool");
-  // amap.toggle().arg("-debug", debug, "Toggle debug output", "");
-  // amap.parse(argc, argv);
-
-
-  //  helib::Context context = helib::ContextBuilder<helib::BGV>()
-  //                              .m(m)
-  //                              .p(p)
-  //                              .r(r)
-  //                              .bits(bits)
-  //                              .c(c)
-  //                              .build();
-
-
-  // helib::SecKey secret_key = helib::SecKey(context);
-  // // Generate the secret key
-  // secret_key.GenSecKey();
-  // helib::addSome1DMatrices(secret_key);
-
-  // std::cout << "\nCreating Public Key ...";
-  // const helib::PubKey& public_key = secret_key;
-  // const helib::EncryptedArray& ea = context.getEA();
-
-    // Print the context
+  // Print the context
   std::cout << std::endl;
   if (debug)
     context.printout();
@@ -182,35 +138,35 @@ int main(int argc, char* argv[])
   long nslots = ea.size();
   std::cout << "\nNumber of slots: " << nslots << std::endl;
 
-   vector<vector<double>> lookup = read_csv("lookup.csv");
-   std::vector<std::pair<helib::Ptxt<helib::BGV>, helib::Ptxt<helib::BGV>>> lookup_ptxt;
-   for (int i =0;i<lookup.size();i++) 
-   {
-    vector<long> v1;
-    v1.push_back(lookup[i][0]);
-    helib::Ptxt<helib::BGV> index(context,v1);
+  vector<vector<double>> lookup = read_csv("lookup.csv");
+  std::vector<std::pair<helib::Ptxt<helib::BGV>, helib::Ptxt<helib::BGV>>> lookup_ptxt;
+  for (int i =0;i<lookup.size();i++) 
+  {
+  vector<long> v1;
+  v1.push_back(lookup[i][0]);
+  helib::Ptxt<helib::BGV> index(context,v1);
 
-    vector<long> v2;
-    v2.push_back(lookup[i][1]);
-    helib::Ptxt<helib::BGV> value(context, v2);
+  vector<long> v2;
+  v2.push_back(lookup[i][1]);
+  helib::Ptxt<helib::BGV> value(context, v2);
 
-    lookup_ptxt.emplace_back(std::move(index), std::move(value));
-   }
+  lookup_ptxt.emplace_back(std::move(index), std::move(value));
+  }
 
-   std::vector<std::pair<helib::Ctxt, helib::Ctxt>> encrypted_lookup_db;
-   for (const auto& lookup_pair : lookup_ptxt) 
-   {
-    helib::Ctxt encrypted_index(public_key);
-    helib::Ctxt encrypted_value(public_key);
-    public_key.Encrypt(encrypted_index, lookup_pair.first);
-    public_key.Encrypt(encrypted_value, lookup_pair.second);
-    encrypted_lookup_db.emplace_back(std::move(encrypted_index),
-                                      std::move(encrypted_value));
-   }
+  std::vector<std::pair<helib::Ctxt, helib::Ctxt>> encrypted_lookup_db;
+  for (const auto& lookup_pair : lookup_ptxt) 
+  {
+  helib::Ctxt encrypted_index(public_key);
+  helib::Ctxt encrypted_value(public_key);
+  public_key.Encrypt(encrypted_index, lookup_pair.first);
+  public_key.Encrypt(encrypted_value, lookup_pair.second);
+  encrypted_lookup_db.emplace_back(std::move(encrypted_index),
+                                    std::move(encrypted_value));
+  }
 
 
 
- 
+
 
   vector<long> qu;
   qu.push_back(-48);
@@ -227,13 +183,56 @@ int main(int argc, char* argv[])
   secret_key.Decrypt(plaintext_result, abs_value);
 
 
-   cout << "Test2" << endl;
+  cout << "Test2" << endl;
 
-   cout<<plaintext_result[0]<<endl;
+  cout<<plaintext_result[0]<<endl;
 
-   
-   cout << "done!" << endl;
+  
+  cout << "done!" << endl;
 
 
+ 
+  vector<vector<double>> interest_vector;
+  interest_vector = read_csv("./interest_vector.csv");
+  //Context& context = publicKey.getContext();
+  vector<vector<Ctxt>> encdb ;
+  
+  for(int i=0; i < interest_vector.size(); i++)
+  {
+    vector<Ctxt> tmp;
+    for(int j=0; j<=interest_vector[i].size(); j++)
+    {
+      if(j<interest_vector[i].size())
+      {
+        cout<<"\nIteration " << i << j;
+        // PtxtArray n(context, interest_vector[i][j]);
+        vector<long> v1;
+        v1.push_back(interest_vector[i][j]);
+        Ptxt<BGV> n(context,v1);
+        Ctxt x(public_key);
+        cout << "Created ptxt and ctxt" << endl;
+        public_key.Encrypt(x, n);
+        cout << "Encrypted ctxt" << endl;
+        tmp.push_back(x);
+        cout<<"\nIteration " << i << j <<" complete";
+      }
+    }
+    // cout << "\n test after for";
+    encdb.emplace_back(tmp);
+  }
+  vector<vector<double>> decrp;
+  for(int i = 0;i<encdb.size();i++)
+  {
+    for(int j = 0 ;j<encdb[i].size();j++)
+    {
+        PtxtArray dec_x (public_key.getContext());
+        dec_x.decrypt(encdb[i][j], secret_key);
+        vector<double> x_ptxt;
+        dec_x.store(x_ptxt);
+        decrp.emplace_back(x_ptxt);
+    }
+  }
+
+  cout << decrp[0][0] <<endl;
   return 0;
 }
