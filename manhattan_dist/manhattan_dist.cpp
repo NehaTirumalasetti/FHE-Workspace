@@ -137,7 +137,7 @@ int main(int argc, char* argv[])
   // Get the number of slot (phi(m))
   long nslots = ea.size();
   std::cout << "\nNumber of slots: " << nslots << std::endl;
-
+  /*
   vector<vector<double>> lookup = read_csv("lookup.csv");
   std::vector<std::pair<helib::Ptxt<helib::BGV>, helib::Ptxt<helib::BGV>>> lookup_ptxt;
   for (int i =0;i<lookup.size();i++) 
@@ -190,7 +190,7 @@ int main(int argc, char* argv[])
   
   cout << "done!" << endl;
 
-
+  */
  
   vector<vector<double>> interest_vector;
   interest_vector = read_csv("./interest_vector.csv");
@@ -292,19 +292,19 @@ int main(int argc, char* argv[])
   //   encdb.emplace_back(tmp);
   // }
 
-  vector<vector<double>> decrp;
-  for(int i = 0;i<encdb.size();i++)
-  {
-    for(int j = 0 ;j<encdb[i].size();j++)
-    {
-        PtxtArray dec_x (public_key.getContext());
-        dec_x.decrypt(encdb[i][j], secret_key);
-        vector<double> x_ptxt;
-        dec_x.store(x_ptxt);
-        decrp.emplace_back(x_ptxt);
-    }
-  }
+  // vector<vector<double>> decrp;
+  // for(int i = 0;i<encdb.size();i++)
+  // {
+  //   for(int j = 0 ;j<encdb[i].size();j++)
+  //   {
+  //       PtxtArray dec_x (public_key.getContext());
+  //       dec_x.decrypt(encdb[i][j], secret_key);
+  //       vector<double> x_ptxt;
+  //       dec_x.store(x_ptxt);
+  //       decrp.emplace_back(x_ptxt);
+  //   }
+  // }
 
-  cout << decrp[0][0] <<endl;
+  // cout << decrp[0][0] <<endl;
   return 0;
 }
