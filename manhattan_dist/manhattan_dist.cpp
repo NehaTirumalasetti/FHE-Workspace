@@ -144,47 +144,46 @@ int main(int argc, char* argv[])
   std::cout << "\nNumber of slots: " << nslots << std::endl;
   
 cout << "\nBefore read_csv";
-vector<vector<double>> lookup = read_csv("interest_vector.csv");
+vector<vector<double>> iv = read_csv("interest_vector.csv");
 cout << "\nAfter read_csv";
-  std::vector<std::pair<helib::Ptxt<helib::BGV>, helib::Ptxt<helib::BGV>>> lookup_ptxt;
+  std::vector<std::pair<helib::Ptxt<helib::BGV>, helib::Ptxt<helib::BGV>>> iv_ptxt;
  cout << "\nBefore for";
-  for (int i =0;i<lookup.size();i++) 
+  for (int i =0;i<iv.size();i++) 
   {
     vector<long> v1;
-    v1.push_back(lookup[i][0]);
+    v1.push_back(iv[i][0]);
     helib::Ptxt<helib::BGV> index(context,v1);
     cout << "\nIndex ptxt created ";
 
     vector<long> v2;
-    v2.push_back(lookup[i][1]);
+    v2.push_back(iv[i][1]);
     helib::Ptxt<helib::BGV> value(context, v2);
     cout << "\nValue ptxt created ";
 
-    lookup_ptxt.emplace_back(std::move(index), std::move(value));
+    iv_ptxt.emplace_back(std::move(index), std::move(value));
     cout << "\nLookup ptxt created ";
   }
 
-  std::vector<std::pair<helib::Ctxt, helib::Ctxt>> encrypted_lookup_db;
-  for (const auto& lookup_pair : lookup_ptxt) 
+  std::vector<std::pair<helib::Ctxt, helib::Ctxt>> enc_ivdb;
+  for (const auto& iv_pair : iv_ptxt) 
   {
     helib::Ctxt encrypted_index(public_key);
     helib::Ctxt encrypted_value(public_key);
     cout << "\nCtxts created ";
 
-    public_key.Encrypt(encrypted_index, lookup_pair.first);
-    public_key.Encrypt(encrypted_value, lookup_pair.second);
+    public_key.Encrypt(encrypted_index, iv_pair.first);
+    public_key.Encrypt(encrypted_value, iv_pair.second);
     cout << "\nEncryption complete ";
 
-    encrypted_lookup_db.emplace_back(std::move(encrypted_index),
+    enc_ivdb.emplace_back(std::move(encrypted_index),
                                       std::move(encrypted_value));
     cout << "\nEmplace back completed";
   }
 
 
 
-  //vector<vector<double>> lookup = read_csv("lookup.csv");
-  /*
-  vector<vector<double>> lookup = read_csv("./interest_vector.csv");
+  vector<vector<double>> lookup = read_csv("lookup.csv");
+  //vector<vector<double>> lookup = read_csv("./interest_vector.csv");
   std::vector<std::pair<helib::Ptxt<helib::BGV>, helib::Ptxt<helib::BGV>>> lookup_ptxt;
   for (int i =0;i<lookup.size();i++) 
   {
@@ -209,12 +208,12 @@ cout << "\nAfter read_csv";
   encrypted_lookup_db.emplace_back(std::move(encrypted_index),
                                     std::move(encrypted_value));
   }
-*/
 
 
 
 
-/*
+
+
   vector<long> qu;
   qu.push_back(-48);
   helib::Ptxt<helib::BGV> query_ptxt(context,qu);
@@ -237,7 +236,7 @@ cout << "\nAfter read_csv";
   
   cout << "done!" << endl;
 
-  */
+
  
  /*
   vector<vector<double>> interest_vector;
