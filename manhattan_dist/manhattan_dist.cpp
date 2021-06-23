@@ -194,37 +194,58 @@ int main(int argc, char* argv[])
  
   vector<vector<double>> interest_vector;
   interest_vector = read_csv("./interest_vector.csv");
+
+  vector<vector<Ctxt>> encdb;
+  Ctxt scratch(public_key);
+  long bitSize = 16;
+
+  for(int i =0;i<interest_vector.size();i++)
+  {
+    vector<Ctxt> tmp(bitSize, scratch);
+    encdb[i]=tmp;
+  }
+
+  for(int i=0;i<interest_vector.size();i++)
+  {
+    for(int j=0;j<interest_vector[i].size();i++)
+    {
+      std::vector<long> a_vec(ea.size());
+      a_vec.push_back(interest_vector[i][j]);
+      ea.encrypt(encdb[i][j], public_key, a_vec);
+
+    }
+  }
   //Context& context = publicKey.getContext();
   
-  vector<vector<Ptxt<BGV>>> db_ptxt;
+  // vector<vector<Ptxt<BGV>>> db_ptxt;
 
-  for(int i =0;i<interest_vector.size();i++)
-  {
-    vector<Ptxt<BGV>> row;
-    for(int j =0;j<interest_vector[i].size();j++)
-    {
-      vector<long> v;
-      v.push_back(interest_vector[i][j]);
-      Ptxt<BGV> p (context, v);
-      row.push_back(p);
-    }
-    db_ptxt.emplace_back(row);
-  }
-  cout << "Ptxt made" << endl;
-  cout << db_ptxt[0][0][0]<< endl;
+  // for(int i =0;i<interest_vector.size();i++)
+  // {
+  //   vector<Ptxt<BGV>> row;
+  //   for(int j =0;j<interest_vector[i].size();j++)
+  //   {
+  //     vector<long> v;
+  //     v.push_back(interest_vector[i][j]);
+  //     Ptxt<BGV> p (context, v);
+  //     row.push_back(p);
+  //   }
+  //   db_ptxt.emplace_back(row);
+  // }
+  // cout << "Ptxt made" << endl;
+  // cout << db_ptxt[0][0][0]<< endl;
 
-  vector<vector<Ctxt>> encdb ;
-  for(int i =0;i<interest_vector.size();i++)
-  {
-    vector<Ctxt> row;
-    for(int j =0;j<interest_vector[i].size();j++)
-    {
-      Ctxt tmp(public_key);
-      public_key.Encrypt(tmp,db_ptxt[i][j]);
-      row.push_back(tmp);
-    }    
-    encdb.emplace_back(move(row));
-  }
+  // vector<vector<Ctxt>> encdb ;
+  // for(int i =0;i<interest_vector.size();i++)
+  // {
+  //   vector<Ctxt> row;
+  //   for(int j =0;j<interest_vector[i].size();j++)
+  //   {
+  //     Ctxt tmp(public_key);
+  //     public_key.Encrypt(tmp,db_ptxt[i][j]);
+  //     row.push_back(tmp);
+  //   }    
+  //   encdb.emplace_back(move(row));
+  // }
 
 // Ctxt c0(public_key);
 //     public_key.Encrypt(c0,db_ptxt[i][0]);
