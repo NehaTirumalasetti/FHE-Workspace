@@ -1,0 +1,28 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/opt/IBM/FHE-Workspace/ctxt_test/ctxt_test.cpp
+iostream
+-
+helib/helib.h
+-
+helib/EncryptedArray.h
+-
+helib/ArgMap.h
+-
+NTL/BasicThreadPool.h
+-
+helayers/hebase/hebase.h
+/opt/IBM/FHE-Workspace/ctxt_test/helayers/hebase/hebase.h
+vector
+-
+fstream
+-
+sstream
+-
+
