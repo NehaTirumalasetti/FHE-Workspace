@@ -195,7 +195,7 @@ int main(int argc, char* argv[])
   vector<vector<double>> interest_vector;
   interest_vector = read_csv("./interest_vector.csv");
   //Context& context = publicKey.getContext();
-  vector<vector<Ctxt>> encdb ;
+  
   vector<vector<Ptxt<BGV>>> db_ptxt;
 
   for(int i =0;i<interest_vector.size();i++)
@@ -213,7 +213,38 @@ int main(int argc, char* argv[])
   cout << "Ptxt made" << endl;
   cout << db_ptxt[0][0][0]<< endl;
 
-  
+  vector<vector<Ctxt>> encdb ;
+  for(int i =0;i<interest_vector.size();i++)
+  {
+    vector<Ctxt> row;
+    for(int j =0;j<interest_vector[i].size();j++)
+    {
+      Ctxt tmp(public_key);
+      public_key.Encrypt(tmp,db_ptxt[i][j]);
+      row.push_back(tmp);
+    }    
+    encdb.emplace_back(move(row));
+  }
+
+// Ctxt c0(public_key);
+//     public_key.Encrypt(c0,db_ptxt[i][0]);
+//     encdb.emplace_back(move(c0));
+//     Ctxt c1(public_key);
+//     public_key.Encrypt(c1,db_ptxt[i][1]);
+//     encdb.emplace_back(move(c1));
+//     Ctxt c2(public_key);
+//     public_key.Encrypt(c2,db_ptxt[i][2]);
+//     encdb.emplace_back(move(c2));
+//     Ctxt c3(public_key);
+//     public_key.Encrypt(c3,db_ptxt[i][3]);
+//     encdb.emplace_back(move(c3));
+//     Ctxt c4(public_key);
+//     public_key.Encrypt(c4,db_ptxt[i][4]);
+//     encdb.emplace_back(move(c4));
+//     Ctxt c5(public_key);
+//     public_key.Encrypt(c5,db_ptxt[i][5]);
+//     encdb.emplace_back(move(c5));
+//     //encdb.emplace_back(move(c0),move(c1),move(c2),move(c3),move(c4),move(c5));
 
   // for(int i=0; i < interest_vector.size(); i++)
   // {
@@ -240,19 +271,19 @@ int main(int argc, char* argv[])
   //   encdb.emplace_back(tmp);
   // }
 
-  // vector<vector<double>> decrp;
-  // for(int i = 0;i<encdb.size();i++)
-  // {
-  //   for(int j = 0 ;j<encdb[i].size();j++)
-  //   {
-  //       PtxtArray dec_x (public_key.getContext());
-  //       dec_x.decrypt(encdb[i][j], secret_key);
-  //       vector<double> x_ptxt;
-  //       dec_x.store(x_ptxt);
-  //       decrp.emplace_back(x_ptxt);
-  //   }
-  // }
+  vector<vector<double>> decrp;
+  for(int i = 0;i<encdb.size();i++)
+  {
+    for(int j = 0 ;j<encdb[i].size();j++)
+    {
+        PtxtArray dec_x (public_key.getContext());
+        dec_x.decrypt(encdb[i][j], secret_key);
+        vector<double> x_ptxt;
+        dec_x.store(x_ptxt);
+        decrp.emplace_back(x_ptxt);
+    }
+  }
 
-  // cout << decrp[0][0] <<endl;
+  cout << decrp[0][0] <<endl;
   return 0;
 }
