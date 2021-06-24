@@ -1,0 +1,38 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/opt/IBM/FHE-Workspace/bin_comp_test/bin_comp_test.cpp
+iostream
+-
+fstream
+-
+vector
+-
+cmath
+-
+algorithm
+-
+tuple
+-
+NTL/BasicThreadPool.h
+-
+helib/helib.h
+-
+helib/intraSlot.h
+-
+helib/binaryArith.h
+-
+helib/binaryCompare.h
+-
+gtest/gtest.h
+/opt/IBM/FHE-Workspace/bin_comp_test/gtest/gtest.h
+test_common.h
+/opt/IBM/FHE-Workspace/bin_comp_test/test_common.h
+helib/debugging.h
+-
+

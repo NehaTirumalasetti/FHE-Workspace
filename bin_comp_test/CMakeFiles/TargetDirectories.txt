@@ -1,0 +1,3 @@
+/opt/IBM/FHE-Workspace/bin_comp_test/CMakeFiles/rebuild_cache.dir
+/opt/IBM/FHE-Workspace/bin_comp_test/CMakeFiles/edit_cache.dir
+/opt/IBM/FHE-Workspace/bin_comp_test/CMakeFiles/bin_comp_test.dir
