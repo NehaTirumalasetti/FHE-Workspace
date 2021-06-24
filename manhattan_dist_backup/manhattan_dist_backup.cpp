@@ -247,11 +247,19 @@ cout << "\nAfter read_csv";
   
   //cout << "\nDist Ptxt : " << dist_ptxt[0];
   sort(dist_dec.begin(), dist_dec.end());
-
+  /*
   cout << "\nDistance\tIndex"; 
   for(int i=0; i<dist_dec.size(); i++)
   {
     cout << "\n" << dist_dec[i].first << "\t\t" << dist_dec[i].second;
+  }
+  */
+
+  cout << "\nTop three recommendations : ";
+  for(int i=0; i<3; i++)
+  {
+    cout << "\nInterest Vector of recommended user : " << iv[dist_dec[i].second];
+    cout << "\nDistance : " << dist_dec[i].first ;
   }
 
   return 0;
@@ -345,5 +353,14 @@ Distance        Index
 29              4
 30              7
 32              2
+
+
+Top three recommendations : 
+Interest Vector of recommended user : [18 48]
+Distance : 12
+Interest Vector of recommended user : [29 37]
+Distance : 22
+Interest Vector of recommended user : [26 33]
+Distance : 23
 
 */
