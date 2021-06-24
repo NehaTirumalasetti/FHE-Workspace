@@ -235,35 +235,31 @@ cout << "\nAfter read_csv";
 */
 
   vector<Ctxt> distances;
-  for (int i=0; i<enc_ivdb.size()-1; i++)
+  for (int i=1; i<enc_ivdb.size(); i++)
   {
     Ctxt diff = enc_ivdb[i].first;
-    diff -= enc_ivdb[i+1].first;
+    diff -= enc_ivdb[0].first;
     Ctxt abs_val_first = get_abs_value(diff, lookup,encrypted_lookup_db);
-    /*
+    
     helib::Ptxt<helib::BGV> plaintext_result1(context);
     secret_key.Decrypt(plaintext_result1, abs_val_first);
-    cout << "Test2" << endl;
-    cout<<plaintext_result1[0]<<endl;
-    cout << "done!" << endl;
-    */
+    cout<<"\nAbs val first : "<<plaintext_result1[0]<<endl;
+    
     Ctxt diff2 = enc_ivdb[i].second;
-    diff2 -= enc_ivdb[i+1].second;
+    diff2 -= enc_ivdb[0].second;
     Ctxt abs_val_second = get_abs_value(diff2, lookup,encrypted_lookup_db);
-
     helib::Ptxt<helib::BGV> plaintext_result2(context);
     secret_key.Decrypt(plaintext_result2, abs_val_second);
-    cout<<plaintext_result2[0]<<endl;
+    cout<<"\nAbs val first : "<<plaintext_result2[0]<<endl;
 
     Ctxt dist = abs_val_first;
     dist += abs_val_second;
     helib::Ptxt<helib::BGV> plaintext_result3(context);
     secret_key.Decrypt(plaintext_result3, dist);
-    cout<<plaintext_result3[0]<<endl;
+    cout<<"\nAddition : "<<plaintext_result3[0]<<endl;
     cout << "done!" << endl;
 
     distances.emplace_back(move(dist));
-
   }
 
  
