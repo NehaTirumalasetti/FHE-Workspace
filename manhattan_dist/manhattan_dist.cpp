@@ -7,6 +7,7 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
+#include <helib/binaryArith.h>
 
 using namespace std;
 using namespace helayers;
@@ -242,6 +243,28 @@ cout << "\nAfter read_csv";
 
     distances.emplace_back(move(dist));
   }
+  long num = 12;
+  long bitsize = 16;
+  vector<long> bitrep(ea.size());
+  bitrep = longToBitVector(num, bitsize);
+  
+  //cout << bitrep.size()<<endl;
+  // for(int i=0;i<bitrep.size();i++)
+  //   cout<<" bit   " << bitrep[i] <<endl;
+
+  Ctxt scratch (public_key);
+  vector<Ctxt> v1 (bitsize,scratch);
+  for (long i = 0; i < bitsize; ++i)
+  {
+    std::vector<long> a_vec(ea.size());
+    for (auto& slot : a_vec)
+      slot = (num >> i) & 1;
+    ea.encrypt(v1[i], public_key, a_vec);
+  }
+  helib::CtPtrs_vectorCt decryp_wrapper(v1);
+  vector<long> decrypted_result;
+  helib::decryptBinaryNums(decrypted_result, decryp_wrapper, secret_key, ea);
+  cout  << decrypted_result.back() << endl;
 
 
   return 0;

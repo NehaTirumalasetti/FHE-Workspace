@@ -25,4 +25,6 @@ fstream
 -
 sstream
 -
+helib/binaryArith.h
+-
 
