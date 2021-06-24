@@ -270,153 +270,80 @@ cout << "\nAfter read_csv";
  */
 
 /*
-  vector<vector<double>> interest_vector;
-  interest_vector = read_csv("./interest_vector.csv");
 
-  vector<vector<Ctxt>> encdb;
-  Ctxt scratch(public_key);
-  long bitSize = 16;
+----- OUTPUT -----
 
-  for(int i =0;i<interest_vector.size();i++)
-  {
-    vector<Ctxt> tmp(bitSize, scratch);
-    encdb[i]=tmp;
-  }
+Abs val first : [6]
 
-  for(int i=0;i<interest_vector.size();i++)
-  {
-    for(int j=0;j<interest_vector[i].size();i++)
-    {
-      std::vector<long> a_vec(ea.size());
-      a_vec.push_back(interest_vector[i][j]);
-      ea.encrypt(encdb[i][j], public_key, a_vec);
+Abs val second : [6]
 
-    }
-  }
+Addition : [12]
+done!
 
-  */
+Abs val first : [24]
 
-  //Context& context = publicKey.getContext();
-  
-  // vector<vector<Ptxt<BGV>>> db_ptxt;
+Abs val second : [8]
 
-  // for(int i =0;i<interest_vector.size();i++)
-  // {
-  //   vector<Ptxt<BGV>> row;
-  //   for(int j =0;j<interest_vector[i].size();j++)
-  //   {
-  //     vector<long> v;
-  //     v.push_back(interest_vector[i][j]);
-  //     Ptxt<BGV> p (context, v);
-  //     row.push_back(p);
-  //   }
-  //   db_ptxt.emplace_back(row);
-  // }
-  // cout << "Ptxt made" << endl;
-  // cout << db_ptxt[0][0][0]<< endl;
+Addition : [32]
+done!
 
-  // vector<vector<Ctxt>> encdb ;
-  // for(int i =0;i<interest_vector.size();i++)
-  // {
-  //   vector<Ctxt> row;
-  //   for(int j =0;j<interest_vector[i].size();j++)
-  //   {
-  //     Ctxt tmp(public_key);
-  //     public_key.Encrypt(tmp,db_ptxt[i][j]);
-  //     row.push_back(tmp);
-  //   }    
-  //   encdb.emplace_back(move(row));
-  // }
+Abs val first : [2]
 
-// Ctxt c0(public_key);
-//     public_key.Encrypt(c0,db_ptxt[i][0]);
-//     encdb.emplace_back(move(c0));
-//     Ctxt c1(public_key);
-//     public_key.Encrypt(c1,db_ptxt[i][1]);
-//     encdb.emplace_back(move(c1));
-//     Ctxt c2(public_key);
-//     public_key.Encrypt(c2,db_ptxt[i][2]);
-//     encdb.emplace_back(move(c2));
-//     Ctxt c3(public_key);
-//     public_key.Encrypt(c3,db_ptxt[i][3]);
-//     encdb.emplace_back(move(c3));
-//     Ctxt c4(public_key);
-//     public_key.Encrypt(c4,db_ptxt[i][4]);
-//     encdb.emplace_back(move(c4));
-//     Ctxt c5(public_key);
-//     public_key.Encrypt(c5,db_ptxt[i][5]);
-//     encdb.emplace_back(move(c5));
-//     //encdb.emplace_back(move(c0),move(c1),move(c2),move(c3),move(c4),move(c5));
+Abs val second : [21]
 
-  // for(int i=0; i < interest_vector.size(); i++)
-  // {
-  //   vector<Ctxt> tmp;
-  //   for(int j=0; j<=interest_vector[i].size(); j++)
-  //   {
-  //     if(j<interest_vector[i].size())
-  //     {
-  //       cout<<"\nIteration " << i << j;
-  //       PtxtArray n(context, interest_vector[i][j]);
-  //       // vector<long> v1;
-  //       // v1.push_back(interest_vector[i][j]);
-  //       // Ptxt<BGV> n(context,v1);
-  //       Ctxt x(public_key);
-  //       cout << "Created ptxt and ctxt" << endl;
-  //       n.encrypt(x);
-  //       //public_key.Encrypt(x, n);
-  //       cout << "Encrypted ctxt" << endl;
-  //       tmp.push_back(x);
-  //       cout<<"\nIteration " << i << j <<" complete";
-  //     }
-  //   }
-  //   // cout << "\n test after for";
-  //   encdb.emplace_back(tmp);
-  // }
+Addition : [23]
+done!
 
-/*
-  cout << "\nStarting decryption : ";
-  vector<vector<double>> decrp;
-   for(int i = 0;i<encrypted_lookup_db.size();i++)
-   {
-     for(int j = 0 ;j<2;j++)
-     {
-         PtxtArray dec_x (public_key.getContext());
-         if(j==0)
-         {
-           dec_x.decrypt(encrypted_lookup_db[i].first, secret_key);
-         }
-         else
-         {
-           dec_x.decrypt(encrypted_lookup_db[i].second, secret_key);
-         }
-         vector<double> x_ptxt;
-         dec_x.store(x_ptxt);
-         decrp.emplace_back(x_ptxt);
-     }
-   }
-*/
-  // cout << decrp[0][0] <<endl;
+Abs val first : [25]
 
-  /*
-  vector<long> qu;
-  qu.push_back(-48);
-  helib::Ptxt<helib::BGV> query_ptxt(context,qu);
-  cout << query_ptxt[0] << endl;
+Abs val second : [4]
 
-  // Encrypt the query
-  helib::Ctxt query(public_key);
-  public_key.Encrypt(query, query_ptxt);
+Addition : [29]
+done!
 
-  Ctxt abs_value = get_abs_value(query, lookup,encrypted_lookup_db);
+Abs val first : [20]
 
-  helib::Ptxt<helib::BGV> plaintext_result(context);
-  secret_key.Decrypt(plaintext_result, abs_value);
+Abs val second : [6]
 
+Addition : [26]
+done!
 
-  cout << "Test2" << endl;
+Abs val first : [5]
 
-  cout<<plaintext_result[0]<<endl;
+Abs val second : [17]
 
-  
-  cout << "done!" << endl;
+Addition : [22]
+done!
+
+Abs val first : [21]
+
+Abs val second : [9]
+
+Addition : [30]
+done!
+
+Abs val first : [9]
+
+Abs val second : [15]
+
+Addition : [24]
+done!
+
+Abs val first : [8]
+
+Abs val second : [25]
+
+Addition : [33]
+done!
+
+Distance        Index
+12              1
+22              6
+23              3
+24              8
+26              5
+29              4
+30              7
+32              2
+
 */
