@@ -27,4 +27,6 @@ sstream
 -
 helib/binaryArith.h
 -
+helib/binaryCompare.h
+-
 

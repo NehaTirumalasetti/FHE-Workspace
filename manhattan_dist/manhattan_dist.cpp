@@ -8,6 +8,7 @@
 #include <fstream>
 #include <sstream>
 #include <helib/binaryArith.h>
+#include <helib/binaryCompare.h>
 
 using namespace std;
 using namespace helayers;
@@ -261,11 +262,63 @@ cout << "\nAfter read_csv";
       slot = (num >> i) & 1;
     ea.encrypt(v1[i], public_key, a_vec);
   }
-  helib::CtPtrs_vectorCt decryp_wrapper(v1);
+  helib::CtPtrs_vectorCt a(v1);
   vector<long> decrypted_result;
-  helib::decryptBinaryNums(decrypted_result, decryp_wrapper, secret_key, ea);
+  helib::decryptBinaryNums(decrypted_result, a, secret_key, ea);
   cout  << decrypted_result.back() << endl;
 
+  long num2 = 32;
+  
+  vector<Ctxt> v2 (bitsize,scratch);
+  for (long i = 0; i < bitsize; ++i)
+  {
+    std::vector<long> a_vec(ea.size());
+    for (auto& slot : a_vec)
+      slot = (num2 >> i) & 1;
+    ea.encrypt(v2[i], public_key, a_vec);
+  }
+  helib::CtPtrs_vectorCt b(v2);
+  vector<long> decrypted_result2;
+  helib::decryptBinaryNums(decrypted_result2, b, secret_key, ea);
+  cout  << decrypted_result2.back() << endl;
+/*
+  vector<Ctxt> ma;
+  CtPtrs_vectorCt max(ma);
+  vector<Ctxt> mi;
+  CtPtrs_vectorCt min(mi);
+  Ctxt mu(public_key);
+  Ctxt ni(public_key);
+
+
+  compareTwoNumbers(max, min, mu,ni,a,b);
+
+  vector<long> decrypted_resultmax;
+  helib::decryptBinaryNums(decrypted_resultmax, max, secret_key, ea);
+  cout  <<"Max : "<< decrypted_resultmax.back() << endl;
+
+  vector<long> decrypted_resultmin;
+  helib::decryptBinaryNums(decrypted_resultmin, min, secret_key, ea);
+  cout  <<"Min : "<< decrypted_resultmin.back() << endl;
+
+  helib::Ptxt<helib::BGV> mu_result(context);
+  secret_key.Decrypt(mu_result, mu);
+  cout<<"\nMu: "<<mu_result[mu_result.size()-1]<<endl;
+  cout<<"\nMu: "<<mu_result[mu_result.size()-2]<<endl;
+
+  helib::Ptxt<helib::BGV> ni_result(context);
+  secret_key.Decrypt(ni_result, ni);
+  cout<<"\nNi: "<<ni_result[ni_result.size()-1]<<endl;
+  cout<<"\nNi: "<<ni_result[ni_result.size()-2]<<endl;*/
+  vector<Ctxt> dif_result(bitsize,scratch);
+  CtPtrs_vectorCt dif(dif_result);
+  subtractBinary(dif,a,b);
+  vector<long> dif_ptxt(ea.size());
+  helib::decryptBinaryNums(dif_ptxt, dif, secret_key, ea);
+  cout  << dif_ptxt.back() << endl;
+  
+
+
+  
 
   return 0;
 }
