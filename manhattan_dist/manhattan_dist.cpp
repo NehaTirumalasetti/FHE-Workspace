@@ -313,9 +313,41 @@ cout << "\nAfter read_csv";
   CtPtrs_vectorCt dif(dif_result);
   subtractBinary(dif,a,b);
   vector<long> dif_ptxt(ea.size());
-  helib::decryptBinaryNums(dif_ptxt, dif, secret_key, ea);
+  helib::decryptBinaryNums(dif_ptxt, dif, secret_key, ea,true);
   cout  << dif_ptxt.back() << endl;
+
+  // vector<Ctxt> sub_result(bitsize,scratch);
+  // CtPtrs_vectorCt sub(sub_result);
+  //vector<Ctxt>neg_result(bitsize,scratch);
+  //CtPtrs_vectorCt neg(neg_result);
+  std::vector<Ctxt> neg_result(b.size(), *b[0]);
+  CtPtrs_vectorCt negated_wrapper(neg_result);
+  negateBinary(negated_wrapper, b);
   
+  // negateBinary(neg,b);
+  // addTwoNumbers(sub,a,b);
+
+  vector<long> sub_ptxt(ea.size());
+  helib::decryptBinaryNums(sub_ptxt, negated_wrapper, secret_key, ea,true);
+  cout  << sub_ptxt.back() << endl;
+  
+  long num3 =-1;
+  vector<Ctxt> v3 (bitsize,scratch);
+  for (long i = 0; i < bitsize; ++i)
+  {
+    std::vector<long> a_vec(ea.size());
+    for (auto& slot : a_vec)
+      slot = (num3 >> i) & 1;
+    ea.encrypt(v3[i], public_key, a_vec);
+  }
+  helib::CtPtrs_vectorCt c(v3);
+
+  vector<Ctxt> neg_prod (bitsize,scratch);
+  CtPtrs_vectorCt neg1(neg_prod);
+  multTwoNumbers(neg1, b,c,true);
+  vector<long> neg_ptxt(ea.size());
+  helib::decryptBinaryNums(neg_ptxt, neg1, secret_key, ea,true);
+  cout  << neg_ptxt.back() << endl;
 
 
   
