@@ -1,0 +1,34 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/opt/IBM/FHE-Workspace/manhattan_dist_backup/manhattan_dist_backup.cpp
+iostream
+-
+helib/helib.h
+-
+helib/EncryptedArray.h
+-
+helib/ArgMap.h
+-
+NTL/BasicThreadPool.h
+-
+helayers/hebase/hebase.h
+/opt/IBM/FHE-Workspace/manhattan_dist_backup/helayers/hebase/hebase.h
+vector
+-
+fstream
+-
+sstream
+-
+helib/binaryArith.h
+-
+helib/binaryCompare.h
+-
+helib/intraSlot.h
+-
+
