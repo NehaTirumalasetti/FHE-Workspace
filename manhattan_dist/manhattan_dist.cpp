@@ -9,7 +9,7 @@
 #include <sstream>
 #include <helib/binaryArith.h>
 #include <helib/binaryCompare.h>
-
+#include <helib/intraSlot.h>
 using namespace std;
 using namespace helayers;
 using namespace helib;
@@ -244,7 +244,7 @@ cout << "\nAfter read_csv";
 
     distances.emplace_back(move(dist));
   }
-  long num = 12;
+  long num = 13;
   long bitsize = 16;
   vector<long> bitrep(ea.size());
   bitrep = longToBitVector(num, bitsize);
@@ -257,31 +257,40 @@ cout << "\nAfter read_csv";
   vector<Ctxt> v1 (bitsize,scratch);
   for (long i = 0; i < bitsize; ++i)
   {
-    std::vector<long> a_vec(ea.size());
-    for (auto& slot : a_vec)
+    //std::vector<long> a_vec(ea.size());
+    /*for (auto& slot : a_vec)
+    {
       slot = (num >> i) & 1;
-    ea.encrypt(v1[i], public_key, a_vec);
+    }*/
+    secret_key.Encrypt(v1[i], NTL::ZZX((num>>i)&1) );
+    //ea.encrypt(v1[i], public_key, a_vec);
   }
   helib::CtPtrs_vectorCt a(v1);
   vector<long> decrypted_result;
   helib::decryptBinaryNums(decrypted_result, a, secret_key, ea);
   cout  << decrypted_result.back() << endl;
 
-  long num2 = 32;
+  long num2 = 13;
   
   vector<Ctxt> v2 (bitsize,scratch);
   for (long i = 0; i < bitsize; ++i)
   {
+    /*
     std::vector<long> a_vec(ea.size());
     for (auto& slot : a_vec)
+    {
       slot = (num2 >> i) & 1;
+      //cout << "Slot : " << slot << endl;
+    }
     ea.encrypt(v2[i], public_key, a_vec);
+    */
+    secret_key.Encrypt(v2[i], NTL::ZZX((num2>>i)&1) );
   }
   helib::CtPtrs_vectorCt b(v2);
   vector<long> decrypted_result2;
   helib::decryptBinaryNums(decrypted_result2, b, secret_key, ea);
   cout  << decrypted_result2.back() << endl;
-/*
+
   vector<Ctxt> ma;
   CtPtrs_vectorCt max(ma);
   vector<Ctxt> mi;
@@ -289,8 +298,12 @@ cout << "\nAfter read_csv";
   Ctxt mu(public_key);
   Ctxt ni(public_key);
 
+  static vector<zzX> unpackSlotEncoding;
+  buildUnpackSlotEncoding(unpackSlotEncoding, context.getEA());
 
-  compareTwoNumbers(max, min, mu,ni,a,b);
+
+  //compareTwoNumbers(max, min, mu,ni,a,b, true);
+  compareTwoNumbers(mu,ni,a,b, false, &unpackSlotEncoding);
 
   vector<long> decrypted_resultmax;
   helib::decryptBinaryNums(decrypted_resultmax, max, secret_key, ea);
@@ -300,22 +313,29 @@ cout << "\nAfter read_csv";
   helib::decryptBinaryNums(decrypted_resultmin, min, secret_key, ea);
   cout  <<"Min : "<< decrypted_resultmin.back() << endl;
 
-  helib::Ptxt<helib::BGV> mu_result(context);
-  secret_key.Decrypt(mu_result, mu);
-  cout<<"\nMu: "<<mu_result[mu_result.size()-1]<<endl;
-  cout<<"\nMu: "<<mu_result[mu_result.size()-2]<<endl;
+  //helib::Ptxt<helib::BGV> mu_result(context);
+  vector<long> mu_result;
+  //secret_key.Decrypt(mu_result, mu);
+  ea.decrypt(mu, secret_key, mu_result);
+  cout << "Mu : " << mu_result[0] <<endl;
+  //cout<<"\nMu: "<<mu_result[mu_result.size()-1]<<endl;
+  //cout<<"\nMu: "<<mu_result[mu_result.size()-2]<<endl;
 
   helib::Ptxt<helib::BGV> ni_result(context);
   secret_key.Decrypt(ni_result, ni);
   cout<<"\nNi: "<<ni_result[ni_result.size()-1]<<endl;
-  cout<<"\nNi: "<<ni_result[ni_result.size()-2]<<endl;*/
+  cout<<"\nNi: "<<ni_result[ni_result.size()-2]<<endl;
 
+  /*
   PtxtArray dec_x (context);
   dec_x.decrypt(ni, secret_key);
   vector<double> x_ptxt;
   dec_x.store(x_ptxt);
 
+  cout << "Decx : " << x_ptxt[0];
+  */
 
+/*
   vector<Ctxt> dif_result(bitsize,scratch);
   CtPtrs_vectorCt dif(dif_result);
   subtractBinary(dif,a,b);
@@ -367,7 +387,7 @@ cout << "\nAfter read_csv";
   helib::decryptBinaryNums(add_ptxt, add, secret_key, ea,true);
   cout  << add_ptxt.back() << endl;
 
-  
+  */
 
   return 0;
 }

@@ -29,4 +29,6 @@ helib/binaryArith.h
 -
 helib/binaryCompare.h
 -
+helib/intraSlot.h
+-
 
