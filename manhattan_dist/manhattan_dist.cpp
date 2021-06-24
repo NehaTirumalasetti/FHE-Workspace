@@ -309,6 +309,13 @@ cout << "\nAfter read_csv";
   secret_key.Decrypt(ni_result, ni);
   cout<<"\nNi: "<<ni_result[ni_result.size()-1]<<endl;
   cout<<"\nNi: "<<ni_result[ni_result.size()-2]<<endl;*/
+
+  PtxtArray dec_x (context);
+  dec_x.decrypt(ni, secret_key);
+  vector<double> x_ptxt;
+  dec_x.store(x_ptxt);
+
+
   vector<Ctxt> dif_result(bitsize,scratch);
   CtPtrs_vectorCt dif(dif_result);
   subtractBinary(dif,a,b);
