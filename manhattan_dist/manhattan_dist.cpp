@@ -243,7 +243,12 @@ cout << "\nAfter read_csv";
     distances.emplace_back(move(dist));
   }
 
- 
+
+  return 0;
+}
+
+ /*
+ --------------- BACKUP SORT ----------------
   //cout << "\nDist Ptxt : " << dist_ptxt[0];
   sort(dist_dec.begin(), dist_dec.end());
 
@@ -252,10 +257,7 @@ cout << "\nAfter read_csv";
   {
     cout << "\n" << dist_dec[i].first << "\t\t" << dist_dec[i].second;
   }
- 
-  return 0;
-}
-
+ */
 
 /*
   vector<vector<double>> interest_vector;
