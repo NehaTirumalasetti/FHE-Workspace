@@ -210,30 +210,9 @@ cout << "\nAfter read_csv";
   }
 
 
-/*
-  vector<long> qu;
-  qu.push_back(-48);
-  helib::Ptxt<helib::BGV> query_ptxt(context,qu);
-  cout << query_ptxt[0] << endl;
-
-  // Encrypt the query
-  helib::Ctxt query(public_key);
-  public_key.Encrypt(query, query_ptxt);
-
-  Ctxt abs_value = get_abs_value(query, lookup,encrypted_lookup_db);
-
-  helib::Ptxt<helib::BGV> plaintext_result(context);
-  secret_key.Decrypt(plaintext_result, abs_value);
 
 
-  cout << "Test2" << endl;
-
-  cout<<plaintext_result[0]<<endl;
-
-  
-  cout << "done!" << endl;
-*/
-
+  vector<pair<long, int>> dist_dec;
   vector<Ctxt> distances;
   for (int i=1; i<enc_ivdb.size(); i++)
   {
@@ -259,11 +238,26 @@ cout << "\nAfter read_csv";
     cout<<"\nAddition : "<<plaintext_result3[0]<<endl;
     cout << "done!" << endl;
 
+    dist_dec.emplace_back(move(plaintext_result3[0]), move(i));
+
     distances.emplace_back(move(dist));
   }
 
  
- /*
+  //cout << "\nDist Ptxt : " << dist_ptxt[0];
+  sort(dist_dec.begin(), dist_dec.end());
+
+  cout << "\nDistance\tIndex"; 
+  for(int i=0; i<dist_dec.size(); i++)
+  {
+    cout << "\n" << dist_dec[i].first << "\t\t" << dist_dec[i].second;
+  }
+ 
+  return 0;
+}
+
+
+/*
   vector<vector<double>> interest_vector;
   interest_vector = read_csv("./interest_vector.csv");
 
@@ -289,6 +283,7 @@ cout << "\nAfter read_csv";
   }
 
   */
+
   //Context& context = publicKey.getContext();
   
   // vector<vector<Ptxt<BGV>>> db_ptxt;
@@ -389,5 +384,27 @@ cout << "\nAfter read_csv";
    }
 */
   // cout << decrp[0][0] <<endl;
-  return 0;
-}
+
+  /*
+  vector<long> qu;
+  qu.push_back(-48);
+  helib::Ptxt<helib::BGV> query_ptxt(context,qu);
+  cout << query_ptxt[0] << endl;
+
+  // Encrypt the query
+  helib::Ctxt query(public_key);
+  public_key.Encrypt(query, query_ptxt);
+
+  Ctxt abs_value = get_abs_value(query, lookup,encrypted_lookup_db);
+
+  helib::Ptxt<helib::BGV> plaintext_result(context);
+  secret_key.Decrypt(plaintext_result, abs_value);
+
+
+  cout << "Test2" << endl;
+
+  cout<<plaintext_result[0]<<endl;
+
+  
+  cout << "done!" << endl;
+*/
