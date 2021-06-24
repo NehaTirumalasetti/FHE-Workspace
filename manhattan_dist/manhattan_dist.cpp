@@ -316,6 +316,9 @@ cout << "\nAfter read_csv";
   helib::decryptBinaryNums(dif_ptxt, dif, secret_key, ea,true);
   cout  << dif_ptxt.back() << endl;
 
+  cout<< "A size " <<a.size()<<endl;
+  cout<< "B size " <<b.size()<<endl;
+ 
   // vector<Ctxt> sub_result(bitsize,scratch);
   // CtPtrs_vectorCt sub(sub_result);
   //vector<Ctxt>neg_result(bitsize,scratch);
@@ -325,7 +328,7 @@ cout << "\nAfter read_csv";
   negateBinary(negated_wrapper, b);
   
   // negateBinary(neg,b);
-  // addTwoNumbers(sub,a,b);
+  //  addTwoNumbers(sub,a,b);
 
   vector<long> sub_ptxt(ea.size());
   helib::decryptBinaryNums(sub_ptxt, negated_wrapper, secret_key, ea,true);
@@ -349,6 +352,13 @@ cout << "\nAfter read_csv";
   helib::decryptBinaryNums(neg_ptxt, neg1, secret_key, ea,true);
   cout  << neg_ptxt.back() << endl;
 
+
+  vector<Ctxt> add_result (bitsize,scratch);
+  CtPtrs_vectorCt add(add_result);
+  addTwoNumbers(add,a,neg1);
+  vector<long> add_ptxt(ea.size());
+  helib::decryptBinaryNums(add_ptxt, add, secret_key, ea,true);
+  cout  << add_ptxt.back() << endl;
 
   
 
