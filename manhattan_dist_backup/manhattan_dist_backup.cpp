@@ -138,18 +138,18 @@ int main(int argc, char* argv[])
 
   // Print the security level
   // Note: This will be negligible to improve performance time.
-  std::cout << "\n***Security Level: " << context.securityLevel()
-            << " *** Negligible for this example ***" << std::endl;
+  //std::cout << "\n***Security Level: " << context.securityLevel()
+            //<< " *** Negligible for this example ***" << std::endl;
 
   // Get the number of slot (phi(m))
   long nslots = ea.size();
   std::cout << "\nNumber of slots: " << nslots << std::endl;
   
-cout << "\nBefore read_csv";
+//cout << "\nBefore read_csv";
 vector<vector<double>> iv = read_csv("interest_vector.csv");
-cout << "\nAfter read_csv";
+//cout << "\nAfter read_csv";
   std::vector<std::pair<helib::Ptxt<helib::BGV>, helib::Ptxt<helib::BGV>>> iv_ptxt;
- cout << "\nBefore for";
+ //cout << "\nBefore for";
   for (int i =0;i<iv.size();i++) 
   {
     vector<long> v1;
