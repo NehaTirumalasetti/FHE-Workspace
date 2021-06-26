@@ -259,7 +259,187 @@ cout << "Created vector of vector ctxt" << endl;
 
 }
 
+/*--------------OUTPUT----------------
+m = 4641, p = 2, phi(m) = 2304
+  ord(p) = 24
+  normBnd = 2.32522
+  polyNormBnd = 65.653
+  factors = [3 7 13 17]
+  generator 3979 has order (== Z_m^*) of 6
+  generator 3095 has order (== Z_m^*) of 2
+  generator 3760 has order (!!= Z_m^*) of 8
+r = 1
+nslots = 96
+hwt = 0
+ctxtPrimes = [6,7,8,9,10,11]
+specialPrimes = [12,13]
+number of bits = 448
 
+security level = 0
+
+Security: 0
+Creating secret key...
+Number of slots: 96
+12
+Created distance vector
+Created vector of vector ctxt
+Iteration i 0
+Created ctxt c
+Created enc vector
+Iteration j 0
+Encrypted bit
+Iteration j 1
+Encrypted bit
+Iteration j 2
+Encrypted bit
+Iteration j 3
+Encrypted bit
+Iteration j 4
+Encrypted bit
+Iteration j 5
+Encrypted bit
+Exited j loop
+added enc to encdb
+Iteration i 1
+Created ctxt c
+Created enc vector
+Iteration j 0
+Encrypted bit
+Iteration j 1
+Encrypted bit
+Iteration j 2
+Encrypted bit
+Iteration j 3
+Encrypted bit
+Iteration j 4
+Encrypted bit
+Iteration j 5
+Encrypted bit
+Exited j loop
+added enc to encdb
+Iteration i 2
+Created ctxt c
+Created enc vector
+Iteration j 0
+Encrypted bit
+Iteration j 1
+Encrypted bit
+Iteration j 2
+Encrypted bit
+Iteration j 3
+Encrypted bit
+Iteration j 4
+Encrypted bit
+Iteration j 5
+Encrypted bit
+Exited j loop
+added enc to encdb
+Iteration i 3
+Created ctxt c
+Created enc vector
+Iteration j 0
+Encrypted bit
+Iteration j 1
+Encrypted bit
+Iteration j 2
+Encrypted bit
+Iteration j 3
+Encrypted bit
+Iteration j 4
+Encrypted bit
+Iteration j 5
+Encrypted bit
+Exited j loop
+added enc to encdb
+Iteration i 4
+Created ctxt c
+Created enc vector
+Iteration j 0
+Encrypted bit
+Iteration j 1
+Encrypted bit
+Iteration j 2
+Encrypted bit
+Iteration j 3
+Encrypted bit
+Iteration j 4
+Encrypted bit
+Iteration j 5
+Encrypted bit
+Exited j loop
+added enc to encdb
+Iteration i 5
+Created ctxt c
+Created enc vector
+Iteration j 0
+Encrypted bit
+Iteration j 1
+Encrypted bit
+Iteration j 2
+Encrypted bit
+Iteration j 3
+Encrypted bit
+Iteration j 4
+Encrypted bit
+Iteration j 5
+Encrypted bit
+Exited j loop
+added enc to encdb
+Iteration i 6
+Created ctxt c
+Created enc vector
+Iteration j 0
+Encrypted bit
+Iteration j 1
+Encrypted bit
+Iteration j 2
+Encrypted bit
+Iteration j 3
+Encrypted bit
+Iteration j 4
+Encrypted bit
+Iteration j 5
+Encrypted bit
+Exited j loop
+added enc to encdb
+Iteration i 7
+Created ctxt c
+Created enc vector
+Iteration j 0
+Encrypted bit
+Iteration j 1
+Encrypted bit
+Iteration j 2
+Encrypted bit
+Iteration j 3
+Encrypted bit
+Iteration j 4
+Encrypted bit
+Iteration j 5
+Encrypted bit
+Exited j loop
+added enc to encdb
+Iteration i 8
+Created ctxt c
+Created enc vector
+Iteration j 0
+Encrypted bit
+Iteration j 1
+Encrypted bit
+Iteration j 2
+Encrypted bit
+Iteration j 3
+Encrypted bit
+Iteration j 4
+Encrypted bit
+Iteration j 5
+Encrypted bit
+Exited j loop
+added enc to encdb
+12
+22
+23
+*/
 
 
 
