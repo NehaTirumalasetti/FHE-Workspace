@@ -185,10 +185,36 @@ int main(int argc, char* argv[])
   cout<< "pNi " <<long(pNi) <<endl;
   cout<< "pMax "<<pMax <<endl;
   cout<< "pMin " <<pMin <<endl;*/
-  
 
 
-// vector<long> v {12,32,23,29,26,22,30,24,33};
+
+ vector<long> v {12,32,23,29,26,22,30,24,33};
+ cout << v[0] << endl;
+//  long v =12;
+ cout << "Created distance vector" << endl;
+ vector<vector<Ctxt>> encdb;
+cout << "Created vector of vector ctxt" << endl;
+ for (int i =0;i<v.size();i++)
+ {
+   cout << "Iteration i " << i << endl;
+   Ctxt c(public_key);
+    cout << "Created ctxt c" << endl;
+   vector<Ctxt> enc(bitSize, c);
+   cout << "Created enc vector" << endl;
+   for (long j = 0; j <bitSize; j++)
+    {
+      cout << "Iteration j " << j << endl;
+      secret_key.Encrypt(enc[j], NTL::ZZX((v[i] >> j) & 1));
+      cout << "Encrypted bit" << endl;
+      if (bootstrap) 
+      { // put them at a lower level
+        enc[j].bringToSet(context.getCtxtPrimes(5));
+      }
+    }
+    cout << "Exited j loop" << endl;
+    encdb.emplace_back(enc);
+    cout << "added enc to encdb" << endl;
+ }
 
  
 
