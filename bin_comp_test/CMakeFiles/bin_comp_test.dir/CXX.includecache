@@ -29,10 +29,6 @@ helib/binaryArith.h
 -
 helib/binaryCompare.h
 -
-gtest/gtest.h
-/opt/IBM/FHE-Workspace/bin_comp_test/gtest/gtest.h
-test_common.h
-/opt/IBM/FHE-Workspace/bin_comp_test/test_common.h
 helib/debugging.h
 -
 
