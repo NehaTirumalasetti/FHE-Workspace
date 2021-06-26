@@ -247,7 +247,13 @@ cout << "Created vector of vector ctxt" << endl;
     }
   }
 
-  // for(int i =)
+  for(int i =0;i<3;i++)
+  {
+    CtPtrs_vectorCt c (encdb[i]);
+    vector<long> cc;
+    decryptBinaryNums(cc, c, secret_key, ea);
+    cout<< cc[0] << endl;
+  }
  
 
 
