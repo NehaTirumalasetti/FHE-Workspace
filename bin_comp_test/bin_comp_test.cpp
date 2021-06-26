@@ -79,7 +79,8 @@ int main(int argc, char* argv[])
   //std::vector<helib::zzX> bin_comp_test::unpackSlotEncoding;
 
   
-  long bitSize = 16;
+  long bitSize = 16;//6
+  vector<long> v {12,32,23,29,26,22,30,24,33};
   long pa = NTL::RandomBits_long(bitSize);
   long pb = NTL::RandomBits_long(bitSize + 1);
   long pMax = std::max(pa, pb);
