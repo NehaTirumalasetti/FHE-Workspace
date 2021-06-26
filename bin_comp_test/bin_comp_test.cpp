@@ -193,6 +193,7 @@ int main(int argc, char* argv[])
 //  long v =12;
  cout << "Created distance vector" << endl;
  vector<vector<Ctxt>> encdb;
+//  vector<CtPtrMat_vectorCt> encdbfin;
 cout << "Created vector of vector ctxt" << endl;
  for (int i =0;i<v.size();i++)
  {
@@ -214,8 +215,39 @@ cout << "Created vector of vector ctxt" << endl;
     cout << "Exited j loop" << endl;
     encdb.emplace_back(enc);
     cout << "added enc to encdb" << endl;
+    // CtPtrs_vectorCt venc(enc);
+    // cout << "Created ctptr" << endl;
+    // encdbfin.emplace_back(venc);
+    // cout << "added ctptr to encdb fin" << endl;
+    
  }
 
+  for(int i =0;i<v.size()-1;i++)
+  {
+    for(int j =0;j<v.size()-i-1;j++)
+    {
+      helib::Ctxt mu(secret_key), ni(secret_key);
+      resize(encdb[j], bitSize, mu);
+      resize(encdb[j+1], bitSize + 1, ni);    
+      compareTwoNumbers(mu, //j>j+1 swap
+                        ni,
+                        helib::CtPtrs_vectorCt(encdb[j]),
+                        helib::CtPtrs_vectorCt(encdb[j+1]),
+                        false,
+                        &unpackSlotEncoding);
+      vector<long> slotsMu;
+      ea.decrypt(mu, secret_key, slotsMu);
+      if(slotsMu[0]==1)//swap
+      {
+        vector<Ctxt> temp;
+        temp = encdb[j];
+        encdb[j]=encdb[j+1];
+        encdb[j+1]=temp;
+      } 
+    }
+  }
+
+  // for(int i =)
  
 
 
