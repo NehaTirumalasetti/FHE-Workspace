@@ -21,22 +21,27 @@ using namespace helib;
 
 int main(int argc, char* argv[])
 {
+  // {2, 15004, 15709, 22, 23, 683, 0, 4099, 13663, 0, 22, 31, 0, 25, 3},
+
+  //2, 2304, 4641, 24, 7, 3, 221, 3979, 3095, 3760, 6, 2, -8, 25, 3},
+   // { p, phi(m),   m,   d, m1, m2, m3,    g1,   g2,   g3, ord1,ord2,ord3,
+      // B,c}
   // Plaintext prime modulus.
   long p = 2;
   // Cyclotomic polynomial - defines phi(m).
-  long m = 4095;
+  long m =4641;//4095; //4641
   // Hensel lifting (default = 1).
   long r = 1;
   // Number of bits of the modulus chain.
-  long bits = 500;
+  long bits = 25;//500; //25
   // Number of columns of Key-Switching matrix (typically 2 or 3).
-  long c = 2;
+  long c =3;// 2;//3
   // Factorisation of m required for bootstrapping.
-  std::vector<long> mvec = {7, 5, 9, 13};
+  std::vector<long> mvec = {7, 3, 221};//{7, 5, 9, 13}; //7, 3, 221
   // Generating set of Zm* group.
-  std::vector<long> gens = {2341, 3277, 911};
+  std::vector<long> gens = {3979, 3095, 3760};//{2341, 3277, 911}; // 3979, 3095, 3760
   // Orders of the previous generators.
-  std::vector<long> ords = {6, 4, 6};
+  std::vector<long> ords = { 6, 2, -8};//{6, 4, 6};// 6, 2, -8
 
  helib::Context context = helib::ContextBuilder<helib::BGV>()
                                .m(m)
@@ -79,7 +84,10 @@ int main(int argc, char* argv[])
   //std::vector<helib::zzX> bin_comp_test::unpackSlotEncoding;
 
   
-  long bitSize = 16;//6
+  long bitSize = 6;//16
+
+  bool bootstrap = false;
+  /*
   vector<long> v {12,32,23,29,26,22,30,24,33};
   long pa = NTL::RandomBits_long(bitSize);
   long pb = NTL::RandomBits_long(bitSize + 1);
@@ -87,7 +95,7 @@ int main(int argc, char* argv[])
   long pMin = std::min(pa, pb);
   bool pMu = pa > pb;
   bool pNi = pa < pb;
-  bool bootstrap = false;
+ 
   cout << "pa " << pa <<endl;
   cout << "pb " << pb <<endl;
   // Encrypt the individual bits
@@ -132,7 +140,9 @@ int main(int argc, char* argv[])
   cout<< "pMu "<<long(pMu) <<endl;
   cout<< "pNi " <<long(pNi) <<endl;
   cout<< "pMax "<<pMax <<endl;
-  cout<< "pMin " <<pMin <<endl;
+  cout<< "pMin " <<pMin <<endl;*/
+
+
  
 
 
