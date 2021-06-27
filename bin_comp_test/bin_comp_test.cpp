@@ -25,6 +25,42 @@ using namespace helib;
                : 30 * (7 + NTL::NumBits(bitSize + 2)); // that should be enough
   }
 
+vector<vector<double>> read_csv(string filename)
+{
+  vector<vector<double>> dataset;
+  ifstream data_file(filename);
+
+  if (!data_file.is_open())
+    throw runtime_error(
+        "Error: This example failed trying to open the data file: " + filename +
+        "\n           Please check this file exists and try again.");
+
+  vector<double> row;
+  string line, entry, temp;
+
+  if (data_file.good()) {
+    // Read each line of file
+    while (getline(data_file, line)) {
+      row.clear();
+
+      std::stringstream ss(line);
+      while (getline(ss, entry, ',')) 
+      {
+        //cout << entry;
+        if(!entry.empty())
+        {
+          row.push_back(stod(entry));
+        }
+        
+      }
+      // Add key value pairs to dataset
+      dataset.push_back(row);
+    }
+  }
+
+  data_file.close();
+  return dataset;
+}
 int main(int argc, char* argv[])
 {
   // // {2, 15004, 15709, 22, 23, 683, 0, 4099, 13663, 0, 22, 31, 0, 25, 3},
@@ -48,22 +84,7 @@ int main(int argc, char* argv[])
   std::vector<long> gens = {3979, 3095, 3760};//{2341, 3277, 911}; // 3979, 3095, 3760
   // Orders of the previous generators.
   std::vector<long> ords = { 6, 2, -8};//{6, 4, 6};// 6, 2, -8
-   //Plaintext prime modulus.
-  // long p = 2;
-  // // Cyclotomic polynomial - defines phi(m).
-  // long m = 4095;
-  // // Hensel lifting (default = 1).
-  // long r = 1;
-  // // Number of bits of the modulus chain.
-  // long bits = 500;
-  // // Number of columns of Key-Switching matrix (typically 2 or 3).
-  // long c = 2;
-  // // Factorisation of m required for bootstrapping.
-  // std::vector<long> mvec = {7, 5, 9, 13};
-  // // Generating set of Zm* group.
-  // std::vector<long> gens = {2341, 3277, 911};
-  // // Orders of the previous generators.
-  // std::vector<long> ords = {6, 4, 6};
+  
 
   bool bootstrap = false;
   long bitSize = 6;
@@ -80,16 +101,7 @@ int main(int argc, char* argv[])
                   .ords(ords)
                   .buildModChain(false)
                   .build();
-                              //  .m(m)
-                              //  .p(p)
-                              //  .r(r)
-                              //  .gens(gens)
-                              //  .ords(ords)
-                              //  .bits(bits)
-                              //  .c(c)
-                              //  .bootstrappable(true)
-                              //  .mvec(mvec)
-                              //  .build();
+                             
    context.buildModChain(L, c, /*willBeBootstrappable=*/bootstrap);
   // Print the context.
   context.printout();
@@ -127,101 +139,36 @@ int main(int argc, char* argv[])
   std::cout << "Number of slots: " << nslots << std::endl;
 
 
-  
-  // long bitSize = 6;//16
-
-  // bool bootstrap = true;
-  
- /* vector<long> v {12,32,23,29,26,22,30,24,33};
-  long pa = NTL::RandomBits_long(bitSize);
-  long pb = NTL::RandomBits_long(bitSize + 1);
-  long pMax = std::max(pa, pb);
-  long pMin = std::min(pa, pb);
-  bool pMu = pa > pb;
-  bool pNi = pa < pb;
- 
-  cout << "pa " << pa <<endl;
-  cout << "pb " << pb <<endl;
-  // Encrypt the individual bits
-  NTL::Vec<helib::Ctxt> eMax, eMin, enca, encb;
-
-  helib::Ctxt mu(secret_key), ni(secret_key);
-  resize(enca, bitSize, mu);
-  resize(encb, bitSize + 1, ni);
-  for (long i = 0; i <= bitSize; i++) {
-    if (i < bitSize)
-      secret_key.Encrypt(enca[i], NTL::ZZX((pa >> i) & 1));
-    secret_key.Encrypt(encb[i], NTL::ZZX((pb >> i) & 1));
-    if (bootstrap) { // put them at a lower level
-       if (i < bitSize)
-         enca[i].bringToSet(context.getCtxtPrimes(5));
-       encb[i].bringToSet(context.getCtxtPrimes(5));
-     }
-  }
-
-    std::vector<long> slotsMin, slotsMax, slotsMu, slotsNi;
-  // comparison only
- helib::CtPtrs_VecCt wMin(eMin),
-        wMax(eMax); // A wrappers around output vectors
-    // comparison with max and min
-    compareTwoNumbers(wMax,
-                      wMin,
-                      mu,
-                      ni,
-                      helib::CtPtrs_VecCt(enca),
-                      helib::CtPtrs_VecCt(encb),
-                      false,
-                      &unpackSlotEncoding);
-    decryptBinaryNums(slotsMax, wMax, secret_key, ea);
-    decryptBinaryNums(slotsMin, wMin, secret_key, ea);
-   // get rid of the wrapper
-  ea.decrypt(mu, secret_key, slotsMu);
-  ea.decrypt(ni, secret_key, slotsNi);
-  cout<< "slotsMax "<<slotsMax[0] <<endl;
-  cout<< "slotsMin " <<slotsMin[0] <<endl;
-  cout<< "slotsMu "<<slotsMu[0] <<endl;
-  cout<< "slotsNi " <<slotsNi[0] <<endl;
-  cout<< "pMu "<<long(pMu) <<endl;
-  cout<< "pNi " <<long(pNi) <<endl;
-  cout<< "pMax "<<pMax <<endl;
-  cout<< "pMin " <<pMin <<endl;*/
-
-
-
  vector<long> v {12,32,23,29,26,22,30,24,33};
- cout << v[0] << endl;
+ vector<int> index {1,2,3,4,5,6,7,8,9};
+//  cout << v[0] << endl;
 //  long v =12;
- cout << "Created distance vector" << endl;
+//  cout << "Created distance vector" << endl;
  vector<vector<Ctxt>> encdb;
 //  vector<CtPtrMat_vectorCt> encdbfin;
-cout << "Created vector of vector ctxt" << endl;
+// cout << "Created vector of vector ctxt" << endl;
  for (int i =0;i<v.size();i++)
  {
-   cout << "Iteration i " << i << endl;
+  //  cout << "Iteration i " << i << endl;
    Ctxt c(public_key);
-    cout << "Created ctxt c" << endl;
+    // cout << "Created ctxt c" << endl;
    vector<Ctxt> enc(bitSize, c);
-   cout << "Created enc vector" << endl;
+  //  cout << "Created enc vector" << endl;
    for (long j = 0; j <bitSize; j++)
     {
-      cout << "Iteration j " << j << endl;
+      // cout << "Iteration j " << j << endl;
       secret_key.Encrypt(enc[j], NTL::ZZX((v[i] >> j) & 1));
-      cout << "Encrypted bit" << endl;
+      // cout << "Encrypted bit" << endl;
       if (bootstrap) 
       { // put them at a lower level
         enc[j].bringToSet(context.getCtxtPrimes(5));
       }
     }
-    cout << "Exited j loop" << endl;
+    // cout << "Exited j loop" << endl;
     encdb.emplace_back(enc);
-    cout << "added enc to encdb" << endl;
-    // CtPtrs_vectorCt venc(enc);
-    // cout << "Created ctptr" << endl;
-    // encdbfin.emplace_back(venc);
-    // cout << "added ctptr to encdb fin" << endl;
-    
+    // cout << "added enc to encdb" << endl;  
  }
-
+  cout<<"\nSorting Distances:"<<endl;
   for(int i =0;i<v.size()-1;i++)
   {
     for(int j =0;j<v.size()-i-1;j++)
@@ -243,16 +190,35 @@ cout << "Created vector of vector ctxt" << endl;
         temp = encdb[j];
         encdb[j]=encdb[j+1];
         encdb[j+1]=temp;
+
+        //swap index
+        int tmp = index[j];
+        index[j] =index[j+1];
+        index[j+1] = tmp;
       } 
     }
   }
+  vector<vector<double>> iv = read_csv("interest_vector.csv");
 
+  cout << "\nDistance\tIndex"; 
+  for(int i =0;i<v.size();i++)
+  {
+    CtPtrs_vectorCt c (encdb[i]);
+    vector<long> cc;
+    decryptBinaryNums(cc, c, secret_key, ea);
+    //cout<< cc[0] << endl;
+    cout << "\n" << cc[0] << "\t\t" << index[i];
+
+  }
+  cout << "\nTop three recommendations : ";
   for(int i =0;i<3;i++)
   {
     CtPtrs_vectorCt c (encdb[i]);
     vector<long> cc;
     decryptBinaryNums(cc, c, secret_key, ea);
-    cout<< cc[0] << endl;
+    // cout<< cc[0] << endl;
+    cout << "\nInterest Vector of recommended user : " << iv[index[i]];
+    cout << "\nDistance : " << cc[0] ;
   }
  
 
@@ -441,64 +407,40 @@ added enc to encdb
 23
 */
 
+// long bitSize = 6;//16
 
-
-/*const helib::EncryptedArray& ea = context.getEA();
-
-  // Choose two random n-bit integers
+  // bool bootstrap = true;
+  
+ /* vector<long> v {12,32,23,29,26,22,30,24,33};
   long pa = NTL::RandomBits_long(bitSize);
   long pb = NTL::RandomBits_long(bitSize + 1);
   long pMax = std::max(pa, pb);
   long pMin = std::min(pa, pb);
   bool pMu = pa > pb;
   bool pNi = pa < pb;
-
+ 
+  cout << "pa " << pa <<endl;
+  cout << "pb " << pb <<endl;
   // Encrypt the individual bits
   NTL::Vec<helib::Ctxt> eMax, eMin, enca, encb;
 
-  helib::Ctxt mu(secKey), ni(secKey);
+  helib::Ctxt mu(secret_key), ni(secret_key);
   resize(enca, bitSize, mu);
   resize(encb, bitSize + 1, ni);
   for (long i = 0; i <= bitSize; i++) {
     if (i < bitSize)
-      secKey.Encrypt(enca[i], NTL::ZZX((pa >> i) & 1));
-    secKey.Encrypt(encb[i], NTL::ZZX((pb >> i) & 1));
+      secret_key.Encrypt(enca[i], NTL::ZZX((pa >> i) & 1));
+    secret_key.Encrypt(encb[i], NTL::ZZX((pb >> i) & 1));
     if (bootstrap) { // put them at a lower level
-      if (i < bitSize)
-        enca[i].bringToSet(context.getCtxtPrimes(5));
-      encb[i].bringToSet(context.getCtxtPrimes(5));
-    }
+       if (i < bitSize)
+         enca[i].bringToSet(context.getCtxtPrimes(5));
+       encb[i].bringToSet(context.getCtxtPrimes(5));
+     }
   }
-#ifdef HELIB_DEBUG
-  decryptAndPrint((std::cout << " before comparison: "),
-                  encb[0],
-                  secKey,
-                  ea,
-                  0);
-#endif
 
-  std::vector<long> slotsMin, slotsMax, slotsMu, slotsNi;
+    std::vector<long> slotsMin, slotsMax, slotsMu, slotsNi;
   // comparison only
-  compareTwoNumbers(mu,
-                    ni,
-                    helib::CtPtrs_VecCt(enca),
-                    helib::CtPtrs_VecCt(encb),
-                    false,
-                    &unpackSlotEncoding);
-  ea.decrypt(mu, secKey, slotsMu);
-  ea.decrypt(ni, secKey, slotsNi);
-  EXPECT_EQ(std::make_pair(slotsMu[0], slotsNi[0]),
-            std::make_pair((long)pMu, (long)pNi))
-      << "Comparison (without min max) error: a=" << pa << ", b=" << pb
-      << ", mu=" << slotsMu[0] << ", ni=" << slotsNi[0] << std::endl;
-  if (helib_test::verbose) {
-    std::cout << "Comparison (without min max) succeeded: ";
-    std::cout << '(' << pa << ',' << pb << ")=> mu=" << slotsMu[0]
-              << ", ni=" << slotsNi[0] << std::endl;
-  }
-
-  {
-    helib::CtPtrs_VecCt wMin(eMin),
+ helib::CtPtrs_VecCt wMin(eMin),
         wMax(eMax); // A wrappers around output vectors
     // comparison with max and min
     compareTwoNumbers(wMax,
@@ -509,22 +451,45 @@ added enc to encdb
                       helib::CtPtrs_VecCt(encb),
                       false,
                       &unpackSlotEncoding);
-    decryptBinaryNums(slotsMax, wMax, secKey, ea);
-    decryptBinaryNums(slotsMin, wMin, secKey, ea);
-  } // get rid of the wrapper
-  ea.decrypt(mu, secKey, slotsMu);
-  ea.decrypt(ni, secKey, slotsNi);
+    decryptBinaryNums(slotsMax, wMax, secret_key, ea);
+    decryptBinaryNums(slotsMin, wMin, secret_key, ea);
+   // get rid of the wrapper
+  ea.decrypt(mu, secret_key, slotsMu);
+  ea.decrypt(ni, secret_key, slotsNi);
+  cout<< "slotsMax "<<slotsMax[0] <<endl;
+  cout<< "slotsMin " <<slotsMin[0] <<endl;
+  cout<< "slotsMu "<<slotsMu[0] <<endl;
+  cout<< "slotsNi " <<slotsNi[0] <<endl;
+  cout<< "pMu "<<long(pMu) <<endl;
+  cout<< "pNi " <<long(pNi) <<endl;
+  cout<< "pMax "<<pMax <<endl;
+  cout<< "pMin " <<pMin <<endl;*/
 
-  EXPECT_EQ(std::make_tuple(pMax, pMin, pMu, pNi),
-            std::make_tuple(slotsMax[0], slotsMin[0], slotsMu[0], slotsNi[0]))
-      << "Comparison (with min max) error: a=" << pa << ", b=" << pb
-      << ", but min=" << slotsMin[0] << ", max=" << slotsMax[0]
-      << ", mu=" << slotsMu[0] << ", ni=" << slotsNi[0] << std::endl;
+ //  .m(m)
+                              //  .p(p)
+                              //  .r(r)
+                              //  .gens(gens)
+                              //  .ords(ords)
+                              //  .bits(bits)
+                              //  .c(c)
+                              //  .bootstrappable(true)
+                              //  .mvec(mvec)
+                              //  .build();
 
-  if (helib_test::verbose) {
-    std::cout << "Comparison (with min max) succeeded: ";
-    std::cout << '(' << pa << ',' << pb << ")=>(" << slotsMin[0] << ','
-              << slotsMax[0] << "), mu=" << slotsMu[0] << ", ni=" << slotsNi[0]
-              << std::endl;
-  }
-*/
+
+                               //Plaintext prime modulus.
+  // long p = 2;
+  // // Cyclotomic polynomial - defines phi(m).
+  // long m = 4095;
+  // // Hensel lifting (default = 1).
+  // long r = 1;
+  // // Number of bits of the modulus chain.
+  // long bits = 500;
+  // // Number of columns of Key-Switching matrix (typically 2 or 3).
+  // long c = 2;
+  // // Factorisation of m required for bootstrapping.
+  // std::vector<long> mvec = {7, 5, 9, 13};
+  // // Generating set of Zm* group.
+  // std::vector<long> gens = {2341, 3277, 911};
+  // // Orders of the previous generators.
+  // std::vector<long> ords = {6, 4, 6};
