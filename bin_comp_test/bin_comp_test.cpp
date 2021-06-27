@@ -168,7 +168,7 @@ int main(int argc, char* argv[])
     encdb.emplace_back(enc);
     // cout << "added enc to encdb" << endl;  
  }
-  cout<<"\nSorting Distances:"<<endl;
+  cout<<"\nSorting Distances... "<<endl;
   for(int i =0;i<v.size()-1;i++)
   {
     for(int j =0;j<v.size()-i-1;j++)
