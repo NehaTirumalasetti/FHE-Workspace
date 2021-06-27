@@ -104,7 +104,7 @@ int main(int argc, char* argv[])
                              
    context.buildModChain(L, c, /*willBeBootstrappable=*/bootstrap);
   // Print the context.
-  context.printout();
+  // context.printout();
   // std::cout << std::endl;
  
  
@@ -217,9 +217,10 @@ int main(int argc, char* argv[])
     vector<long> cc;
     decryptBinaryNums(cc, c, secret_key, ea);
     // cout<< cc[0] << endl;
-    cout << "\nInterest Vector of recommended user : " << iv[index[i]]<<endl;
-    cout << "\nDistance : " << cc[0] <<endl ;
+    cout << "\nInterest Vector of recommended user : " << iv[index[i]];
+    cout << "\nDistance : " << cc[0] ;
   }
+  cout << endl;
  
 
 
