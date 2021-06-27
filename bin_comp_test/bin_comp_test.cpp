@@ -105,11 +105,11 @@ int main(int argc, char* argv[])
    context.buildModChain(L, c, /*willBeBootstrappable=*/bootstrap);
   // Print the context.
   context.printout();
-  std::cout << std::endl;
+  // std::cout << std::endl;
  
  
   // Print the security level.
-  std::cout << "Security: " << context.securityLevel() << std::endl;
+  // std::cout << "Security: " << context.securityLevel() << std::endl;
 
   // Secret key management.
   std::cout << "Creating secret key..." << std::endl;
@@ -217,8 +217,8 @@ int main(int argc, char* argv[])
     vector<long> cc;
     decryptBinaryNums(cc, c, secret_key, ea);
     // cout<< cc[0] << endl;
-    cout << "\nInterest Vector of recommended user : " << iv[index[i]];
-    cout << "\nDistance : " << cc[0] ;
+    cout << "\nInterest Vector of recommended user : " << iv[index[i]]<<endl;
+    cout << "\nDistance : " << cc[0] <<endl ;
   }
  
 
