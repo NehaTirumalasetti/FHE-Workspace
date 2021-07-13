@@ -237,3 +237,37 @@ HELIB_NTIMER_START(timer_enc);
   
 
 }
+
+/*  OUTPUT
+
+---Initialising HE Environment ... 
+Initializing the Context ... Creating secret key...
+
+Creating Public Key ...Number of slots: 96
+
+Sorting Distances... 
+
+Distance        Index
+12              1
+22              6
+23              3
+24              8
+26              5
+29              4
+30              7
+32              2
+33              9
+Top three recommendations : 
+Interest Vector of recommended user : [18 48]
+Distance : 12
+Interest Vector of recommended user : [29 37]
+Distance : 22
+Interest Vector of recommended user : [26 33]
+Distance : 23
+
+  timer_Context: 0.219583 / 1 = 0.219583   [/opt/IBM/FHE-Workspace/sort_test/sort_test.cpp:91]
+  timer_SecKey: 0.074141 / 1 = 0.074141   [/opt/IBM/FHE-Workspace/sort_test/sort_test.cpp:108]
+  timer_SKM: 0.38515 / 1 = 0.38515   [/opt/IBM/FHE-Workspace/sort_test/sort_test.cpp:117]
+  timer_PubKey: 0 / 1 = 0   [/opt/IBM/FHE-Workspace/sort_test/sort_test.cpp:126]
+  timer_enc: 0.491515 / 1 = 0.491515   [/opt/IBM/FHE-Workspace/sort_test/sort_test.cpp:149]
+  timer_sorting: 59.4951 / 1 = 59.4951   [/opt/IBM/FHE-Workspace/sort_test/sort_test.cpp:173]*/
