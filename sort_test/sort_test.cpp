@@ -22,6 +22,44 @@ long calculateLevels(bool bootstrap, long bitSize)
               ? 900
               : 30 * (7 + NTL::NumBits(bitSize + 2)); // that should be enough
 }
+
+vector<vector<double>> read_csv(string filename)
+{
+  vector<vector<double>> dataset;
+  ifstream data_file(filename);
+
+  if (!data_file.is_open())
+    throw runtime_error(
+        "Error: This example failed trying to open the data file: " + filename +
+        "\n           Please check this file exists and try again.");
+
+  vector<double> row;
+  string line, entry, temp;
+
+  if (data_file.good()) {
+    // Read each line of file
+    while (getline(data_file, line)) {
+      row.clear();
+
+      std::stringstream ss(line);
+      while (getline(ss, entry, ',')) 
+      {
+        //cout << entry;
+        if(!entry.empty())
+        {
+          row.push_back(stod(entry));
+        }
+        
+      }
+      // Add key value pairs to dataset
+      dataset.push_back(row);
+    }
+  }
+
+  data_file.close();
+  return dataset;
+}
+
 int main(int argc, char* argv[])
 {
   long p = 2; 
@@ -100,13 +138,102 @@ int main(int argc, char* argv[])
   long nslots = ea.size();
   std::cout << "Number of slots: " << nslots << std::endl;
 
+  vector<long> v {12,32,23,29,26,22,30,24,33};
+ vector<int> index {1,2,3,4,5,6,7,8,9};
+//  cout << v[0] << endl;
+//  long v =12;
+//  cout << "Created distance vector" << endl;
+ vector<vector<Ctxt>> encdb;
+//  vector<CtPtrMat_vectorCt> encdbfin;
+// cout << "Created vector of vector ctxt" << endl;
+HELIB_NTIMER_START(timer_enc);
+ for (int i =0;i<v.size();i++)
+ {
+  //  cout << "Iteration i " << i << endl;
+   Ctxt c(public_key);
+    // cout << "Created ctxt c" << endl;
+   vector<Ctxt> enc(bitSize, c);
+  //  cout << "Created enc vector" << endl;
+   for (long j = 0; j <bitSize; j++)
+    {
+      // cout << "Iteration j " << j << endl;
+      secret_key.Encrypt(enc[j], NTL::ZZX((v[i] >> j) & 1));
+      // cout << "Encrypted bit" << endl;
+      if (bootstrap) 
+      { // put them at a lower level
+        enc[j].bringToSet(context.getCtxtPrimes(5));
+      }
+    }
+    // cout << "Exited j loop" << endl;
+    encdb.emplace_back(enc);
+    // cout << "added enc to encdb" << endl;  
+ }
+ HELIB_NTIMER_STOP(timer_enc);
+  cout<<"\nSorting Distances... "<<endl;
+  HELIB_NTIMER_START(timer_sorting);
+  for(int i =0;i<v.size()-1;i++)
+  {
+    for(int j =0;j<v.size()-i-1;j++)
+    {
+      helib::Ctxt mu(secret_key), ni(secret_key);
+      resize(encdb[j], bitSize, mu);
+      resize(encdb[j+1], bitSize + 1, ni);    
+      compareTwoNumbers(mu, //j>j+1 swap
+                        ni,
+                        helib::CtPtrs_vectorCt(encdb[j]),
+                        helib::CtPtrs_vectorCt(encdb[j+1]),
+                        false,
+                        &unpackSlotEncoding);
+      vector<long> slotsMu;
+      ea.decrypt(mu, secret_key, slotsMu);
+      if(slotsMu[0]==1)//swap
+      {
+        vector<Ctxt> temp;
+        temp = encdb[j];
+        encdb[j]=encdb[j+1];
+        encdb[j+1]=temp;
+
+        //swap index
+        int tmp = index[j];
+        index[j] =index[j+1];
+        index[j+1] = tmp;
+      } 
+    }
+  }
+  HELIB_NTIMER_STOP(timer_sorting);
+
+
+  vector<vector<double>> iv = read_csv("interest_vector.csv");
+
+  cout << "\nDistance\tIndex"; 
+  for(int i =0;i<v.size();i++)
+  {
+    CtPtrs_vectorCt c (encdb[i]);
+    vector<long> cc;
+    decryptBinaryNums(cc, c, secret_key, ea);
+    //cout<< cc[0] << endl;
+    cout << "\n" << cc[0] << "\t\t" << index[i];
+
+  }
+  cout << "\nTop three recommendations : ";
+  for(int i =0;i<3;i++)
+  {
+    CtPtrs_vectorCt c (encdb[i]);
+    vector<long> cc;
+    decryptBinaryNums(cc, c, secret_key, ea);
+    // cout<< cc[0] << endl;
+    cout << "\nInterest Vector of recommended user : " << iv[index[i]];
+    cout << "\nDistance : " << cc[0] ;
+  }
+  cout << endl;
+
     helib::printNamedTimer(std::cout << std::endl, "timer_Context");
     helib::printNamedTimer(std::cout, "timer_Chain");
     helib::printNamedTimer(std::cout, "timer_SecKey");
     helib::printNamedTimer(std::cout, "timer_SKM");
     helib::printNamedTimer(std::cout, "timer_PubKey");
-    // helib::printNamedTimer(std::cout, "timer_PtxtCountryDB");
-    // helib::printNamedTimer(std::cout, "timer_CtxtCountryDB");
+    helib::printNamedTimer(std::cout, "timer_enc");
+    helib::printNamedTimer(std::cout, "timer_sorting");
   
 
 }
