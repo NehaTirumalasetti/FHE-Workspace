@@ -60,7 +60,7 @@ vector<vector<double>> read_csv(string filename)
   return dataset;
 }
 //std::vector<zzX>* unpackSlotEncoding = nullptr)
-vector<vector<Ctxt>> bubbleSort(vector<CtPtrs_vectorCt> encdb, vector<int> index , EncryptedArray ea , SecKey secret_key)
+void bubbleSort(vector<CtPtrs_vectorCt> op,vector<CtPtrs_vectorCt> encdb, vector<int> index , EncryptedArray ea , SecKey secret_key)
 {//vector<vector<Ctxt>> encdb
     // Context& context = c.getContext();
     for(int i =0;i<encdb.size()-1;i++)
@@ -82,21 +82,26 @@ vector<vector<Ctxt>> bubbleSort(vector<CtPtrs_vectorCt> encdb, vector<int> index
                         // &unpackSlotEncoding);
       vector<long> slotsMu;
       ea.decrypt(mu, secret_key, slotsMu);
-      if(slotsMu[0]==1)//swap
-      {
-        vector<Ctxt> temp;
-        temp = encdb[j];
-        encdb[j]= encdb[j+1];
-        encdb[j+1]=temp;
+      // if(slotsMu[0]==1)//swap
+      // {
+      //   vector<Ctxt> temp;
+      //   temp = encdb[j];
+      //   encdb[j]= encdb[j+1];
+      //   encdb[j+1]=temp;
 
-        //swap index
-        int tmp = index[j];
-        index[j] =index[j+1];
-        index[j+1] = tmp;
-      } 
+      //   //swap index
+      //   int tmp = index[j];
+      //   index[j] =index[j+1];
+      //   index[j+1] = tmp;
+      // } 
+      if(slotsMu[0]==1)//j>j+1
+      {
+        op.emplace_back(encdb[j+1]);
+        op.emplace_back(encdb[j]);
+      }
     }
   }
-  return encdb;
+  // return encdb;
 }
 
 int main(int argc, char* argv[])
@@ -183,6 +188,7 @@ int main(int argc, char* argv[])
 //  long v =12;
 //  cout << "Created distance vector" << endl;
  vector<vector<Ctxt>> encdb;
+ vector<CtPtrs_vectorCt> bindb;
 //  vector<CtPtrMat_vectorCt> encdbfin;
 // cout << "Created vector of vector ctxt" << endl;
 HELIB_NTIMER_START(timer_enc);
@@ -205,12 +211,15 @@ HELIB_NTIMER_START(timer_enc);
     }
     // cout << "Exited j loop" << endl;
     encdb.emplace_back(enc);
+    bindb.emplace_back(CtPtrs_vectorCt(enc));
     // cout << "added enc to encdb" << endl;  
  }
  HELIB_NTIMER_STOP(timer_enc);
   cout<<"\nSorting Distances... "<<endl;
   HELIB_NTIMER_START(timer_sorting);
-  vector<vector<Ctxt>> encdb1 = bubbleSort(encdb, index, ea, secret_key);
+  vector<CtPtrs_vectorCt> op;
+  // vector<vector<Ctxt>> encdb1 = bubbleSort(encdb, index, ea, secret_key);
+  bubbleSort(op,bindb, index, ea, secret_key);
   // for(int i =0;i<v.size()-1;i++)
   // {
   //   for(int j =0;j<v.size()-i-1;j++)
@@ -249,9 +258,9 @@ HELIB_NTIMER_START(timer_enc);
   cout << "\nDistance\tIndex"; 
   for(int i =0;i<v.size();i++)
   {
-    CtPtrs_vectorCt c (encdb1[i]);
+    // CtPtrs_vectorCt c (encdb1[i]);
     vector<long> cc;
-    decryptBinaryNums(cc, c, secret_key, ea);
+    decryptBinaryNums(cc, op[i], secret_key, ea);
     //cout<< cc[0] << endl;
     cout << "\n" << cc[0] << "\t\t" << index[i];
 
@@ -259,9 +268,9 @@ HELIB_NTIMER_START(timer_enc);
   cout << "\nTop three recommendations : ";
   for(int i =0;i<3;i++)
   {
-    CtPtrs_vectorCt c (encdb1[i]);
+    // CtPtrs_vectorCt c (encdb1[i]);
     vector<long> cc;
-    decryptBinaryNums(cc, c, secret_key, ea);
+    decryptBinaryNums(cc, op[i], secret_key, ea);
     // cout<< cc[0] << endl;
     cout << "\nInterest Vector of recommended user : " << iv[index[i]];
     cout << "\nDistance : " << cc[0] ;

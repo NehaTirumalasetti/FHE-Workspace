@@ -1,3 +1,0 @@
-/opt/IBM/FHE-Workspace/sort_test/CMakeFiles/rebuild_cache.dir
-/opt/IBM/FHE-Workspace/sort_test/CMakeFiles/edit_cache.dir
-/opt/IBM/FHE-Workspace/sort_test/CMakeFiles/sort_test.dir
