@@ -59,42 +59,42 @@ vector<vector<double>> read_csv(string filename)
   data_file.close();
   return dataset;
 }
+//std::vector<zzX>* unpackSlotEncoding = nullptr)
+vector<vector<Ctxt>> bubbleSort(vector<vector<Ctxt>> encdb, vector<int> index , EncryptedArray ea , SecKey secret_key)
+{
+    // Context& context = c.getContext();
+    for(int i =0;i<encdb.size()-1;i++)
+    {
+    for(int j =0;j<encdb.size()-i-1;j++)
+    {
+      // If `a`=`b` then `mu`=`ni`=`0`
+      helib::Ctxt mu(encdb[0][0].getPubKey()), ni(encdb[0][0].getPubKey());
+      // resize(encdb[j], bitSize, mu);
+      // resize(encdb[j+1], bitSize + 1, ni);    
+      compareTwoNumbers(mu, //j>j+1 swap //a>b
+                        ni, //a<b
+                        helib::CtPtrs_vectorCt(encdb[j]),
+                        helib::CtPtrs_vectorCt(encdb[j+1]));//,
+                        // false,
+                        // &unpackSlotEncoding);
+      vector<long> slotsMu;
+      ea.decrypt(mu, secret_key, slotsMu);
+      if(slotsMu[0]==1)//swap
+      {
+        vector<Ctxt> temp;
+        temp = encdb[j];
+        encdb[j]=encdb[j+1];
+        encdb[j+1]=temp;
 
-// vector<vector<Ctxt>> bubbleSort(vector<vector<Ctxt>> encdb, vector<int> index , Ctxt c)
-// {
-//     Context& context = c.getContext();
-//     for(int i =0;i<encdb.size()-1;i++)
-//     {
-//     for(int j =0;j<encdb.size()-i-1;j++)
-//     {
-//       // If `a`=`b` then `mu`=`ni`=`0`
-//       helib::Ctxt mu(secret_key), ni(secret_key);
-//       resize(encdb[j], bitSize, mu);
-//       resize(encdb[j+1], bitSize + 1, ni);    
-//       compareTwoNumbers(mu, //j>j+1 swap //a>b
-//                         ni, //a<b
-//                         helib::CtPtrs_vectorCt(encdb[j]),
-//                         helib::CtPtrs_vectorCt(encdb[j+1]),
-//                         false,
-//                         &unpackSlotEncoding);
-//       vector<long> slotsMu;
-//       ea.decrypt(mu, secret_key, slotsMu);
-//       if(slotsMu[0]==1)//swap
-//       {
-//         vector<Ctxt> temp;
-//         temp = encdb[j];
-//         encdb[j]=encdb[j+1];
-//         encdb[j+1]=temp;
-
-//         //swap index
-//         int tmp = index[j];
-//         index[j] =index[j+1];
-//         index[j+1] = tmp;
-//       } 
-//     }
-//   }
-
-// }
+        //swap index
+        int tmp = index[j];
+        index[j] =index[j+1];
+        index[j+1] = tmp;
+      } 
+    }
+  }
+  return encdb;
+}
 
 int main(int argc, char* argv[])
 {
@@ -207,36 +207,37 @@ HELIB_NTIMER_START(timer_enc);
  HELIB_NTIMER_STOP(timer_enc);
   cout<<"\nSorting Distances... "<<endl;
   HELIB_NTIMER_START(timer_sorting);
-  for(int i =0;i<v.size()-1;i++)
-  {
-    for(int j =0;j<v.size()-i-1;j++)
-    {
-      // If `a`=`b` then `mu`=`ni`=`0`
-      helib::Ctxt mu(secret_key), ni(secret_key);
-      resize(encdb[j], bitSize, mu);
-      resize(encdb[j+1], bitSize + 1, ni);    
-      compareTwoNumbers(mu, //j>j+1 swap //a>b
-                        ni, //a<b
-                        helib::CtPtrs_vectorCt(encdb[j]),
-                        helib::CtPtrs_vectorCt(encdb[j+1]));
-                        // false,
-                        // &unpackSlotEncoding);
-      vector<long> slotsMu;
-      ea.decrypt(mu, secret_key, slotsMu);
-      if(slotsMu[0]==1)//swap
-      {
-        vector<Ctxt> temp;
-        temp = encdb[j];
-        encdb[j]=encdb[j+1];
-        encdb[j+1]=temp;
+  vector<vector<Ctxt>> encdb1 = bubbleSort(encdb, index, ea, secret_key);
+  // for(int i =0;i<v.size()-1;i++)
+  // {
+  //   for(int j =0;j<v.size()-i-1;j++)
+  //   {
+  //     // If `a`=`b` then `mu`=`ni`=`0`
+  //     helib::Ctxt mu(encdb[0][0].getPubKey()), ni(encdb[0][0].getPubKey());
+  //     // resize(encdb[j], bitSize, mu);
+  //     // resize(encdb[j+1], bitSize + 1, ni);    
+  //     compareTwoNumbers(mu, //j>j+1 swap //a>b
+  //                       ni, //a<b
+  //                       helib::CtPtrs_vectorCt(encdb[j]),
+  //                       helib::CtPtrs_vectorCt(encdb[j+1]));
+  //                       // false,
+  //                       // &unpackSlotEncoding);
+  //     vector<long> slotsMu;
+  //     ea.decrypt(mu, secret_key, slotsMu);
+  //     if(slotsMu[0]==1)//swap
+  //     {
+  //       vector<Ctxt> temp;
+  //       temp = encdb[j];
+  //       encdb[j]=encdb[j+1];
+  //       encdb[j+1]=temp;
 
-        //swap index
-        int tmp = index[j];
-        index[j] =index[j+1];
-        index[j+1] = tmp;
-      } 
-    }
-  }
+  //       //swap index
+  //       int tmp = index[j];
+  //       index[j] =index[j+1];
+  //       index[j+1] = tmp;
+  //     } 
+  //   }
+  // }
   HELIB_NTIMER_STOP(timer_sorting);
 
 
@@ -245,7 +246,7 @@ HELIB_NTIMER_START(timer_enc);
   cout << "\nDistance\tIndex"; 
   for(int i =0;i<v.size();i++)
   {
-    CtPtrs_vectorCt c (encdb[i]);
+    CtPtrs_vectorCt c (encdb1[i]);
     vector<long> cc;
     decryptBinaryNums(cc, c, secret_key, ea);
     //cout<< cc[0] << endl;
@@ -255,7 +256,7 @@ HELIB_NTIMER_START(timer_enc);
   cout << "\nTop three recommendations : ";
   for(int i =0;i<3;i++)
   {
-    CtPtrs_vectorCt c (encdb[i]);
+    CtPtrs_vectorCt c (encdb1[i]);
     vector<long> cc;
     decryptBinaryNums(cc, c, secret_key, ea);
     // cout<< cc[0] << endl;
