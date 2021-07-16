@@ -60,6 +60,42 @@ vector<vector<double>> read_csv(string filename)
   return dataset;
 }
 
+// vector<vector<Ctxt>> bubbleSort(vector<vector<Ctxt>> encdb, vector<int> index , Ctxt c)
+// {
+//     Context& context = c.getContext();
+//     for(int i =0;i<encdb.size()-1;i++)
+//     {
+//     for(int j =0;j<encdb.size()-i-1;j++)
+//     {
+//       // If `a`=`b` then `mu`=`ni`=`0`
+//       helib::Ctxt mu(secret_key), ni(secret_key);
+//       resize(encdb[j], bitSize, mu);
+//       resize(encdb[j+1], bitSize + 1, ni);    
+//       compareTwoNumbers(mu, //j>j+1 swap //a>b
+//                         ni, //a<b
+//                         helib::CtPtrs_vectorCt(encdb[j]),
+//                         helib::CtPtrs_vectorCt(encdb[j+1]),
+//                         false,
+//                         &unpackSlotEncoding);
+//       vector<long> slotsMu;
+//       ea.decrypt(mu, secret_key, slotsMu);
+//       if(slotsMu[0]==1)//swap
+//       {
+//         vector<Ctxt> temp;
+//         temp = encdb[j];
+//         encdb[j]=encdb[j+1];
+//         encdb[j+1]=temp;
+
+//         //swap index
+//         int tmp = index[j];
+//         index[j] =index[j+1];
+//         index[j+1] = tmp;
+//       } 
+//     }
+//   }
+
+// }
+
 int main(int argc, char* argv[])
 {
   long p = 2; 
@@ -175,15 +211,16 @@ HELIB_NTIMER_START(timer_enc);
   {
     for(int j =0;j<v.size()-i-1;j++)
     {
+      // If `a`=`b` then `mu`=`ni`=`0`
       helib::Ctxt mu(secret_key), ni(secret_key);
       resize(encdb[j], bitSize, mu);
       resize(encdb[j+1], bitSize + 1, ni);    
-      compareTwoNumbers(mu, //j>j+1 swap
-                        ni,
+      compareTwoNumbers(mu, //j>j+1 swap //a>b
+                        ni, //a<b
                         helib::CtPtrs_vectorCt(encdb[j]),
-                        helib::CtPtrs_vectorCt(encdb[j+1]),
-                        false,
-                        &unpackSlotEncoding);
+                        helib::CtPtrs_vectorCt(encdb[j+1]));
+                        // false,
+                        // &unpackSlotEncoding);
       vector<long> slotsMu;
       ea.decrypt(mu, secret_key, slotsMu);
       if(slotsMu[0]==1)//swap
