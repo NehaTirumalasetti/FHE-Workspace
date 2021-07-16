@@ -60,21 +60,24 @@ vector<vector<double>> read_csv(string filename)
   return dataset;
 }
 //std::vector<zzX>* unpackSlotEncoding = nullptr)
-vector<vector<Ctxt>> bubbleSort(vector<vector<Ctxt>> encdb, vector<int> index , EncryptedArray ea , SecKey secret_key)
-{
+vector<vector<Ctxt>> bubbleSort(vector<CtPtrs_vectorCt> encdb, vector<int> index , EncryptedArray ea , SecKey secret_key)
+{//vector<vector<Ctxt>> encdb
     // Context& context = c.getContext();
     for(int i =0;i<encdb.size()-1;i++)
     {
     for(int j =0;j<encdb.size()-i-1;j++)
     {
       // If `a`=`b` then `mu`=`ni`=`0`
-      helib::Ctxt mu(encdb[0][0].getPubKey()), ni(encdb[0][0].getPubKey());
+      // helib::Ctxt mu(encdb[0][0].getPubKey()), ni(encdb[0][0].getPubKey());
+      helib::Ctxt mu(secret_key), ni(secret_key);
       // resize(encdb[j], bitSize, mu);
       // resize(encdb[j+1], bitSize + 1, ni);    
       compareTwoNumbers(mu, //j>j+1 swap //a>b
                         ni, //a<b
-                        helib::CtPtrs_vectorCt(encdb[j]),
-                        helib::CtPtrs_vectorCt(encdb[j+1]));//,
+                        encdb[j],
+                        encdb[j+1]);//,
+                        // helib::CtPtrs_vectorCt(encdb[j]),
+                        // helib::CtPtrs_vectorCt(encdb[j+1]));//,
                         // false,
                         // &unpackSlotEncoding);
       vector<long> slotsMu;
@@ -83,7 +86,7 @@ vector<vector<Ctxt>> bubbleSort(vector<vector<Ctxt>> encdb, vector<int> index , 
       {
         vector<Ctxt> temp;
         temp = encdb[j];
-        encdb[j]=encdb[j+1];
+        encdb[j]= encdb[j+1];
         encdb[j+1]=temp;
 
         //swap index
