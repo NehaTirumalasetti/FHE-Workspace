@@ -60,50 +60,100 @@ vector<vector<double>> read_csv(string filename)
   return dataset;
 }
 //std::vector<zzX>* unpackSlotEncoding = nullptr)
-void bubbleSort(vector<CtPtrs_vectorCt> op,vector<CtPtrs_vectorCt> encdb, vector<int> index , EncryptedArray ea , SecKey secret_key)
+
+
+void bubbleSort1(vector<CtPtrs_vectorCt> op,vector<CtPtrs_vectorCt> encdb, vector<int> index , EncryptedArray ea , SecKey secret_key)
 {//vector<vector<Ctxt>> encdb
+   
+    cout<<"Entered function" <<endl;
+    /*for(int i =0;i<encdb.size()-1;i++)
+      {
+        cout<<"Entered for loop i" <<endl;
+        for(int j =0;j<encdb.size()-i-1;j++)
+        {
+          // If `a`=`b` then `mu`=`ni`=`0`
+          cout<<"Entered for loop j" <<endl;
+            helib::Ctxt mu(secret_key), ni(secret_key);
+           cout<<"starting compare" <<endl;
+            compareTwoNumbers(mu, //j>j+1 swap //a>b
+                              ni, //a<b
+                              encdb[j],
+                              encdb[j+1]);//,
+                              // helib::CtPtrs_vectorCt(encdb[j]),
+                              // helib::CtPtrs_vectorCt(encdb[j+1]));//,
+                              // false,
+                              // &unpackSlotEncoding);
+            vector<long> slotsMu;
+            ea.decrypt(mu, secret_key, slotsMu);
+            cout<<"Completed compare" <<endl;
+            
+            if(slotsMu[0]==1)//j>j+1
+            {
+              cout<<"Doing swap" <<endl;
+              op.emplace_back(encdb[j+1]);
+              op.emplace_back(encdb[j]);
+              cout<<"completed swap" <<endl;
+            }
+            else
+            {
+              op.emplace_back(encdb[j]);
+              op.emplace_back(encdb[j+1]);
+            }
+            cout<<"Completed loop j" <<endl;
+        }
+      }*/
+
+       helib::Ctxt mu(secret_key), ni(secret_key);
+           cout<<"starting store" <<endl;
+           CtPtrs_vectorCt a = encdb[0];
+           CtPtrs_vectorCt b = encdb[1];
+           cout<<"starting compare" <<endl;
+            compareTwoNumbers(mu, //j>j+1 swap //a>b
+                              ni, //a<b
+                              a,
+                              b); // issue with compare causing segmentation fault
+      
+  // return encdb;*/
+}
+vector<vector<Ctxt>> bubbleSort(vector<vector<Ctxt>> encdb, vector<int> index , EncryptedArray ea , SecKey secret_key)
+{
     // Context& context = c.getContext();
     for(int i =0;i<encdb.size()-1;i++)
     {
     for(int j =0;j<encdb.size()-i-1;j++)
     {
       // If `a`=`b` then `mu`=`ni`=`0`
-      // helib::Ctxt mu(encdb[0][0].getPubKey()), ni(encdb[0][0].getPubKey());
       helib::Ctxt mu(secret_key), ni(secret_key);
-      // resize(encdb[j], bitSize, mu);
-      // resize(encdb[j+1], bitSize + 1, ni);    
       compareTwoNumbers(mu, //j>j+1 swap //a>b
                         ni, //a<b
-                        encdb[j],
-                        encdb[j+1]);//,
-                        // helib::CtPtrs_vectorCt(encdb[j]),
-                        // helib::CtPtrs_vectorCt(encdb[j+1]));//,
+                        helib::CtPtrs_vectorCt(encdb[j]),
+                        helib::CtPtrs_vectorCt(encdb[j+1]));//,
                         // false,
                         // &unpackSlotEncoding);
       vector<long> slotsMu;
       ea.decrypt(mu, secret_key, slotsMu);
-      // if(slotsMu[0]==1)//swap
-      // {
-      //   vector<Ctxt> temp;
-      //   temp = encdb[j];
-      //   encdb[j]= encdb[j+1];
-      //   encdb[j+1]=temp;
-
-      //   //swap index
-      //   int tmp = index[j];
-      //   index[j] =index[j+1];
-      //   index[j+1] = tmp;
-      // } 
-      if(slotsMu[0]==1)//j>j+1
+      if(slotsMu[0]==1)//swap
       {
-        op.emplace_back(encdb[j+1]);
-        op.emplace_back(encdb[j]);
+        vector<Ctxt> temp;
+        temp = encdb[j];
+        encdb[j]=encdb[j+1];
+        encdb[j+1]=temp;
+
+         //swap index
+        int tmp = index[j];
+        index[j] =index[j+1];
+        index[j+1] = tmp;
       }
     }
-  }
-  // return encdb;
+    }
+    return encdb;
+    /*
+    Sorting Distances... 
+terminate called after throwing an instance of 'helib::LogicError'
+  what():  Cannot assign Ctxts with different pubKey
+Aborted (core dumped) HEIN
+    */
 }
-
 int main(int argc, char* argv[])
 {
   long p = 2; 
@@ -218,42 +268,13 @@ HELIB_NTIMER_START(timer_enc);
   cout<<"\nSorting Distances... "<<endl;
   HELIB_NTIMER_START(timer_sorting);
   vector<CtPtrs_vectorCt> op;
-  // vector<vector<Ctxt>> encdb1 = bubbleSort(encdb, index, ea, secret_key);
-  bubbleSort(op,bindb, index, ea, secret_key);
-  // for(int i =0;i<v.size()-1;i++)
-  // {
-  //   for(int j =0;j<v.size()-i-1;j++)
-  //   {
-  //     // If `a`=`b` then `mu`=`ni`=`0`
-  //     helib::Ctxt mu(encdb[0][0].getPubKey()), ni(encdb[0][0].getPubKey());
-  //     // resize(encdb[j], bitSize, mu);
-  //     // resize(encdb[j+1], bitSize + 1, ni);    
-  //     compareTwoNumbers(mu, //j>j+1 swap //a>b
-  //                       ni, //a<b
-  //                       helib::CtPtrs_vectorCt(encdb[j]),
-  //                       helib::CtPtrs_vectorCt(encdb[j+1]));
-  //                       // false,
-  //                       // &unpackSlotEncoding);
-  //     vector<long> slotsMu;
-  //     ea.decrypt(mu, secret_key, slotsMu);
-  //     if(slotsMu[0]==1)//swap
-  //     {
-  //       vector<Ctxt> temp;
-  //       temp = encdb[j];
-  //       encdb[j]=encdb[j+1];
-  //       encdb[j+1]=temp;
-
-  //       //swap index
-  //       int tmp = index[j];
-  //       index[j] =index[j+1];
-  //       index[j+1] = tmp;
-  //     } 
-  //   }
-  // }
+  vector<vector<Ctxt>> encdb1 = bubbleSort(encdb, index, ea, secret_key);
+  // bubbleSort(op,bindb, index, ea, secret_key);
+  
   HELIB_NTIMER_STOP(timer_sorting);
 
 
-  vector<vector<double>> iv = read_csv("interest_vector.csv");
+   vector<vector<double>> iv = read_csv("interest_vector.csv");
 
   cout << "\nDistance\tIndex"; 
   for(int i =0;i<v.size();i++)
@@ -321,3 +342,39 @@ Distance : 23
   timer_PubKey: 0 / 1 = 0   [/opt/IBM/FHE-Workspace/sort_test/sort_test.cpp:126]
   timer_enc: 0.491515 / 1 = 0.491515   [/opt/IBM/FHE-Workspace/sort_test/sort_test.cpp:149]
   timer_sorting: 59.4951 / 1 = 59.4951   [/opt/IBM/FHE-Workspace/sort_test/sort_test.cpp:173]*/
+
+
+  // for(int i =0;i<v.size()-1;i++)
+  // {
+  //   for(int j =0;j<v.size()-i-1;j++)
+  //   {
+  //     // If `a`=`b` then `mu`=`ni`=`0`
+  //     helib::Ctxt mu(encdb[0][0].getPubKey()), ni(encdb[0][0].getPubKey());
+  //     // resize(encdb[j], bitSize, mu);
+  //     // resize(encdb[j+1], bitSize + 1, ni);    
+  //     compareTwoNumbers(mu, //j>j+1 swap //a>b
+  //                       ni, //a<b
+  //                       helib::CtPtrs_vectorCt(encdb[j]),
+  //                       helib::CtPtrs_vectorCt(encdb[j+1]));
+  //                       // false,
+  //                       // &unpackSlotEncoding);
+  //     vector<long> slotsMu;
+  //     ea.decrypt(mu, secret_key, slotsMu);
+  //     if(slotsMu[0]==1)//swap
+  //     {
+  //       vector<Ctxt> temp;
+  //       temp = encdb[j];
+  //       encdb[j]=encdb[j+1];
+  //       encdb[j+1]=temp;
+
+  //       //swap index
+  //       int tmp = index[j];
+  //       index[j] =index[j+1];
+  //       index[j+1] = tmp;
+  //     } 
+  //   }
+  // }
+
+
+
+
