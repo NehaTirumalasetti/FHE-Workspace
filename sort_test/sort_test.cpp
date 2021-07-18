@@ -125,7 +125,8 @@ vector<vector<Ctxt>> bubbleSort(vector<vector<Ctxt>> encdb, vector<int> index , 
     {
       cout<<"creating mu and ni"<<endl;
       // If `a`=`b` then `mu`=`ni`=`0`
-      helib::Ctxt mu(secret_key), ni(secret_key);
+      // helib::Ctxt mu(secret_key), ni(secret_key);
+      helib::Ctxt mu(encdb[0][0].getPubKey()), ni(encdb[0][0].getPubKey());
       cout<<"comparing 2 numbers"<<endl;
       compareTwoNumbers(mu, //j>j+1 swap //a>b
                         ni, //a<b
@@ -290,13 +291,9 @@ HELIB_NTIMER_START(timer_enc);
   // vector<CtPtrs_vectorCt> op;
   // vector<vector<Ctxt>> encdb1 = bubbleSort(encdb, index, ea, secret_key);
 
-  testcomp(encdb, ea, secret_key);
+  
 
-  // helib::Ctxt mu(secret_key), ni(secret_key);
-  //  compareTwoNumbers(mu, //j>j+1 swap //a>b
-  //                       ni, //a<b
-  //                       helib::CtPtrs_vectorCt(encdb[0]),
-  //                       helib::CtPtrs_vectorCt(encdb[1]));
+  // testcomp(encdb, ea, secret_key);
   // bubbleSort(op,bindb, index, ea, secret_key);
   
   HELIB_NTIMER_STOP(timer_sorting);
@@ -307,7 +304,7 @@ HELIB_NTIMER_START(timer_enc);
   cout << "\nDistance\tIndex"; 
   for(int i =0;i<v.size();i++)
   {
-     CtPtrs_vectorCt c (encdb[i]);
+     CtPtrs_vectorCt c (encdb1[i]);
     vector<long> cc;
     decryptBinaryNums(cc, c, secret_key, ea);
     //cout<< cc[0] << endl;
@@ -317,7 +314,7 @@ HELIB_NTIMER_START(timer_enc);
   cout << "\nTop three recommendations : ";
   for(int i =0;i<3;i++)
   {
-     CtPtrs_vectorCt c (encdb[i]);
+    CtPtrs_vectorCt c (encdb1[i]);
     vector<long> cc;
     decryptBinaryNums(cc, c, secret_key, ea);
     // cout<< cc[0] << endl;
