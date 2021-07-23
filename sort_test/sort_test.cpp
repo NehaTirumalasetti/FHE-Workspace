@@ -115,7 +115,7 @@ vector<vector<double>> read_csv(string filename)
       
   // return encdb;
 }*/
-vector<vector<Ctxt>> bubbleSort(vector<vector<Ctxt>> encdb, vector<int> index , EncryptedArray ea , SecKey secret_key)
+vector<vector<Ctxt>> bubbleSort(vector<vector<Ctxt>> encdb,  EncryptedArray ea , SecKey secret_key)
 {
     cout<<"entered function" <<endl;
     // Context& context = c.getContext();
@@ -144,22 +144,43 @@ vector<vector<Ctxt>> bubbleSort(vector<vector<Ctxt>> encdb, vector<int> index , 
         temp = encdb[j];
         encdb[j]=encdb[j+1];
         encdb[j+1]=temp;
-
-         //swap index
-        int tmp = index[j];
-        index[j] =index[j+1];
-        index[j+1] = tmp;
       }
     }
     }
     cout<<"leaving function" <<endl;
     return encdb;
-    /*
-    Sorting Distances... 
-terminate called after throwing an instance of 'helib::LogicError'
-  what():  Cannot assign Ctxts with different pubKey
-Aborted (core dumped) HEIN
-    */
+   
+}
+vector<vector<Ctxt>> insertionSort(vector<vector<Ctxt>> encdb,  EncryptedArray ea , SecKey secret_key)
+{
+  for(int i = 1;i<encdb.size();i++)
+  {
+    int j = i-1;
+    vector<Ctxt> key = encdb[i];
+    while(j>=0)
+    {
+      helib::Ctxt mu(encdb[0][0].getPubKey()), ni(encdb[0][0].getPubKey());
+      cout<<"comparing 2 numbers"<<endl;
+      compareTwoNumbers(mu, //j>key swap //a>b
+                        ni, //a<b
+                        helib::CtPtrs_vectorCt(encdb[j]),
+                        helib::CtPtrs_vectorCt(key));
+                        // false,
+                        // &unpackSlotEncoding);
+      cout<<"decrypting mu"<<endl;
+      vector<long> slotsMu;
+      ea.decrypt(mu, secret_key, slotsMu);
+      if(slotsMu[0]==1)//swap
+      {
+        encdb[j+1]=encdb[j];
+        j=j-1;    
+      }
+      else
+        break;
+    }
+    encdb[j+1] = key;
+  }
+  return encdb;
 }
 long testcomp(vector<vector<Ctxt>> encdb, EncryptedArray ea, SecKey secret_key)
 {
@@ -286,42 +307,26 @@ HELIB_NTIMER_START(timer_enc);
     // cout << "added enc to encdb" << endl;  
  }
  HELIB_NTIMER_STOP(timer_enc);
-  cout<<"\nSorting Distances... "<<endl;
+  cout<<"\nSorting... "<<endl;
+
   HELIB_NTIMER_START(timer_sorting);
-  // vector<CtPtrs_vectorCt> op;
-  // vector<vector<Ctxt>> encdb1 = bubbleSort(encdb, index, ea, secret_key);
+  //  vector<vector<Ctxt>> encdb1 = bubbleSort(encdb, ea, secret_key);
+  vector<vector<Ctxt>> encdb1 = insertionSort(encdb, ea, secret_key);
 
-  
-
-  // testcomp(encdb, ea, secret_key);
-  // bubbleSort(op,bindb, index, ea, secret_key);
-  
   HELIB_NTIMER_STOP(timer_sorting);
 
 
-   vector<vector<double>> iv = read_csv("interest_vector.csv");
 
-  cout << "\nDistance\tIndex"; 
+
+  cout << "\nSorted values:"; 
   for(int i =0;i<v.size();i++)
   {
      CtPtrs_vectorCt c (encdb1[i]);
     vector<long> cc;
     decryptBinaryNums(cc, c, secret_key, ea);
     //cout<< cc[0] << endl;
-    cout << "\n" << cc[0] << "\t\t" << index[i];
-
+    cout << "\n" << cc[0];
   }
-  cout << "\nTop three recommendations : ";
-  for(int i =0;i<3;i++)
-  {
-    CtPtrs_vectorCt c (encdb1[i]);
-    vector<long> cc;
-    decryptBinaryNums(cc, c, secret_key, ea);
-    // cout<< cc[0] << endl;
-    cout << "\nInterest Vector of recommended user : " << iv[index[i]];
-    cout << "\nDistance : " << cc[0] ;
-  }
-  cout << endl;
 
     helib::printNamedTimer(std::cout << std::endl, "timer_Context");
     helib::printNamedTimer(std::cout, "timer_Chain");
@@ -399,6 +404,13 @@ Distance : 23
   //     } 
   //   }
   // }
+
+   /*
+    Sorting Distances... 
+terminate called after throwing an instance of 'helib::LogicError'
+  what():  Cannot assign Ctxts with different pubKey
+Aborted (core dumped) HEIN
+    */
 
 
 
