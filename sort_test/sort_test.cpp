@@ -195,6 +195,20 @@ long testcomp(vector<vector<Ctxt>> encdb, EncryptedArray ea, SecKey secret_key)
   return(slotsMu[0]);
 
 }
+void merge(vector<vector<Ctxt>> array, int begin,int mid, int const end, EncryptedArray ea, SecKey secret_key)
+{
+  
+}
+void mergeSort(vector<vector<Ctxt>> array, int begin, int end, EncryptedArray ea, SecKey secret_key)
+{
+    if (begin >= end)
+        return; // Returns recursivly
+ 
+    auto mid = begin + (end - begin) / 2;
+    mergeSort(array, begin, mid,ea, secret_key);
+    mergeSort(array, mid + 1, end, ea, secret_key);
+    merge(array, begin, mid, end, ea, secret_key);
+}
 
 int main(int argc, char* argv[])
 {
