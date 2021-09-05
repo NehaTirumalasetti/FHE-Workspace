@@ -195,61 +195,23 @@ long testcomp(vector<vector<Ctxt>> encdb, EncryptedArray ea, SecKey secret_key)
   return(slotsMu[0]);
 
 }
-void merge(vector<vector<Ctxt>> array, int left,int mid, int const right, EncryptedArray ea, SecKey secret_key)
-{
-  int subArr1 = mid-left+1;
-  int subArr2 = right - mid;
-  vector<vector<Ctxt>> leftArr, rightArr;
-  for(int i=0;i<subArr1;i++)
-    leftArr[i] = array[left + i];
-  for(int i=0;i<subArr1;i++)
-    rightArr[i] = array[mid + 1 + i];
-  int indexsubarr1 = 0, indexsubarr2 = 0, indexmergearray = left;
-    while (indexsubarr1 < subArr1 && indexsubarr2 < subArr2) {
 
-      helib::Ctxt mu(array[0][0].getPubKey()), ni(array[0][0].getPubKey());
-      cout<<"comparing 2 numbers"<<endl;
-      compareTwoNumbers(mu, //j>key swap //a>b
-                        ni, //a<b
-                        helib::CtPtrs_vectorCt(rightArr[indexsubarr2]),
-                        helib::CtPtrs_vectorCt(leftArr[indexsubarr1]));
-                        // false,
-                        // &unpackSlotEncoding);
-      cout<<"decrypting mu"<<endl;
-      vector<long> slotsMu;
-      ea.decrypt(mu, secret_key, slotsMu);
-      if(slotsMu[0]==1)//swap
-      {
-        array[indexmergearray] = leftArr[indexsubarr1];
-        indexsubarr1++;
-      }
-      else
-      {
-        array[indexmergearray] = rightArr[indexsubarr2];
-        indexsubarr2++;
-      }
-      indexmergearray++;
-    }
-     while (indexsubarr1 < subArr1) {
-        array[indexmergearray] = leftArr[indexsubarr1];
-        indexsubarr1++;
-        indexmergearray++;
-    }
-    while (indexsubarr2 < subArr2) {
-        array[indexmergearray] = rightArr[indexsubarr2];
-        indexsubarr2++;
-        indexmergearray++;
-    }
-}
-void mergeSort(vector<vector<Ctxt>> array, int begin, int end, EncryptedArray ea, SecKey secret_key)
+vector<vector<Ctxt>> mergeSort(vector<vector<Ctxt>> encdb, int begin, int end, EncryptedArray ea , SecKey secret_key)
 {
-    if (begin >= end)
-        return; // Returns recursivly
- 
-    auto mid = begin + (end - begin) / 2;
-    mergeSort(array, begin, mid,ea, secret_key);
-    mergeSort(array, mid + 1, end, ea, secret_key);
-    merge(array, begin, mid, end, ea, secret_key);
+  if(begin>=end)
+    return encdb;
+  else{
+    int mid = (begin+end)/2;
+    mergeSort(encdb,begin,mid,ea,secret_key);
+    mergeSort(encdb,mid+1,end,ea,secret_key);
+    return merge(encdb,begin,mid,end,ea,secret_key);
+    }
+
+} 
+
+vector<vector<Ctxt>> merge(vector<vector<Ctxt>> encdb, int begin, int mid, int end, EncryptedArray ea, SecKey secret_key)
+{
+
 }
 
 int main(int argc, char* argv[])
@@ -367,8 +329,8 @@ HELIB_NTIMER_START(timer_enc);
 
   HELIB_NTIMER_START(timer_sorting);
   //  vector<vector<Ctxt>> encdb1 = bubbleSort(encdb, ea, secret_key);
-  // vector<vector<Ctxt>> encdb1 = insertionSort(encdb, ea, secret_key);
-   mergeSort(encdb,0,encdb.size()-1, ea, secret_key);
+  vector<vector<Ctxt>> encdb1 = insertionSort(encdb, ea, secret_key);
+  //  mergeSort(encdb,0,encdb.size()-1, ea, secret_key);
   HELIB_NTIMER_STOP(timer_sorting);
 
 
@@ -377,7 +339,7 @@ HELIB_NTIMER_START(timer_enc);
   cout << "\nSorted values:"; 
   for(int i =0;i<v.size();i++)
   {
-     CtPtrs_vectorCt c (encdb[i]);
+     CtPtrs_vectorCt c (encdb1[i]);
     vector<long> cc;
     decryptBinaryNums(cc, c, secret_key, ea);
     //cout<< cc[0] << endl;
@@ -469,5 +431,64 @@ Aborted (core dumped) HEIN
     */
 
 
+/*
+void merge(vector<vector<Ctxt>> array, int left,int mid, int const right, EncryptedArray ea, SecKey secret_key)
+{
+  int subArr1 = mid-left+1;
+  int subArr2 = right - mid;
+  vector<vector<Ctxt>> leftArr, rightArr;
+  for(int i=0;i<subArr1;i++)
+    leftArr[i] = array[left + i];
+  for(int i=0;i<subArr1;i++)
+    rightArr[i] = array[mid + 1 + i];
+  int indexsubarr1 = 0, indexsubarr2 = 0, indexmergearray = left;
+    while (indexsubarr1 < subArr1 && indexsubarr2 < subArr2) {
+
+      helib::Ctxt mu(array[0][0].getPubKey()), ni(array[0][0].getPubKey());
+      cout<<"comparing 2 numbers"<<endl;
+      compareTwoNumbers(mu, //j>key swap //a>b
+                        ni, //a<b
+                        helib::CtPtrs_vectorCt(rightArr[indexsubarr2]),
+                        helib::CtPtrs_vectorCt(leftArr[indexsubarr1]));
+                        // false,
+                        // &unpackSlotEncoding);
+      cout<<"decrypting mu"<<endl;
+      vector<long> slotsMu;
+      ea.decrypt(mu, secret_key, slotsMu);
+      if(slotsMu[0]==1)//swap
+      {
+        array[indexmergearray] = leftArr[indexsubarr1];
+        indexsubarr1++;
+      }
+      else
+      {
+        array[indexmergearray] = rightArr[indexsubarr2];
+        indexsubarr2++;
+      }
+      indexmergearray++;
+    }
+     while (indexsubarr1 < subArr1) {
+        array[indexmergearray] = leftArr[indexsubarr1];
+        indexsubarr1++;
+        indexmergearray++;
+    }
+    while (indexsubarr2 < subArr2) {
+        array[indexmergearray] = rightArr[indexsubarr2];
+        indexsubarr2++;
+        indexmergearray++;
+    }
+}
+
+void mergeSort(vector<vector<Ctxt>> array, int begin, int end, EncryptedArray ea, SecKey secret_key)
+{
+    if (begin >= end)
+        return; // Returns recursivly
+ 
+    auto mid = begin + (end - begin) / 2;
+    mergeSort(array, begin, mid,ea, secret_key);
+    mergeSort(array, mid + 1, end, ea, secret_key);
+    merge(array, begin, mid, end, ea, secret_key);
+}
+*/
 
 
