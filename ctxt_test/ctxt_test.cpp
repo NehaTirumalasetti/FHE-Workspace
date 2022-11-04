@@ -89,6 +89,7 @@ int main(int argc, char* argv[])
   const helib::PubKey& public_key = secret_key;
   const helib::EncryptedArray& ea = context.getEA();
 
+  std::cout<< "Size of public key: " << sizeof(public_key) << endl;
     // Print the context
   std::cout << std::endl;
   if (debug)

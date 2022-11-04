@@ -85,6 +85,9 @@ int main(int argc, char* argv[])
   HelibBgvContext he;
   he.init(conf);
 
+  cout << "Size of public key" << sizeof(he.getPublicKey()) << endl;
+
+  
   /*helib::Context he = helib::ContextBuilder<helib::BGV>()
                                .m(m)
                                .p(p)

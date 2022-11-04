@@ -280,6 +280,8 @@ int main(int argc, char* argv[])
   HELIB_NTIMER_START(timer_PubKey);
   const helib::PubKey& public_key = secret_key;
    HELIB_NTIMER_STOP(timer_PubKey);
+   cout << "pub key size" << endl;
+  std::cout << "Size of Public key: "<<sizeof(public_key)<<std::endl;
 
   // Get the EncryptedArray of the context.
   const helib::EncryptedArray& ea = context.getEA();
